@@ -15,6 +15,8 @@ public class DatabaseConnection {
     private static String db = "ShotSpot";
     private static String un = "LGPremia";
     private static String password = "P@ssw0rd";
+
+
     public static Connection connect(){
         Connection conn = null;
         String ConnURL = null;
@@ -33,4 +35,5 @@ public class DatabaseConnection {
         }
         return conn;
     }
+
 }
