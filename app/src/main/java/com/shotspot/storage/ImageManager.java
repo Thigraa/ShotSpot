@@ -1,6 +1,8 @@
 package com.shotspot.storage;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.blob.BlobContainerPermissions;
+import com.microsoft.azure.storage.blob.BlobContainerPublicAccessType;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
@@ -13,9 +15,9 @@ import java.util.LinkedList;
 
 public class ImageManager {
     public static final String storageConnectionString =
-            "https://shotspot.blob.core.windows.net/" +
-                    "AccountName=imagenes;" +
-                    "AccountKey=sp=r&st=2021-05-06T13:26:15Z&se=2021-05-06T21:26:15Z&spr=https&sv=2020-02-10&sr=c&sig=2ZbdaKu%2BOwWii3LFvLKL0WF%2BVwT05aLZWhaMowYFDhA%3D";
+            "DefaultEndpointsProtocol=https;AccountName=shotspot;AccountKey=/hyqj41B3TVn0HPUp+lFm+8ORM8j4dAhPFwz8eUpS2qzVHaA1dJtGoLAULG7wK3t++NtUXgO/Hc/MRwykyoI2g==;EndpointSuffix=core.windows.net" +
+                    "AccountName=shotspot;" +
+                    "AccountKey=/hyqj41B3TVn0HPUp+lFm+8ORM8j4dAhPFwz8eUpS2qzVHaA1dJtGoLAULG7wK3t++NtUXgO/Hc/MRwykyoI2g==";
 
     private static CloudBlobContainer getContainer() throws Exception{
         // Retrieve storage account from connection-string.
@@ -28,7 +30,14 @@ public class ImageManager {
 
         // Get a reference to a container.
         // The container name must be lower case
+//        TODO No conecta por algun motivo string null
         CloudBlobContainer container = blobClient.getContainerReference("imagenes");
+        if (!container.exists()) {
+            container.createIfNotExists();
+            BlobContainerPermissions containerPermissions = new BlobContainerPermissions();
+            containerPermissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
+            container.uploadPermissions(containerPermissions);
+        }
 
         return container;
     }
