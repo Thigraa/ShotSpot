@@ -31,11 +31,15 @@ android {
 
     packagingOptions{
         exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/LICENSE.md'
     }
 }
 
 dependencies {
 
+    compile 'com.microsoft.azure.android:azure-storage-android:0.8.0@aar'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
