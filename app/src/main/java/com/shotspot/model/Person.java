@@ -6,6 +6,8 @@ public class Person {
     String email;
     String password;
     String imageURL;
+    String token;
+
 
     public Person() {
     }
@@ -58,6 +60,14 @@ public class Person {
         this.imageURL = imageURL;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -68,4 +78,5 @@ public class Person {
                 ", imageURL='" + imageURL + '\'' +
                 '}';
     }
+
 }

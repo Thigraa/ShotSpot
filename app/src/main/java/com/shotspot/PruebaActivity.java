@@ -33,7 +33,7 @@ public class PruebaActivity extends AppCompatActivity {
                 long imageLength = 0;
 
                 try {
-                    ImageManager.GetImage("chomunusuke.png", imageStream, imageLength);
+                    ImageManager.GetImage("nutkgiitfc", imageStream, imageLength);
 
                     byte[] buffer = imageStream.toByteArray();
 

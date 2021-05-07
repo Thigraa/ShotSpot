@@ -11,13 +11,13 @@ import com.microsoft.azure.storage.blob.ListBlobItem;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class ImageManager {
     public static final String storageConnectionString =
-            "DefaultEndpointsProtocol=https;AccountName=shotspot;AccountKey=/hyqj41B3TVn0HPUp+lFm+8ORM8j4dAhPFwz8eUpS2qzVHaA1dJtGoLAULG7wK3t++NtUXgO/Hc/MRwykyoI2g==;EndpointSuffix=core.windows.net" +
-                    "AccountName=shotspot;" +
-                    "AccountKey=/hyqj41B3TVn0HPUp+lFm+8ORM8j4dAhPFwz8eUpS2qzVHaA1dJtGoLAULG7wK3t++NtUXgO/Hc/MRwykyoI2g==";
+            "DefaultEndpointsProtocol=https;AccountName=shotspot;AccountKey=/hyqj41B3TVn0HPUp+lFm+8ORM8j4dAhPFwz8eUpS2qzVHaA1dJtGoLAULG7wK3t++NtUXgO/Hc/MRwykyoI2g==;EndpointSuffix=core.windows.net";
+
 
     private static CloudBlobContainer getContainer() throws Exception{
         // Retrieve storage account from connection-string.
@@ -45,8 +45,8 @@ public class ImageManager {
         CloudBlobContainer container = getContainer();
 
         container.createIfNotExists();
-
-        String imageName = randomString(10);
+        String date = new Date().toString();
+        String imageName = randomString(10)+date;
 
         CloudBlockBlob imageBlob = container.getBlockBlobReference(imageName);
         imageBlob.upload(image, imageLength);
