@@ -7,16 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.shotspot.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WelcomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WelcomeFragment extends Fragment {
-
+    Button register, login;
     public WelcomeFragment() {
         // Required empty public constructor
     }
@@ -33,6 +30,26 @@ public class WelcomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
+        register = v.findViewById(R.id.register_welcome);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new RegisterFragment());
+            }
+        });
+        login = v.findViewById(R.id.login_welcome);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new LoginFragment());
+            }
+        });
         return v;
+    }
+
+    public void replaceFragment(Fragment f){
+        getFragmentManager().beginTransaction()
+                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .commit();
     }
 }

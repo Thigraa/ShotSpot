@@ -19,6 +19,9 @@
         <item name="invertedText">#EEEEEE</item>
         <item name="bgEdittext">#E1E1E1</item>
         <item name="rippleColor">#42262626</item>
-
+    </style>
+    <style name="buttonRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

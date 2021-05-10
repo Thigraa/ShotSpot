@@ -12,8 +12,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(int idUser, String username, String email, String password, String imageURL) {
-        this.idUser = idUser;
+    public Person(String username, String email, String password, String imageURL) {
         this.username = username;
         this.email = email;
         this.password = password;
