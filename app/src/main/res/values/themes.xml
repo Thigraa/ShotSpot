@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ShotSpot" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ShotSpot" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">#262626</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -12,5 +12,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="bg">@drawable/background_light</item>
+        <item name="bgColor">#EEEEEE</item>
+        <item name="mainText">#262626</item>
+        <item name="buttonBg">#262626</item>
+        <item name="invertedText">#EEEEEE</item>
+        <item name="bgEdittext">#E1E1E1</item>
+        <item name="rippleColor">#42262626</item>
+
     </style>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Home"
+        android:icon="@drawable/ic_outline_camera_24"/>
+    <item android:title="Discover"
+            android:icon="@drawable/ic_outline_explore_24"/>
+    <item android:title="Add Spot"
+        android:icon="@drawable/ic_outline_add_circle_outline_24"/>
+    <item android:title="My Spots"
+            android:icon="@drawable/ic_outline_person_24"/>
+</menu>

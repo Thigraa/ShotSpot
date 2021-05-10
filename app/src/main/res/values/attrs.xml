@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="bg" format="reference"/>
+    <attr name="bgColor" format="color"/>
+    <attr name="mainText" format="color"/>
+    <attr name="buttonBg" format="color"/>
+    <attr name="invertedText" format="color"/>
+    <attr name="bgEdittext" format="color"/>
+</resources>
