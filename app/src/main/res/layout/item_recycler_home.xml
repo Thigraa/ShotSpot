@@ -21,6 +21,7 @@
         tools:text="Username" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileUserImageItem"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
@@ -31,6 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.jama.carouselview.CarouselView
+        android:id="@+id/carouselRecyclerViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:carouselOffset="center"

@@ -1,5 +1,17 @@
 package com.shotspot.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.Toast;
+
+import com.shotspot.R;
+import com.shotspot.database.Person_CRUD;
+import com.shotspot.database.SpotImage_CRUD;
+import com.shotspot.storage.ImageManager;
+
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+
 public class SpotImage {
     int idImage;
     int idUser;
@@ -48,6 +60,23 @@ public class SpotImage {
         this.imageURL = imageURL;
     }
 
+    public Bitmap getBitmap(){
+        final ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+        long imageLength = 0;
+        Bitmap bitmap = null;
+        try {
+
+            ImageManager.GetImage(getImageURL(), imageStream, imageLength);
+
+            byte[] buffer = imageStream.toByteArray();
+
+             bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
     @Override
     public String toString() {
         return "SpotImage{" +
@@ -57,4 +86,6 @@ public class SpotImage {
                 ", imageURL='" + imageURL + '\'' +
                 '}';
     }
+
+
 }
