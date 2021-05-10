@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(fragment);
         }
         else{
-            fragment = new WelcomeFragment();
+            fragment = new HomeFragment();
             replaceFragment(fragment);
 
         }
@@ -58,80 +58,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        for(int i = 0; i< getSupportFragmentManager().getFragments().size(); i++ ){
-            if(getSupportFragmentManager().getFragments().get(i).isVisible()){
-                Fragment f =  getSupportFragmentManager().getFragments().get(i);
+        for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
+            if (getSupportFragmentManager().getFragments().get(i).isVisible()) {
+                Fragment f = getSupportFragmentManager().getFragments().get(i);
                 getSupportFragmentManager().putFragment(savedInstanceState, "lastFragment", f);
             }
         }
-
-        imageView = findViewById(R.id.imagen);
-        button = findViewById(R.id.botonAdd);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectImageFromGallery();
-            }
-        });
-
-        uploadImageButton =  findViewById(R.id.botonUpload);
-        uploadImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UploadImage();
-                Intent intent = new Intent(MainActivity.this,PruebaActivity.class);
-                startActivity(intent);
-            }
-        });
-        uploadImageButton.setEnabled(false);
-
-
     }
 
-    private void SelectImageFromGallery()
-    {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
-    }
-
-    private void UploadImage()
-    {
-        try {
-            final InputStream imageStream = getContentResolver().openInputStream(this.imageUri);
-            final int imageLength = imageStream.available();
-
-                    try {
-                        final String imageName = ImageManager.UploadImage(imageStream, imageLength);
-                                Toast.makeText(MainActivity.this, "Image Uploaded Successfully. Name = " + imageName, Toast.LENGTH_SHORT).show();
-
-                    }
-                    catch(Exception ex) {
-                        final String exceptionMessage = ex.getMessage();
-                        Toast.makeText(MainActivity.this, exceptionMessage, Toast.LENGTH_SHORT).show();
-                        ex.printStackTrace();
-
-
-                    }
-        }
-        catch(Exception ex) {
-
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
-        switch (requestCode) {
-            case SELECT_IMAGE:
-                if (resultCode == RESULT_OK) {
-                    this.imageUri = imageReturnedIntent.getData();
-                    this.imageView.setImageURI(this.imageUri);
-                    this.uploadImageButton.setEnabled(true);
-                }
-        }
-    }
 }
