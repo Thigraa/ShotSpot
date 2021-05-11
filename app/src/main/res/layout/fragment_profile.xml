@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment">
+    tools:context=".fragments.ProfileFragment"
+    android:layout_marginBottom="50sp">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -21,12 +22,10 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileUserCircleImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
                 android:src="@drawable/ic_launcher_background"
-
-                android:minHeight="100sp"
-                android:minWidth="100sp">
+                >
 
             </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -35,6 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="?attr/mainText"
                 android:layout_marginHorizontal="4sp"
                 android:layout_marginBottom="42sp"
                 android:textSize="24sp"

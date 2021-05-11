@@ -73,6 +73,8 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             Spot spot = spots.get(position);
             Person user = Person_CRUD.getPerson(spot.getIdUser());
             holder.usernameTV.setText(user.getUsername());
+            holder.descriptionTV.setText(spot.getDescription());
+            holder.tagsTV.setText(spot.getTags());
             ImageManager.GetImage(user.getImageURL(), imageStream, imageLength);
 
             byte[] buffer = imageStream.toByteArray();
@@ -82,7 +84,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             holder.profileImg.setImageBitmap(bitmap);
             List<SpotImage> images = SpotImage_CRUD.getSpotId(spot.getIdSpot());
             holder.carouselView.setSize(images.size());
-            holder.carouselView.setAutoPlay(true);
+            holder.carouselView.setAutoPlay(false);
             holder.carouselView.setAutoPlayDelay(3000);
             holder.carouselView.setResource(R.layout.center_carousel_item);
             holder.carouselView.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
@@ -92,6 +94,12 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 public void onBindView(View view, int position) {
                     ImageView imageView = view.findViewById(R.id.imageView);
                     imageView.setImageBitmap(images.get(position).getBitmap());
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //TODO Zoom Image onClick
+                        }
+                    });
                 }
             });
             holder.carouselView.show();
@@ -107,7 +115,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
     }
 
     public static class SpotHolder extends RecyclerView.ViewHolder {
-        TextView usernameTV;
+        TextView usernameTV, descriptionTV, tagsTV;
         CircleImageView profileImg;
         CarouselView carouselView;
 
@@ -116,6 +124,8 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             profileImg = itemView.findViewById(R.id.profileUserImageItem);
             usernameTV = itemView.findViewById(R.id.usernameTextViewItem);
             carouselView = itemView.findViewById(R.id.carouselRecyclerViewItem);
+            descriptionTV = itemView.findViewById(R.id.descriptionTextViewItem);
+            tagsTV = itemView.findViewById(R.id.tagsTextViewItem);
 
         }
     }

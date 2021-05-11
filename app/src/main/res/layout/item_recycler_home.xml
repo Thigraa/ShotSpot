@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/bgColor">
+    android:background="?attr/bgColor"
+    android:layout_marginVertical="4sp">
 
     <TextView
         android:id="@+id/usernameTextViewItem"
@@ -33,6 +34,7 @@
 
     <com.jama.carouselview.CarouselView
         android:id="@+id/carouselRecyclerViewItem"
+        android:layout_marginTop="4sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:carouselOffset="center"
@@ -49,6 +51,38 @@
         app:scaleOnScroll="false"
         app:setAutoPlay="false"
         app:size="10" />
+
+    <TextView
+        android:id="@+id/descriptionTextViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_bold"
+        android:textColor="?attr/mainText"
+        tools:text="This is a beautiful place where you can see a fishy cat and stranges rooms"
+        android:gravity="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/carouselRecyclerViewItem">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tagsTextViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_bold"
+        android:textColor="?attr/mainText"
+        android:textStyle="italic"
+        android:gravity="end"
+        tools:text="#Tecnology#Insti#Barcelona"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextViewItem">
+
+    </TextView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

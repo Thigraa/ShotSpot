@@ -1,5 +1,7 @@
 package com.shotspot.storage;
 
+import android.widget.Toast;
+
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.BlobContainerPermissions;
 import com.microsoft.azure.storage.blob.BlobContainerPublicAccessType;
@@ -79,6 +81,17 @@ public class ImageManager {
             imageLength = blob.getProperties().getLength();
 
             blob.download(imageStream);
+        }
+    }
+
+
+    public static void DeleteImage(String name) throws Exception {
+        CloudBlobContainer container = getContainer();
+
+        CloudBlockBlob blob = container.getBlockBlobReference(name);
+
+        if(blob.deleteIfExists()){
+            System.out.println("Image DELETED FROM STORAGE");
         }
     }
 
