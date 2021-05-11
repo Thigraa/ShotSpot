@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shotspot.database.DatabaseConnection;
 import com.shotspot.fragments.HomeFragment;
 import com.shotspot.fragments.LoginFragment;
+import com.shotspot.fragments.ProfileFragment;
 import com.shotspot.fragments.RegisterFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.helper.Encryptor;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(fragment);
         }
         else{
-            fragment = new HomeFragment();
+            fragment = new ProfileFragment();
             replaceFragment(fragment);
 
         }

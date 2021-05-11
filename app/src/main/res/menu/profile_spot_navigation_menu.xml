@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="MySpots"
+        android:icon="@drawable/ic_outline_camera_24"/>
+    <item android:title="Liked"
+        android:icon="@drawable/ic_baseline_approval_24"/>
+</menu>
