@@ -41,14 +41,12 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(fragment);
         }
         else{
-            fragment = new ProfileFragment();
+            fragment = new HomeFragment();
             replaceFragment(fragment);
 
         }
 
     }
-
-
 
     public void replaceFragment(Fragment f){
         getSupportFragmentManager().beginTransaction()
