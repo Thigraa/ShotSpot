@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShotSpot">
         <activity android:name=".PruebaActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
