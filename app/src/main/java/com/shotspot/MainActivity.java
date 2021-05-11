@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +14,13 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shotspot.database.DatabaseConnection;
+import com.shotspot.database.Person_CRUD;
 import com.shotspot.fragments.HomeFragment;
 import com.shotspot.fragments.LoginFragment;
 import com.shotspot.fragments.RegisterFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.helper.Encryptor;
+import com.shotspot.model.Person;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +29,8 @@ import java.sql.SQLException;
 
 public class MainActivity extends AppCompatActivity {
     public static BottomNavigationView bottomNavigationView;
-    public static Connection connection;
+    private Connection connection;
+    public static Person currentUser;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -35,15 +40,31 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setVisibility(View.INVISIBLE);
         connection = DatabaseConnection.connect();
+        Context context=this.getApplicationContext();
+        SharedPreferences settings = context.getSharedPreferences("PREFERENCES", 0);
+        String isLogged= settings.getString("token", null);
+        System.out.println("is Logged: "+isLogged);
         Fragment fragment;
-        if (savedInstanceState != null) {
-            fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
-            replaceFragment(fragment);
-        } else {
-            fragment = new WelcomeFragment();
-            replaceFragment(fragment);
+        if(isLogged != null){
+            if (savedInstanceState != null) {
+                fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
+                replaceFragment(fragment);
+            } else {
+                fragment = new HomeFragment();
+                replaceFragment(fragment);
 
+            }
+        }else{
+            if (savedInstanceState != null) {
+                fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
+                replaceFragment(fragment);
+            } else {
+                fragment = new WelcomeFragment();
+                replaceFragment(fragment);
+
+            }
         }
+
 
     }
 

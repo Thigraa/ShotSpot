@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shotspot.MainActivity;
 import com.shotspot.R;
+
+import static com.shotspot.MainActivity.bottomNavigationView;
 
 public class HomeFragment extends Fragment {
 
@@ -27,6 +30,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         return v;
     }
 }

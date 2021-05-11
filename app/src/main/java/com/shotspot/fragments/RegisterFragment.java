@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shotspot.MainActivity;
 import com.shotspot.R;
 import com.shotspot.database.DatabaseConnection;
 import com.shotspot.database.Person_CRUD;
@@ -27,14 +26,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.shotspot.MainActivity.connection;
-
 public class RegisterFragment extends Fragment {
-    EditText username, email, password, repeatPassword;
-    TextView checkBoxText;
-    CheckBox checkBox;
-    Button register;
-    ProgressBar progressBar;
+    private EditText username, email, password, repeatPassword;
+    private TextView checkBoxText;
+    private CheckBox checkBox;
+    private Button register;
+    private ProgressBar progressBar;
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -49,9 +46,9 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View v = inflater.inflate(R.layout.fragment_register, container, false);
-       username = v.findViewById(R.id.usernameEdittextRegister);
+       username = v.findViewById(R.id.usernameEdittextLogin);
        email = v.findViewById(R.id.emailEdittextRegister);
-       password = v.findViewById(R.id.passwordEdittextRegister);
+       password = v.findViewById(R.id.passwordEdittextLogin);
        repeatPassword = v.findViewById(R.id.repeatpasswordEdittextRegister);
        checkBox = v.findViewById(R.id.materialCheckBox);
        checkBoxText = v.findViewById(R.id.termsAndConditions);
