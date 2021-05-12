@@ -50,7 +50,7 @@
             android:text="@string/username"
             android:textColor="?attr/mainText"
             android:textSize="35sp"
-            app:layout_constraintBottom_toTopOf="@+id/usernameEdittextRegister"
+            app:layout_constraintBottom_toTopOf="@+id/usernameEdittextLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.116"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
-            android:id="@+id/usernameEdittextRegister"
+            android:id="@+id/usernameEdittextLogin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -93,7 +93,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.098"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/usernameEdittextRegister"
+            app:layout_constraintTop_toBottomOf="@+id/usernameEdittextLogin"
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText
@@ -129,7 +129,7 @@
             android:text="@string/password"
             android:textColor="?attr/mainText"
             android:textSize="35sp"
-            app:layout_constraintBottom_toTopOf="@+id/passwordEdittextRegister"
+            app:layout_constraintBottom_toTopOf="@+id/passwordEdittextLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.113"
             app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +137,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText
-            android:id="@+id/passwordEdittextRegister"
+            android:id="@+id/passwordEdittextLogin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -173,7 +173,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.151"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordEdittextRegister"
+            app:layout_constraintTop_toBottomOf="@+id/passwordEdittextLogin"
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText

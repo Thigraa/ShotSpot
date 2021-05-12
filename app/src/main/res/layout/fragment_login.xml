@@ -35,7 +35,7 @@
           android:text="@string/username"
           android:textColor="?attr/mainText"
           android:textSize="35sp"
-          app:layout_constraintBottom_toTopOf="@+id/usernameEdittextRegister"
+          app:layout_constraintBottom_toTopOf="@+id/usernameEdittextLogin"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="0.116"
           app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
           app:layout_constraintVertical_bias="1.0" />
 
       <EditText
-          android:id="@+id/usernameEdittextRegister"
+          android:id="@+id/usernameEdittextLogin"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="32dp"
@@ -65,7 +65,7 @@
           app:layout_constraintVertical_bias="0.294" />
 
       <EditText
-          android:id="@+id/passwordEdittextRegister"
+          android:id="@+id/passwordEdittextLogin"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="32dp"
@@ -95,7 +95,7 @@
           android:text="@string/password"
           android:textColor="?attr/mainText"
           android:textSize="35sp"
-          app:layout_constraintBottom_toTopOf="@+id/passwordEdittextRegister"
+          app:layout_constraintBottom_toTopOf="@+id/passwordEdittextLogin"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="0.116"
           app:layout_constraintStart_toStartOf="parent"
@@ -103,25 +103,24 @@
           app:layout_constraintVertical_bias="1.0" />
 
       <Button
+          android:id="@+id/buttonLogin"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="32dp"
-          android:layout_marginLeft="32dp"
           android:layout_marginEnd="32dp"
-          android:layout_marginRight="32dp"
           android:layout_marginBottom="64dp"
           android:backgroundTint="?attr/buttonBg"
           android:fontFamily="@font/barlowcondensed_regular"
-          android:paddingBottom="10dp"
           android:paddingTop="5dp"
-          app:shapeAppearanceOverlay="@style/buttonRounded"
+          android:paddingBottom="10dp"
           android:text="@string/login"
           android:textColor="?attr/invertedText"
           android:textSize="24sp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="1.0"
-          app:layout_constraintStart_toStartOf="parent" />
+          app:layout_constraintStart_toStartOf="parent"
+          app:shapeAppearanceOverlay="@style/buttonRounded" />
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:id="@+id/floatingActionButton"
@@ -138,6 +137,22 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:tint="?attr/mainText" />
+
+      <ProgressBar
+          android:id="@+id/progressBar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:indeterminate="true"
+          android:indeterminateTint="?attr/mainText"
+          android:indeterminateTintMode="src_atop"
+          android:progressTint="?attr/mainText"
+          android:visibility="invisible"
+          app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.498"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/passwordEdittextLogin"
+          app:layout_constraintVertical_bias="0.853" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
