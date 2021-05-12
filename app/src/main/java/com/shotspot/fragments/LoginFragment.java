@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
             Person p = Person_CRUD.getPerson(usernameEdittext.getText().toString(), passwordEncrypted);
             System.out.println(p);
             //Result
-            if(p != null){
+            if(p.getIdUser() > 0){
                 //MATCHES
                 currentUser = p;
                 System.out.println("settede");
@@ -137,6 +137,6 @@ public class LoginFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("token", currentUser.getToken());
         Person_CRUD.updateToken(currentUser);
-        editor.commit();
+        editor.apply();
     }
 }

@@ -27,6 +27,7 @@ import com.shotspot.model.Person;
 import com.shotspot.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -83,9 +84,8 @@ public class ProfileFragment extends Fragment {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.remove("token");
                 editor.apply();
-                Intent intent = new Intent(getActivity(),MainActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                Objects.requireNonNull(getActivity()).finish();
+                startActivity(getActivity().getIntent());
             }
         });
     }
