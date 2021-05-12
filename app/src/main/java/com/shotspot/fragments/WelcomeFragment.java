@@ -30,14 +30,17 @@ public class WelcomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
+        //Connect layout to class
         register = v.findViewById(R.id.register_welcome);
+        login = v.findViewById(R.id.login_welcome);
+
+        //Set on click listeners
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 replaceFragment(new RegisterFragment());
             }
         });
-        login = v.findViewById(R.id.login_welcome);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +49,7 @@ public class WelcomeFragment extends Fragment {
         });
         return v;
     }
-
+    //Method to replace fragments
     public void replaceFragment(Fragment f){
         getFragmentManager().beginTransaction()
                 .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)

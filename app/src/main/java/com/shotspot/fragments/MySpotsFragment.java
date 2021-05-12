@@ -14,6 +14,8 @@ import com.shotspot.R;
 import com.shotspot.adapter.SpotAdapter;
 import com.shotspot.database.Spot_CRUD;
 
+import static com.shotspot.MainActivity.currentUser;
+
 
 public class MySpotsFragment extends Fragment {
 
@@ -37,8 +39,8 @@ public class MySpotsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_spots, container, false);
         rvProfileSpots = v.findViewById(R.id.recyclerSpotsProfile);
-        //TODO Change de value of the userId by the current User
-        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getByUserId(4));
+        //Set adapter based on the spot published by the current user
+        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getByUserId(currentUser.getIdUser()));
         rvProfileSpots.setAdapter(adapter);
         rvProfileSpots.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;

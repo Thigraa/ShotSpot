@@ -34,8 +34,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+        //Connect layout to class
         bottomNavigationView.setVisibility(View.VISIBLE);
         rHome = v.findViewById(R.id.recyclerHome);
+        //Set the adapter of the recycler which a List of Spots and a LayoutManager
         SpotAdapter spotAdapter = new SpotAdapter(Spot_CRUD.getAll());
         rHome.setAdapter(spotAdapter);
         rHome.setLayoutManager(new LinearLayoutManager(getContext()));

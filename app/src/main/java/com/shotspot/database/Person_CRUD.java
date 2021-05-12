@@ -37,6 +37,31 @@ public class Person_CRUD {
         return person;
     }
 
+    public static Person getPerson(String token){
+        Person person = new Person();
+        try{
+            String sql = "SELECT * FROM dbo.Person WHERE token= ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,token);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()){
+                person.setIdUser(rs.getInt(1));
+                person.setUsername(rs.getString(2));
+                person.setImageURL(rs.getString(3));
+                person.setEmail(rs.getString(4));
+                person.setPassword(rs.getString(5));
+                person.setToken(rs.getString(6));
+
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return person;
+    }
+
     public static Person getPerson(String username, String password){
         Person person = new Person();
         try{
@@ -101,16 +126,34 @@ public class Person_CRUD {
         return isDeleted;
     }
 
-    public static boolean update(Person person){
+    public static boolean updateUsernameAndToken(Person person){
         boolean inserted = false;
-        String sql ="UPDATE Person SET image_url = ? , username = ? , token = ?";
+        String sql ="UPDATE Person SET  username = ? , token = ? WHERE  id_user = ?";
+        try {
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,person.getUsername());
+            statement.setString(2,person.getToken());
+            statement.setInt(3,person.getIdUser());
+            int updeated = statement.executeUpdate();
+            if (updeated>=1) inserted=true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return inserted;
+    }
+
+    public static boolean updateImage(Person person){
+        boolean inserted = false;
+        String sql ="UPDATE Person SET image_url = ? WHERE id_user = ? ";
+
         try {
             ImageManager.DeleteImage(getPerson(person.getIdUser()).getImageURL());
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,person.getImageURL());
-            statement.setString(2,person.getUsername());
-            statement.setString(3,person.getToken());
-
+            statement.setInt(2,person.getIdUser());
 
             int updeated = statement.executeUpdate();
             if (updeated>=1) inserted=true;
@@ -122,27 +165,13 @@ public class Person_CRUD {
         return inserted;
     }
 
-    public static boolean updateImage(String newImage){
+    public static boolean updateToken(Person person){
         boolean inserted = false;
-        String sql ="UPDATE Person SET image_url = ? ";
+        String sql ="UPDATE Person SET token = ? where id_user = ? ";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,newImage);
-
-            int updeated = statement.executeUpdate();
-            if (updeated>=1) inserted=true;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return inserted;
-    }
-
-    public static boolean updateToken(String newToken){
-        boolean inserted = false;
-        String sql ="UPDATE Person SET token = ? ";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,newToken);
+            statement.setString(1,person.getToken());
+            statement.setInt(2,person.getIdUser());
 
             int updeated = statement.executeUpdate();
             if (updeated>=1) inserted=true;

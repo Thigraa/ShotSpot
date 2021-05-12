@@ -10,8 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/editTextBackground"
-        android:paddingVertical="1sp">
+        android:background="?attr/bgEdittext"
+        android:paddingBottom="2dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,8 +34,8 @@
                 android:id="@+id/profileUserImageItem"
                 app:civ_border_color="?attr/mainText"
                 app:civ_border_width="1sp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintEnd_toStartOf="@+id/usernameTextViewItem"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 app:carouselOffset="center"
                 app:enableSnapping="true"
-                app:indicatorAnimationType="drop"
+                app:indicatorAnimationType="scale"
                 app:indicatorPadding="5"
                 app:indicatorRadius="5"
                 app:indicatorSelectedColor="?attr/mainText"
@@ -58,8 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/profileUserImageItem"
                 app:resource="@drawable/background_dark"
                 app:scaleOnScroll="false"
-                app:setAutoPlay="false"
-                app:size="10" />
+                app:setAutoPlay="false" />
 
             <TextView
                 android:id="@+id/descriptionTextViewItem"

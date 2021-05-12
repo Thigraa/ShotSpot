@@ -18,6 +18,8 @@ import com.shotspot.model.Like;
 
 import java.util.List;
 
+import static com.shotspot.MainActivity.currentUser;
+
 
 public class LikedSpotsFragment extends Fragment {
 
@@ -41,8 +43,8 @@ public class LikedSpotsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_liked_spots, container, false);
         rvProfileLiked = v.findViewById(R.id.recyclerLikedProfile);
-        //TODO Change de value of the userId by the current User
-        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getLikeds(4));
+        //Create adapter based on the like of the user
+        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getLikeds(currentUser.getIdUser()));
         rvProfileLiked.setAdapter(adapter);
         rvProfileLiked.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,54 +7,94 @@
     tools:context=".fragments.ProfileFragment"
     android:layout_marginBottom="50sp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:id="@+id/profileLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24sp"
-            android:layout_marginTop="24sp"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <LinearLayout
+           android:id="@+id/profileLayout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginHorizontal="24sp"
+                   android:layout_marginTop="24sp"
+                   android:orientation="vertical"
+                   tools:ignore="UselessParent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileUserCircleImage"
-                android:layout_width="100sp"
-                android:layout_height="100sp"
-                android:src="@drawable/ic_launcher_background"
-                app:civ_border_width="2sp"
-                app:civ_border_color="?attr/mainText"
-                >
+                   <de.hdodenhof.circleimageview.CircleImageView
+                       android:id="@+id/profileUserCircleImage"
+                       android:layout_width="100sp"
+                       android:layout_height="100sp"
+                       android:src="@drawable/ic_launcher_background"
+                       app:civ_border_width="2sp"
+                       app:civ_border_color="?attr/mainText"
+                       >
 
-            </de.hdodenhof.circleimageview.CircleImageView>
+                   </de.hdodenhof.circleimageview.CircleImageView>
 
-            <TextView
-                android:id="@+id/profileUsernameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textColor="?attr/mainText"
-                android:layout_marginHorizontal="4sp"
-                android:layout_marginBottom="42sp"
-                android:textSize="24sp"
-                tools:text="Username">
+                   <TextView
+                       android:id="@+id/profileUsernameTextView"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:layout_gravity="center"
+                       android:textColor="?attr/mainText"
+                       android:layout_marginHorizontal="4sp"
+                       android:layout_marginBottom="42sp"
+                       android:textSize="24sp"
+                       tools:text="Username">
 
-            </TextView>
+                   </TextView>
 
-        </LinearLayout>
+               </LinearLayout>
+               <ImageButton
+                   android:id="@+id/logOutProfileButton"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center"
+                   android:layout_margin="16dp"
+                   android:text="LogOut"
+                   android:src="@drawable/ic_baseline_logout_24"
+                   android:layout_weight="0.5">
 
-        <include layout="@layout/profile_spots_navigation"/>
-    </LinearLayout>
-    <FrameLayout
-        android:id="@+id/profileSpots"
-        android:layout_below="@id/profileLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </FrameLayout>
+               </ImageButton>
+               <ImageButton
+                   android:id="@+id/editProfileButton"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_baseline_edit_24"
+                   android:layout_gravity="center"
+                   android:layout_margin="16dp"
+                   android:layout_weight="0.5">
 
-</RelativeLayout>
+               </ImageButton>
+           </LinearLayout>
+
+           <com.google.android.material.bottomnavigation.BottomNavigationView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:backgroundTint="?attr/bgColor"
+               app:itemIconSize="35dp"
+               app:labelVisibilityMode="unlabeled"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:menu="@menu/profile_spot_navigation_menu">
+
+           </com.google.android.material.bottomnavigation.BottomNavigationView>
+       </LinearLayout>
+       <FrameLayout
+           android:id="@+id/profileSpots"
+           android:layout_below="@id/profileLayout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </FrameLayout>
+   </RelativeLayout>
+
+</ScrollView>

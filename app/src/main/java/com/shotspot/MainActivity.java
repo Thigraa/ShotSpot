@@ -5,33 +5,29 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shotspot.database.DatabaseConnection;
 import com.shotspot.database.Person_CRUD;
 import com.shotspot.fragments.HomeFragment;
-import com.shotspot.fragments.LoginFragment;
 import com.shotspot.fragments.ProfileFragment;
-import com.shotspot.fragments.RegisterFragment;
 import com.shotspot.fragments.WelcomeFragment;
-import com.shotspot.helper.Encryptor;
 import com.shotspot.model.Person;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class MainActivity extends AppCompatActivity {
     public static BottomNavigationView bottomNavigationView;
     private Connection connection;
     public static Person currentUser;
+    String logToken;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -39,15 +35,40 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_ShotSpot);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setVisibility(View.VISIBLE);
+        connectLayout();
         connection = DatabaseConnection.connect();
+        getToken();
+        checkLogin(savedInstanceState);
+        setBottomNavigationViewClicks();
+
+    }
+
+    //Method to replace fragments
+    public void replaceFragment(Fragment f) {
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .commit();
+    }
+    //Method to connect the layout to the class
+    public void connectLayout(){
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setVisibility(View.INVISIBLE);
+    }
+    //Method to get the saved token
+    public void getToken(){
         Context context=this.getApplicationContext();
         SharedPreferences settings = context.getSharedPreferences("PREFERENCES", 0);
-        String isLogged= settings.getString("token", null);
-        System.out.println("is Logged: "+isLogged);
+        logToken = settings.getString("token", null);
+    }
+    //Method to chek if the user have been logged before --> if logged goes to Home Fragment, else goes to Welcome Fragment
+    public void checkLogin(Bundle savedInstanceState){
         Fragment fragment;
-        if(isLogged != null){
+        if(logToken != null){
+
+            //LOGGED
+            currentUser = Person_CRUD.getPerson(logToken);
+            System.out.println(currentUser);
             if (savedInstanceState != null) {
                 fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
                 replaceFragment(fragment);
@@ -57,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }else{
+            //NOT LOGGED
             if (savedInstanceState != null) {
                 fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
                 replaceFragment(fragment);
@@ -66,17 +88,34 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
 
+    public void setBottomNavigationViewClicks(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.homeButton:
+                        replaceFragment(new HomeFragment());
+                        return true;
 
+                    case R.id.discover:
+                        return true;
+                    case R.id.addSpot:
+                        return true;
+                    case R.id.profile:
+                        replaceFragment(new ProfileFragment());
+                        return true;
+
+                }
+                return true;
+            }
+        });
     }
 
 
-    public void replaceFragment(Fragment f) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
-                .commit();
-    }
-
+    //Method to save the fragment when changing the default theme. DARK TO LIGHT | LIGHT TO DARK without
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
@@ -85,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             if (getSupportFragmentManager().getFragments().get(i).isVisible()) {
                 Fragment f = getSupportFragmentManager().getFragments().get(i);
                 getSupportFragmentManager().putFragment(savedInstanceState, "lastFragment", f);
+                break;
             }
         }
     }

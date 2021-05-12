@@ -32,8 +32,8 @@ public class RegisterFragment extends Fragment {
     private CheckBox checkBox;
     private Button register;
     private ProgressBar progressBar;
+
     public RegisterFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -46,6 +46,7 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View v = inflater.inflate(R.layout.fragment_register, container, false);
+       //Connect layout to class
        username = v.findViewById(R.id.usernameEdittextLogin);
        email = v.findViewById(R.id.emailEdittextRegister);
        password = v.findViewById(R.id.passwordEdittextLogin);
@@ -54,26 +55,41 @@ public class RegisterFragment extends Fragment {
        checkBoxText = v.findViewById(R.id.termsAndConditions);
        register = v.findViewById(R.id.register_register);
        progressBar = v.findViewById(R.id.progressBar);
-
+        //Set on click listener
        register.setOnClickListener(new View.OnClickListener() {
            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
            @Override
            public void onClick(View v) {
-              registerManager();
+               //Manages the register
+                registerManager();
            }
        });
         return v;
     }
 
+    //Method that manages the register process.
+    // Checks:
+        // all the fields are filled
+        // the password is 8 characters long
+        // the both password match
+        // checkbox is checked
+        // the email is in a valid form and not in use
+        // the username is not in use
+    //Then creates a person in the database (Insert)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void registerManager(){
         boolean usernameRepeat = false;
         boolean emailRepeat= false;
         if(!username.getText().toString().isEmpty() && !email.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && !repeatPassword.getText().toString().isEmpty()){
+            // all the fields are filled
             if(password.getText().toString().length() >= 8){
+                // the password is 8 characters long
                 if(password.getText().toString().equals(repeatPassword.getText().toString())){
+                    // the both password match
                     if(checkBox.isChecked()){
+                        // checkbox is checked
                         if(email.getText().toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")){
+                            // the email is in a valid form
                             try {
                                 progressBar.setVisibility(View.VISIBLE);
                                 register.setClickable(false);
@@ -94,7 +110,9 @@ public class RegisterFragment extends Fragment {
                                 throwables.printStackTrace();
                             }
                             if(!usernameRepeat){
+                                // the email is not in use
                                 if(!emailRepeat){
+                                    // the username is not in use
                                     String passwordEncrypted = Encryptor.md5(password.getText().toString());
                                     Person person = new Person(username.getText().toString(), email.getText().toString(), passwordEncrypted, null);
                                     Person_CRUD.insert(person);
@@ -131,6 +149,7 @@ public class RegisterFragment extends Fragment {
             Toast.makeText(getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
         }
     }
+    //Method to replace fragments
     public void replaceFragment(Fragment f) {
         getFragmentManager().beginTransaction()
                 .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)

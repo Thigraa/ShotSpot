@@ -29,6 +29,7 @@ import com.shotspot.model.SpotImage;
 import com.shotspot.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -83,11 +84,15 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
             holder.profileImg.setImageBitmap(bitmap);
             List<SpotImage> images = SpotImage_CRUD.getSpotId(spot.getIdSpot());
-            holder.carouselView.setSize(images.size());
+            int numPhotos= images.size();
+            if (numPhotos>10){
+                numPhotos=10;
+                Collections.shuffle(images);
+            }
+            holder.carouselView.setSize(numPhotos);
             holder.carouselView.setAutoPlay(false);
             holder.carouselView.setAutoPlayDelay(3000);
             holder.carouselView.setResource(R.layout.center_carousel_item);
-            holder.carouselView.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
             holder.carouselView.setCarouselOffset(OffsetType.CENTER);
             holder.carouselView.setCarouselViewListener(new CarouselViewListener() {
                 @Override
