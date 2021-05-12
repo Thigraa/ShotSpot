@@ -1,5 +1,6 @@
 package com.shotspot.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -56,6 +58,7 @@ public class ProfileFragment extends Fragment {
         profileImageView = v.findViewById(R.id.profileUserCircleImage);
         logOutButton = v.findViewById(R.id.logOutProfileButton);
         editProfileButton = v.findViewById(R.id.editProfileButton);
+        profileSpotsNavigation = v.findViewById(R.id.profileSpotNavigation);
         usernameTV.setText(currentUser.getUsername());
         try {
             if (currentUser.getBitmap()!= null){
@@ -64,6 +67,7 @@ public class ProfileFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        setProfileSpotsNavigationViewClicks();
 
         return v;
     }
@@ -72,9 +76,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bottomNavigationView.setVisibility(View.VISIBLE);
-        Fragment fragment = new MySpotsFragment();
-        replaceFragment(fragment);
-
+        replaceFragment(new MySpotsFragment());
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +88,23 @@ public class ProfileFragment extends Fragment {
                 editor.apply();
                 Objects.requireNonNull(getActivity()).finish();
                 startActivity(getActivity().getIntent());
+            }
+        });
+    }
+
+    public void setProfileSpotsNavigationViewClicks(){
+        profileSpotsNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.mySpots:
+                        replaceFragment(new MySpotsFragment());
+                        return true;
+                    case R.id.likedSpots:
+                        replaceFragment(new LikedSpotsFragment());
+                        return true;
+                }
+                return true;
             }
         });
     }

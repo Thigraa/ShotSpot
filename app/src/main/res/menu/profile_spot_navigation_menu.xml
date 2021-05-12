@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="MySpots"
+        android:id="@+id/mySpots"
         android:icon="@drawable/ic_baseline_approval_24"/>
     <item android:title="Liked"
+        android:id="@+id/likedSpots"
         android:icon="@drawable/ic_baseline_beenhere_24"/>
 </menu>
