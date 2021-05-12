@@ -10,19 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shotspot.MainActivity;
 import com.shotspot.R;
 import com.shotspot.adapter.SpotAdapter;
+import com.shotspot.database.Like_CRUD;
 import com.shotspot.database.Spot_CRUD;
+import com.shotspot.model.Like;
 
-import static com.shotspot.MainActivity.bottomNavigationView;
+import java.util.List;
 
-public class HomeFragment extends Fragment {
 
-    RecyclerView rHome;
-    public HomeFragment() {
+public class LikedSpotsFragment extends Fragment {
+
+
+
+    RecyclerView rvProfileLiked;
+    public LikedSpotsFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,12 +38,13 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-        bottomNavigationView.setVisibility(View.VISIBLE);
-        rHome = v.findViewById(R.id.recyclerHome);
-        SpotAdapter spotAdapter = new SpotAdapter(Spot_CRUD.getAll());
-        rHome.setAdapter(spotAdapter);
-        rHome.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Inflate the layout for this fragment
+        View v= inflater.inflate(R.layout.fragment_liked_spots, container, false);
+        rvProfileLiked = v.findViewById(R.id.recyclerLikedProfile);
+        //TODO Change de value of the userId by the current User
+        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getLikeds(4));
+        rvProfileLiked.setAdapter(adapter);
+        rvProfileLiked.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;
     }
 }

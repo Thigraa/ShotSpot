@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Like_CRUD {
 
@@ -80,6 +82,28 @@ public class Like_CRUD {
             throwables.printStackTrace();
         }
         return isDeleted;
+    }
+
+    public static List<Like> getLikes(int idUser){
+        String sql = "SELECT * FROM Liked where id_user =?";
+        List<Like> likeList = new ArrayList<>();
+        try{
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,idUser);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()){
+                Like like = new Like();
+                like.setId_user(rs.getInt(1));
+                like.setId_spot(rs.getInt(2));
+                likeList.add(like);
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return likeList;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.shotspot.database;
 
+import com.shotspot.model.Like;
 import com.shotspot.model.Spot;
 
 import java.sql.Connection;
@@ -63,6 +64,61 @@ public class Spot_CRUD {
         }
         return spots;
     }
+    public static List<Spot> getByUserId(int userId){
+        List<Spot> spots= new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM dbo.Spot WHERE id_user = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,userId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+                Spot spot= new Spot();
+                spot.setIdSpot(rs.getInt(1));
+                spot.setIdUser(rs.getInt(2));
+                spot.setLatitde(rs.getDouble(3));
+                spot.setLongitude(rs.getDouble(4));
+                spot.setDescription(rs.getString(5));
+                spot.setTags(rs.getString(6));
+                spots.add(spot);
+
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return spots;
+    }
+
+
+    public static List<Spot> getLikeds(int userId){
+        List<Spot> spots= new ArrayList<>();
+        try{
+            //TODO Chech if this query works
+            String sql = "SELECT * FROM dbo.Spot WHERE id_spot IN (SELECT id_spot FROM dbo.Liked WHERE id_user = ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,userId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+                Spot spot= new Spot();
+                spot.setIdSpot(rs.getInt(1));
+                spot.setIdUser(rs.getInt(2));
+                spot.setLatitde(rs.getDouble(3));
+                spot.setLongitude(rs.getDouble(4));
+                spot.setDescription(rs.getString(5));
+                spot.setTags(rs.getString(6));
+                spots.add(spot);
+
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return spots;
+    }
 
     public static boolean insert(Spot spot){
         boolean inserted = false;
@@ -101,4 +157,6 @@ public class Spot_CRUD {
         }
         return isDeleted;
     }
+
+
 }

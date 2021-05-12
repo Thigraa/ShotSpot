@@ -14,7 +14,7 @@ public class SpotImage_CRUD {
 
     private  static Connection connection = DatabaseConnection.connect();
 
-    public static SpotImage getSpot(int idImage){
+    public static SpotImage getSpotImage(int idImage){
         SpotImage spotImage = new SpotImage();
         try{
             String sql = "SELECT * FROM dbo.Spot_Image WHERE id_image= ?";
@@ -36,7 +36,7 @@ public class SpotImage_CRUD {
         return spotImage;
     }
 
-    public static SpotImage getSpot(String imageURL){
+    public static SpotImage getSpotImage(String imageURL){
         SpotImage spotImage = new SpotImage();
         try{
             String sql = "SELECT * FROM dbo.Spot_Image WHERE image_url= ?";

@@ -2,6 +2,8 @@ package com.shotspot.database;
 
 
 import com.shotspot.model.Person;
+import com.shotspot.storage.ImageManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,32 @@ public class Person_CRUD {
 
             if (rs.next()){
                 person.setIdUser(idUser);
+                person.setUsername(rs.getString(2));
+                person.setImageURL(rs.getString(3));
+                person.setEmail(rs.getString(4));
+                person.setPassword(rs.getString(5));
+                person.setToken(rs.getString(6));
+
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return person;
+    }
+
+    public static Person getPerson(String username, String password){
+        Person person = new Person();
+        try{
+            String sql = "SELECT * FROM dbo.Person WHERE username = ? AND pass = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,username);
+            statement.setString(2,password);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()){
+                person.setIdUser(rs.getInt(1));
                 person.setUsername(rs.getString(2));
                 person.setImageURL(rs.getString(3));
                 person.setEmail(rs.getString(4));
@@ -71,6 +99,57 @@ public class Person_CRUD {
             throwables.printStackTrace();
         }
         return isDeleted;
+    }
+
+    public static boolean update(Person person){
+        boolean inserted = false;
+        String sql ="UPDATE Person SET image_url = ? , username = ? , token = ?";
+        try {
+            ImageManager.DeleteImage(getPerson(person.getIdUser()).getImageURL());
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,person.getImageURL());
+            statement.setString(2,person.getUsername());
+            statement.setString(3,person.getToken());
+
+
+            int updeated = statement.executeUpdate();
+            if (updeated>=1) inserted=true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return inserted;
+    }
+
+    public static boolean updateImage(String newImage){
+        boolean inserted = false;
+        String sql ="UPDATE Person SET image_url = ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newImage);
+
+            int updeated = statement.executeUpdate();
+            if (updeated>=1) inserted=true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return inserted;
+    }
+
+    public static boolean updateToken(String newToken){
+        boolean inserted = false;
+        String sql ="UPDATE Person SET token = ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newToken);
+
+            int updeated = statement.executeUpdate();
+            if (updeated>=1) inserted=true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return inserted;
     }
 
 }

@@ -17,6 +17,7 @@ import com.shotspot.database.DatabaseConnection;
 import com.shotspot.database.Person_CRUD;
 import com.shotspot.fragments.HomeFragment;
 import com.shotspot.fragments.LoginFragment;
+import com.shotspot.fragments.ProfileFragment;
 import com.shotspot.fragments.RegisterFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.helper.Encryptor;
@@ -35,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_ShotSpot);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setVisibility(View.INVISIBLE);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         connection = DatabaseConnection.connect();
         Context context=this.getApplicationContext();
         SharedPreferences settings = context.getSharedPreferences("PREFERENCES", 0);

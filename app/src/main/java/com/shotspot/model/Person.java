@@ -1,5 +1,12 @@
 package com.shotspot.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.shotspot.storage.ImageManager;
+
+import java.io.ByteArrayOutputStream;
+
 public class Person {
     int idUser;
     String username;
@@ -65,6 +72,24 @@ public class Person {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Bitmap getBitmap(){
+        final ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+        long imageLength = 0;
+        Bitmap bitmap = null;
+        try {
+
+            ImageManager.GetImage(getImageURL(), imageStream, imageLength);
+
+            byte[] buffer = imageStream.toByteArray();
+
+            bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
     @Override
