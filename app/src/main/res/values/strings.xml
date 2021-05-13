@@ -7,4 +7,51 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="username_dot_dot">  Username…</string>
+    <string name="TermsAndConditions_p1">These Terms and Conditions of Use regulate the rules to which the use of the ShotSpot APP (hereinafter, the APP) is subject,
+        which can be downloaded from the PlayStore domain Downloading or using the APP attributes the condition of User to whoever does it and implies acceptance of all the conditions included in this document and in the Privacy Policy and Legal Notice of said website .
+        The User should read these conditions each time he uses the APP, since they could be modified in the future.
+    </string>
+    <string name="TermsAndConditions_p2">
+        Only Users expressly authorized by LGPremia may access the download and use of the APP. Users who do not have authorization will not be able to access said content.
+    </string>
+    <string name="TermsAndConditions_p3">
+        Charges: You are responsible for paying all costs or expenses you incur as a result of downloading and using the LGPremia Application, including any roaming or carrier network charges. Check with your service provider for details.
+    </string>
+    <string name="TermsAndConditions_p4">
+        Anonymous statistics: LGPremia reserves the right to track your activity on the Application of and to report it to our third-party statistical service providers. All this anonymously.
+    </string>
+    <string name="TermsAndConditions_p5">
+        Protection of your personal information: we want to help you carry out all the necessary steps to protect your privacy and information. Please refer to the LGPremia Privacy Policy and the privacy notices of the Application to learn what type of information we collect and the measures we take to protect your personal information.
+    </string>
+    <string name="TermsAndConditions_p6">
+        It is prohibited to alter or modify any part of the APP other than those contained therein, circumvent, deactivate or manipulate in any other way (or try to circumvent, deactivate or manipulate) the security functions or other functions of the program and use the APP or its contents for a commercial or advertising purpose. The use of the APP for the purpose of damaging property, rights or interests of LGPremia or third parties is prohibited. It is also prohibited to carry out any other use that alters, damages or disables the networks, servers, equipment, products and computer programs of LGPremia or of third parties.
+    </string>
+    <string name="TermsAndConditions_p7">
+        The APP and its contents (texts, photographs, graphics, images, technology, software, links, contents, graphic design, source code, etc.), as well as the trademarks and other distinctive signs are the property of LGPremia or third parties, not acquiring the User no right over them by the mere use of the APP. The User must refrain from:
+    </string>
+
+    <string name="TermsAndConditions_p7a">
+       Reproduce, copy, distribute, make available to third parties, publicly communicate, transform or modify the APP or its contents, except in the cases contemplated by law or expressly authorized by LGPremia or by the owner of said rights.
+    </string>
+    <string name="TermsAndConditions_p7b">
+        Reproduce or copy the APP or its contents for private use, as well as communicate them publicly or make them available to third parties when this entails their reproduction.
+    </string>
+    <string name="TermsAndConditions_p7c">
+        Extract or reuse all or a substantial part of the contents of the APP
+    </string>
+    <string name="TermsAndConditions_p8">
+       Subject to the conditions established in the previous section, LGPremia grants the User a license to use the APP, non-exclusive, free, for personal use, limited to national territory and indefinitely. Said license is also granted under the same terms with respect to updates and improvements made to the application. Said use licenses may be unilaterally revoked by LGPremia at any time, by merely notifying the User.
+    </string>
+    <string name="TermsAndConditions_p9">
+       In any case, it is the User\'s responsibility to have adequate tools for the detection and disinfection of malicious programs or any other harmful computer element. LGPremia is not responsible for damage to computer equipment during the use of the APP. Likewise, LGPremia will not be responsible for damages caused to Users when said damages originate from failures or disconnections in the telecommunications networks that interrupt the service.
+    </string>
+    <string name="TermsAndConditions_p10">
+        IMPORTANT: We can, without this entailing any obligation to you, modify these Terms of Use without notifying you at any time. If you continue to use the application after any modification to these Terms of Use has been made, that continued use will constitute your acceptance of such modifications. If you do not accept these terms of use or agree to be bound by them, you must not use the application or download or use any related software. The use you make of the application is under your sole responsibility. We have no responsibility for the removal or inability to store or transmit any content or other information maintained or transmitted by the application. We are not responsible for the accuracy or reliability of any information or advice transmitted through the application. We may, at any time, limit or discontinue your use in our sole discretion. To the maximum extent permitted by law, in no event will we be liable for any related loss or damage.
+    </string>
+    <string name="TermsAndConditions_p11">
+        The User undertakes to make correct use of the APP, in accordance with the Law, with these Terms and Conditions of Use and with the other regulations and instructions that, where appropriate, may be applicable The User will respond to LGPremia and against third parties of any damages that may be caused by breach of these obligations
+    </string>
+    <string name="TermsAndConditions_p12">
+        These Terms and Conditions of Use are governed entirely by Spanish law. For the resolution of any conflict related to its interpretation or application, the User expressly submits to the jurisdiction of the courts of Spain.
+    </string>
 </resources>
