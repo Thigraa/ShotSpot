@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/close_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -206,7 +206,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
-            android:checked="true"
+            android:checked="false"
             app:buttonTint="?attr/mainText"
             app:layout_constraintBottom_toTopOf="@+id/register_register"
             app:layout_constraintStart_toStartOf="parent"

@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shotspot.R;
 import com.shotspot.database.DatabaseConnection;
 import com.shotspot.database.Person_CRUD;
@@ -32,6 +33,8 @@ public class RegisterFragment extends Fragment {
     private CheckBox checkBox;
     private Button register;
     private ProgressBar progressBar;
+    FloatingActionButton closeButton;
+
 
     public RegisterFragment() {
     }
@@ -55,7 +58,21 @@ public class RegisterFragment extends Fragment {
        checkBoxText = v.findViewById(R.id.termsAndConditions);
        register = v.findViewById(R.id.register_register);
        progressBar = v.findViewById(R.id.progressBar);
+       closeButton = v.findViewById(R.id.close_register);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         //Set on click listener
+        checkBoxText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new TermsFragment());
+            }
+        });
+
        register.setOnClickListener(new View.OnClickListener() {
            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
            @Override
