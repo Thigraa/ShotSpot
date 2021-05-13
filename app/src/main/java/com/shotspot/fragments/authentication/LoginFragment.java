@@ -1,4 +1,4 @@
-package com.shotspot.fragments;
+package com.shotspot.fragments.authentication;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,13 +17,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.shotspot.R;
-import com.shotspot.database.Person_CRUD;
+import com.shotspot.database.crud.Person_CRUD;
+import com.shotspot.fragments.navigation.HomeFragment;
 import com.shotspot.helper.Encryptor;
 import com.shotspot.model.Person;
 
 import java.util.UUID;
 
-import static com.shotspot.MainActivity.currentUser;
+import static com.shotspot.activities.MainActivity.currentUser;
 
 
 public class LoginFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.shotspot.fragments;
+package com.shotspot.fragments.navigation.profile;
 
 import android.os.Bundle;
 
@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 
 import com.shotspot.R;
 import com.shotspot.adapter.SpotAdapter;
-import com.shotspot.database.Spot_CRUD;
+import com.shotspot.database.crud.Spot_CRUD;
 
-import static com.shotspot.MainActivity.currentUser;
+import static com.shotspot.activities.MainActivity.currentUser;
 
 
 public class MySpotsFragment extends Fragment {

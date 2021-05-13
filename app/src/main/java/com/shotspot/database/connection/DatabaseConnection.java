@@ -1,4 +1,4 @@
-package com.shotspot.database;
+package com.shotspot.database.connection;
 
 import android.os.StrictMode;
 import android.util.Log;

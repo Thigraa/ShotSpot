@@ -1,4 +1,4 @@
-package com.shotspot;
+package com.shotspot.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,12 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.shotspot.R;
 import com.shotspot.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;

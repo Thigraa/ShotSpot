@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.shotspot.R;
+import com.shotspot.fragments.authentication.LoginFragment;
+import com.shotspot.fragments.authentication.RegisterFragment;
 
 public class WelcomeFragment extends Fragment {
     Button register, login;

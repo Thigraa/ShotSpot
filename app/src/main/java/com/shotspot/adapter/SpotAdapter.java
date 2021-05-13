@@ -14,15 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jama.carouselview.CarouselView;
-import com.jama.carouselview.CarouselViewAdapter;
 import com.jama.carouselview.CarouselViewListener;
-import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
-import com.shotspot.PruebaActivity;
 import com.shotspot.R;
-import com.shotspot.database.Person_CRUD;
-import com.shotspot.database.SpotImage_CRUD;
-import com.shotspot.database.Spot_CRUD;
+import com.shotspot.database.crud.Person_CRUD;
+import com.shotspot.database.crud.SpotImage_CRUD;
 import com.shotspot.model.Person;
 import com.shotspot.model.Spot;
 import com.shotspot.model.SpotImage;

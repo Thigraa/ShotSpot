@@ -1,4 +1,4 @@
-package com.shotspot.fragments;
+package com.shotspot.fragments.authentication;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shotspot.R;
-import com.shotspot.database.DatabaseConnection;
-import com.shotspot.database.Person_CRUD;
+import com.shotspot.database.connection.DatabaseConnection;
+import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.helper.Encryptor;
 import com.shotspot.model.Person;
 

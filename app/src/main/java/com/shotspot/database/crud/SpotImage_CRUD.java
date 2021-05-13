@@ -1,6 +1,6 @@
-package com.shotspot.database;
+package com.shotspot.database.crud;
 
-import com.shotspot.model.Person;
+import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.model.SpotImage;
 
 import java.sql.Connection;
