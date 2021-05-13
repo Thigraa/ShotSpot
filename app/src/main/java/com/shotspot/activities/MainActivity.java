@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shotspot.R;
 import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.database.crud.Person_CRUD;
+import com.shotspot.fragments.navigation.DiscoverFragment;
 import com.shotspot.fragments.navigation.HomeFragment;
 import com.shotspot.fragments.navigation.ProfileFragment;
 import com.shotspot.fragments.WelcomeFragment;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.discover:
+                        replaceFragment(new DiscoverFragment());
                         return true;
                     case R.id.addSpot:
                         return true;
