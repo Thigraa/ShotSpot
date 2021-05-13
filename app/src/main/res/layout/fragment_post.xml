@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PostFragment">
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <EditText
+           android:id="@+id/usernameEdittextDescription"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="32dp"
+           android:layout_marginTop="304dp"
+           android:layout_marginEnd="32dp"
+           android:background="@drawable/rounded_big"
+           android:backgroundTint="?attr/bgEdittext"
+           android:fontFamily="@font/raleway_regular"
+           android:hint="Write a description..."
+           android:inputType="textMultiLine"
+           android:paddingLeft="20dp"
+           android:paddingTop="15dp"
+           android:paddingBottom="75dp"
+           android:textSize="20sp"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintHorizontal_bias="1.0"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <EditText
+           android:id="@+id/usernameEdittextLogin"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="32dp"
+           android:layout_marginTop="440dp"
+           android:layout_marginEnd="32dp"
+           android:background="@drawable/rounded"
+           android:backgroundTint="?attr/bgEdittext"
+           android:fontFamily="@font/raleway_regular"
+           android:hint="#tag#anotherTag..."
+           android:paddingVertical="15dp"
+           android:paddingLeft="20dp"
+           android:textSize="20sp"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintHorizontal_bias="0.0"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/recyclerTags"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/usernameEdittextLogin" />
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
