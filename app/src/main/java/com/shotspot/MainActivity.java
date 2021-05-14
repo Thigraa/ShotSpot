@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.shotspot.database.DatabaseConnection;
 import com.shotspot.database.Person_CRUD;
 import com.shotspot.fragments.HomeFragment;
+import com.shotspot.fragments.PostFragment;
 import com.shotspot.fragments.ProfileFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.model.Person;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(Fragment f) {
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .replace(R.id.navHost, f, f.getClass().getSimpleName())
                 .commit();
     }
     //Method to connect the layout to the class
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.discover:
                         return true;
                     case R.id.addSpot:
+                        replaceFragment(new PostFragment());
                         return true;
                     case R.id.profile:
                         replaceFragment(new ProfileFragment());

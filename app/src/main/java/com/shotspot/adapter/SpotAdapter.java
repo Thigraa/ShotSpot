@@ -18,7 +18,6 @@ import com.jama.carouselview.CarouselViewAdapter;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
-import com.shotspot.PruebaActivity;
 import com.shotspot.R;
 import com.shotspot.database.Person_CRUD;
 import com.shotspot.database.SpotImage_CRUD;
