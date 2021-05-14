@@ -6,12 +6,9 @@
     android:layout_marginBottom="50dp"
     tools:context=".fragments.navigation.DiscoverFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <org.osmdroid.views.MapView
-        android:id="@+id/open_map_view"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/gMapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </org.osmdroid.views.MapView>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
