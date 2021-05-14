@@ -31,7 +31,9 @@
             android:value="@string/google_maps_key" />
         <activity android:name=".activities.PruebaActivity" />
         <activity android:name=".activities.MainActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustPan">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
