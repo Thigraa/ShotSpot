@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.navigation.profile.MySpotsFragment">
+    android:layout_marginBottom="50dp"
+    tools:context=".fragments.navigation.DiscoverFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/gMapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerSpotsProfile"
-        />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

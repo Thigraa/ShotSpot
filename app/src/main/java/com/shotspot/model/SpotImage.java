@@ -2,15 +2,10 @@ package com.shotspot.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
-import com.shotspot.R;
-import com.shotspot.database.Person_CRUD;
-import com.shotspot.database.SpotImage_CRUD;
 import com.shotspot.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;
-import java.util.List;
 
 public class SpotImage {
     int idImage;

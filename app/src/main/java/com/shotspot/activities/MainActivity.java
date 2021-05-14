@@ -1,4 +1,4 @@
-package com.shotspot;
+package com.shotspot.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -14,10 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.shotspot.database.DatabaseConnection;
-import com.shotspot.database.Person_CRUD;
-import com.shotspot.fragments.HomeFragment;
-import com.shotspot.fragments.ProfileFragment;
+import com.shotspot.R;
+import com.shotspot.database.connection.DatabaseConnection;
+import com.shotspot.database.crud.Person_CRUD;
+import com.shotspot.fragments.navigation.DiscoverFragment;
+import com.shotspot.fragments.navigation.HomeFragment;
+import com.shotspot.fragments.navigation.ProfileFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.model.Person;
 
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.discover:
+                        replaceFragment(new DiscoverFragment());
                         return true;
                     case R.id.addSpot:
                         return true;

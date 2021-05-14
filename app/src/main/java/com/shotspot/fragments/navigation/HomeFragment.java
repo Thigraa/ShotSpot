@@ -1,4 +1,4 @@
-package com.shotspot.fragments;
+package com.shotspot.fragments.navigation;
 
 import android.os.Bundle;
 
@@ -10,12 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shotspot.MainActivity;
 import com.shotspot.R;
 import com.shotspot.adapter.SpotAdapter;
-import com.shotspot.database.Spot_CRUD;
+import com.shotspot.database.crud.Spot_CRUD;
 
-import static com.shotspot.MainActivity.bottomNavigationView;
+import static com.shotspot.activities.MainActivity.bottomNavigationView;
 
 public class HomeFragment extends Fragment {
 
