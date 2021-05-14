@@ -1,4 +1,4 @@
-package com.shotspot;
+package com.shotspot.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,6 +19,7 @@ import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.fragments.navigation.DiscoverFragment;
 import com.shotspot.fragments.navigation.HomeFragment;
+import com.shotspot.fragments.navigation.PostFragment;
 import com.shotspot.fragments.navigation.ProfileFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.model.Person;

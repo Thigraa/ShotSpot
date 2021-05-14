@@ -12,8 +12,6 @@ import com.shotspot.R;
 
 import java.util.List;
 
-import static com.shotspot.fragments.PostFragment.myTags;
-
 public class RecyclerAdapterTags extends RecyclerView.Adapter<RecyclerAdapterTags.TagViewHolder> {
 
     List<String> tags;
