@@ -47,7 +47,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     EditText descriptionEdittext, tagsEdittext;
-    RecyclerView recyclerViewTags;
+    public static RecyclerView recyclerViewTags;
     public static ArrayList <String> myTags;
     RecyclerAdapterTags adapterTags;
     LinearLayoutManager manager;
@@ -147,11 +147,11 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         Bundle positionBundle = getArguments();
-
+        int mapStyle = getResources().getIdentifier(mapTheme.getText().toString(),"raw",getContext().getPackageName());
         gMap = googleMap;
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         try {
-            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), getResources().getIdentifier(mapTheme.getText().toString(),"raw",getContext().getPackageName())));
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),mapStyle ));
             if (!success){
                 System.out.println();
             }
