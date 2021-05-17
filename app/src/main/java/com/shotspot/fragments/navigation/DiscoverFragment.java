@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -53,7 +54,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     FusedLocationProviderClient fusedLocationProviderClient;
     List<Spot> spotList = new ArrayList<>();
     Thread thread;
-    LatLng myPosition = new LatLng(62.4531987,42.1865311);
+    LatLng myPosition ;
+    CameraPosition cameraPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,9 +155,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
         añadirMarcadores();
-        CameraPosition cameraPosition= new CameraPosition.Builder().target(getPosition()).zoom(15).bearing(0).tilt(30).build();
-
-        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        getPosition();
 
 //        TODO personalize the window to show on the marker
 //        gMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -179,12 +179,12 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                 bundle.putDouble("longitud",latLng.longitude);
                 bundle.putDouble("latitud",latLng.latitude);
 //                PostFragment f = new PostFragment();
-                getPosition();
+
             }
         });
     }
 
-    private LatLng getPosition() {
+    private void getPosition() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
@@ -196,13 +196,17 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location != null)
-                myPosition = new LatLng(location.getLatitude(),location.getLongitude());
-                System.out.println(myPosition);
+                if (location != null) {
+                    myPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                    System.out.println(myPosition);
+                    cameraPosition= new CameraPosition.Builder().target(myPosition).zoom(15).bearing(0).tilt(30).build();
+                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }else {
+                    Toast.makeText(getContext(), "Enable location please", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-//        TODO no cambia bien la posicion
-        return myPosition;
+
     }
 
     private void añadirMarcadores() {
@@ -211,8 +215,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             MarkerOptions marker = new MarkerOptions();
             LatLng latLng = new LatLng(spot.getLatitde(),spot.getLongitude());
             marker.position(latLng);
-            marker.title(spot.getTags());
-            marker.snippet(spot.getDescription());
+            marker.title(spot.getDescription());
+            marker.snippet(spot.getTags());
             marker.draggable(false);
             gMap.addMarker(marker);
         }
