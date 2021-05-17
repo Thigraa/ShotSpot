@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -179,7 +178,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                 bundle.putDouble("longitud",latLng.longitude);
                 bundle.putDouble("latitud",latLng.latitude);
 //                PostFragment f = new PostFragment();
-
+                getPosition();
             }
         });
     }
@@ -196,17 +195,13 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location != null) {
-                    myPosition = new LatLng(location.getLatitude(), location.getLongitude());
-                    System.out.println(myPosition);
-                    cameraPosition= new CameraPosition.Builder().target(myPosition).zoom(15).bearing(0).tilt(30).build();
-                    gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                }else {
-                    Toast.makeText(getContext(), "Enable location please", Toast.LENGTH_SHORT).show();
-                }
+                if (location != null)
+                myPosition = new LatLng(location.getLatitude(),location.getLongitude());
+                System.out.println(myPosition);
             }
         });
-
+//        TODO no cambia bien la posicion
+        return myPosition;
     }
 
     private void añadirMarcadores() {

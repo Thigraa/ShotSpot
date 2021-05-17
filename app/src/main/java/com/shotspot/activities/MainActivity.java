@@ -19,6 +19,7 @@ import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.fragments.navigation.DiscoverFragment;
 import com.shotspot.fragments.navigation.HomeFragment;
+import com.shotspot.fragments.navigation.PostFragment;
 import com.shotspot.fragments.navigation.ProfileFragment;
 import com.shotspot.fragments.WelcomeFragment;
 import com.shotspot.model.Person;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(Fragment f) {
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .replace(R.id.navHost, f, f.getClass().getSimpleName())
                 .commit();
     }
     //Method to connect the layout to the class
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new DiscoverFragment());
                         return true;
                     case R.id.addSpot:
+                        replaceFragment(new PostFragment());
                         return true;
                     case R.id.profile:
                         replaceFragment(new ProfileFragment());

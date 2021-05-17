@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shotspot.R;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.fragments.navigation.HomeFragment;
@@ -31,6 +32,7 @@ public class LoginFragment extends Fragment {
     private EditText usernameEdittext, passwordEdittext;
     private Button login;
     private ProgressBar progressBar;
+    private FloatingActionButton closeButton;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -52,8 +54,15 @@ public class LoginFragment extends Fragment {
         passwordEdittext = v.findViewById(R.id.passwordEdittextLogin);
         login = v.findViewById(R.id.buttonLogin);
         progressBar = v.findViewById(R.id.progressBar);
+        closeButton = v.findViewById(R.id.close_login);
 
         //Set on click listeners
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
