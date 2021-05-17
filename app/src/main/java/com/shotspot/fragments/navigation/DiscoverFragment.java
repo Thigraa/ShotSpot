@@ -41,6 +41,8 @@ import com.shotspot.model.Spot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shotspot.activities.MainActivity.bottomNavigationView;
+
 public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 
     private static final int REQUEST_IMAGE_CAPTURE = 100;
@@ -70,6 +72,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_discover, container, false);
         pedirPermiso();
+        bottomNavigationView.setVisibility(View.VISIBLE);
         return rootView;
     }
 

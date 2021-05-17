@@ -14,6 +14,7 @@ public class  MyCluster implements ClusterItem {
     private final  int idSpot;
 
 
+
     public MyCluster(double lat, double lng, String title, String snippet, int idSpot) {
         this.idSpot = idSpot;
         position = new LatLng(lat, lng);
@@ -37,5 +38,9 @@ public class  MyCluster implements ClusterItem {
     @Override
     public String getSnippet() {
         return snippet;
+    }
+
+    public int getIdSpot() {
+        return idSpot;
     }
 }
