@@ -29,10 +29,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
@@ -143,17 +141,19 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+
         gMap = googleMap;
         gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.dark_map_style));
         gMap.setMaxZoomPreference(18);
         gMap.setMinZoomPreference(3);
+        setUpClusterer();
         enableMyLocation();
         try {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        añadirMarcadores();
+
         getPosition();
 
 //        TODO personalize the window to show on the marker
@@ -167,7 +167,20 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 //            @Nullable
 //            @Override
 //            public View getInfoContents(@NonNull Marker marker) {
-//                return null;
+//                View v = getLayoutInflater().inflate(R.layout.item_recycler_home,null);
+//                TextView usernameTV, descriptionTV, tagsTV;
+//                CircleImageView profileImg;
+//                profileImg = v.findViewById(R.id.profileUserImageItem);
+//                profileImg.setVisibility(View.INVISIBLE);
+//                usernameTV = v.findViewById(R.id.usernameTextViewItem);
+//                usernameTV.setVisibility(View.INVISIBLE);
+//                descriptionTV = v.findViewById(R.id.descriptionTextViewItem);
+//                tagsTV = v.findViewById(R.id.tagsTextViewItem);
+//                descriptionTV.setText(marker.getTitle());
+//                tagsTV.setText(marker.getSnippet());
+//                CarouselView carouselView = v.findViewById(R.id.carouselRecyclerViewItem);
+//
+//                return v;
 //            }
 //        });
 
@@ -204,7 +217,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                 } else {
                     Toast.makeText(getContext(), "Activate the location please", Toast.LENGTH_SHORT).show();
                 }
-                setUpClusterer();
+
             }
         });
         System.out.println(myPosition);
@@ -213,13 +226,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     private void añadirMarcadores() {
         for (Spot spot :
                 spotList) {
-            MarkerOptions marker = new MarkerOptions();
-            LatLng latLng = new LatLng(spot.getLatitde(), spot.getLongitude());
-            marker.position(latLng);
-            marker.title(spot.getDescription());
-            marker.snippet(spot.getTags());
-            marker.draggable(false);
-            gMap.addMarker(marker);
+            MyCluster marker = new MyCluster(spot.getLatitde(),spot.getLongitude(),spot.getDescription(),spot.getTags(), spot.getIdSpot());
+            clusterManager.addItem(marker);
         }
     }
 
@@ -234,26 +242,35 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         gMap.setOnCameraIdleListener(clusterManager);
         gMap.setOnMarkerClickListener(clusterManager);
 
+        //TODO Make a function when you click on a item/marker
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyCluster>() {
+            @Override
+            public boolean onClusterItemClick(MyCluster item) {
+                return false;
+            }
+        });
         // Add cluster items (markers) to the cluster manager.
 //        addItems();
+        añadirMarcadores();
+
     }
-
-    private void addItems() {
-        // Position the map.
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 10));
-
-        // Set some lat/lng coordinates to start with.
-        double lat = 51.5145160;
-        double lng = -0.1270060;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            MyCluster offsetItem = new MyCluster(lat, lng, "Title " + i, "Snippet " + i);
-            clusterManager.addItem(offsetItem);
-        }
-        clusterManager.setAnimation(true);
-    }
+//
+//    private void addItems() {
+//        // Position the map.
+//        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.503186, 2.126446), 10));
+//
+//        // Set some lat/lng coordinates to start with.
+//        double lat = 41.503186;
+//        double lng = 2.126446;
+//
+//        // Add ten cluster items in close proximity, for purposes of this example.
+//        for (int i = 0; i < 10; i++) {
+//            double offset = i / 60d;
+//            lat = lat + offset;
+//            lng = lng + offset;
+//            MyCluster offsetItem = new MyCluster(lat, lng, "Title " + i, "Snippet " + i, idSpot);
+//            clusterManager.addItem(offsetItem);
+//        }
+//        clusterManager.setAnimation(true);
+//    }
 }

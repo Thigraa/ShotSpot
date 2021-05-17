@@ -11,9 +11,11 @@ public class  MyCluster implements ClusterItem {
     private final LatLng position;
     private final String title;
     private final String snippet;
+    private final  int idSpot;
 
 
-    public MyCluster(double lat, double lng, String title, String snippet) {
+    public MyCluster(double lat, double lng, String title, String snippet, int idSpot) {
+        this.idSpot = idSpot;
         position = new LatLng(lat, lng);
         this.title = title;
         this.snippet = snippet;
