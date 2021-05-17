@@ -3,7 +3,7 @@ package com.shotspot.model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.shotspot.storage.ImageManager;
+import com.shotspot.database.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;
 

@@ -3,6 +3,7 @@ package com.shotspot.fragments.navigation;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -144,19 +145,17 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
         gMap = googleMap;
-        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.dark_map_style));
+        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.dark_map_style ));
         gMap.setMaxZoomPreference(18);
         gMap.setMinZoomPreference(3);
-        setUpClusterer();
         enableMyLocation();
         try {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        setUpClusterer();
         getPosition();
 
 //        TODO personalize the window to show on the marker
@@ -258,22 +257,22 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 
     }
 //
-//    private void addItems() {
-//        // Position the map.
-//        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.503186, 2.126446), 10));
-//
-//        // Set some lat/lng coordinates to start with.
-//        double lat = 41.503186;
-//        double lng = 2.126446;
-//
-//        // Add ten cluster items in close proximity, for purposes of this example.
-//        for (int i = 0; i < 10; i++) {
-//            double offset = i / 60d;
-//            lat = lat + offset;
-//            lng = lng + offset;
-//            MyCluster offsetItem = new MyCluster(lat, lng, "Title " + i, "Snippet " + i, idSpot);
-//            clusterManager.addItem(offsetItem);
-//        }
-//        clusterManager.setAnimation(true);
-//    }
+    private void addItems() {
+        // Position the map.
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.503186, 2.126446), 10));
+
+        // Set some lat/lng coordinates to start with.
+        double lat = 41.503186;
+        double lng = 2.126446;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            MyCluster offsetItem = new MyCluster(lat, lng, "Title " + i, "Snippet " + i, 1);
+            clusterManager.addItem(offsetItem);
+        }
+        clusterManager.setAnimation(true);
+    }
 }

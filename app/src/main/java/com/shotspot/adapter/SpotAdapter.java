@@ -22,7 +22,7 @@ import com.shotspot.database.crud.SpotImage_CRUD;
 import com.shotspot.model.Person;
 import com.shotspot.model.Spot;
 import com.shotspot.model.SpotImage;
-import com.shotspot.storage.ImageManager;
+import com.shotspot.database.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Collections;
