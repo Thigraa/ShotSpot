@@ -20,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shotspot.R;
 import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.database.crud.Person_CRUD;
-import com.shotspot.fragments.TermsFragment;
 import com.shotspot.helper.Encryptor;
 import com.shotspot.model.Person;
 

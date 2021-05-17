@@ -1,4 +1,4 @@
-package com.shotspot.fragments;
+package com.shotspot.fragments.authentication;
 
 import android.os.Bundle;
 

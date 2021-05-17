@@ -3,7 +3,7 @@ package com.shotspot.database.crud;
 
 import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.model.Person;
-import com.shotspot.storage.ImageManager;
+import com.shotspot.database.storage.ImageManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package com.shotspot.storage;
+package com.shotspot.database.storage;
 
 import android.widget.Toast;
 
