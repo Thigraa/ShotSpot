@@ -6,4 +6,5 @@
     <attr name="buttonBg" format="color"/>
     <attr name="invertedText" format="color"/>
     <attr name="bgEdittext" format="color"/>
+    <attr name="mapTheme" format="string"/>
 </resources>

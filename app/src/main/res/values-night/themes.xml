@@ -19,5 +19,6 @@
         <item name="invertedText">#262626</item>
         <item name="bgEdittext">#323232</item>
         <item name="rippleColor">#42EEEEEE</item>
+        <item name="mapTheme">dark_map_style</item>
     </style>
 </resources>

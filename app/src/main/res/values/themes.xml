@@ -19,6 +19,7 @@
         <item name="invertedText">#EEEEEE</item>
         <item name="bgEdittext">#E1E1E1</item>
         <item name="rippleColor">#42262626</item>
+        <item name="mapTheme">light_map_style</item>
     </style>
     <style name="buttonRounded">
         <item name="cornerFamily">rounded</item>
