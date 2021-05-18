@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -59,6 +60,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     CameraPosition cameraPosition;
     private ClusterManager<MyCluster> clusterManager;
 
+    TextView mapTheme;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +148,9 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.dark_map_style ));
+        mapTheme = rootView.findViewById(R.id.discoverMapTheme);
+        int mapStyle = getResources().getIdentifier(mapTheme.getText().toString(),"raw",getContext().getPackageName());
+        gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),mapStyle ));
         gMap.setMaxZoomPreference(18);
         gMap.setMinZoomPreference(3);
         enableMyLocation();
