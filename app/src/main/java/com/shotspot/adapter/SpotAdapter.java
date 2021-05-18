@@ -72,14 +72,14 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             holder.usernameTV.setText(user.getUsername());
             holder.descriptionTV.setText(spot.getDescription());
             holder.tagsTV.setText(spot.getTags());
-            ImageManager.GetImage(user.getImageURL(), imageStream, imageLength);
+            ImageManager.getImage(user.getImageURL(), imageStream, imageLength);
 
             byte[] buffer = imageStream.toByteArray();
 
             Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
 
             holder.profileImg.setImageBitmap(bitmap);
-            List<SpotImage> images = SpotImage_CRUD.getSpotId(spot.getIdSpot());
+            List<SpotImage> images = SpotImage_CRUD.getImagesBySpotId(spot.getIdSpot());
             int numPhotos= images.size();
             if (numPhotos>10){
                 numPhotos=10;

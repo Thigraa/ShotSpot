@@ -109,7 +109,7 @@ public class SpotImage_CRUD {
         return isDeleted;
     }
 
-    public static List<SpotImage> getSpotId(int idSpot){
+    public static List<SpotImage> getImagesBySpotId(int idSpot){
         List<SpotImage> spotImages = new ArrayList<>();
         try{
             String sql = "SELECT * FROM dbo.Spot_Image WHERE id_spot= ?";

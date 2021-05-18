@@ -1,5 +1,9 @@
 package com.shotspot.database.storage;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -10,8 +14,10 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.LinkedList;
@@ -43,7 +49,7 @@ public class ImageManager {
 
         return container;
     }
-    public static String UploadImage(InputStream image, int imageLength) throws Exception {
+    public static String uploadImage(InputStream image, int imageLength) throws Exception {
         CloudBlobContainer container = getContainer();
 
         container.createIfNotExists();
@@ -57,7 +63,7 @@ public class ImageManager {
 
     }
 
-    public static String[] ListImages() throws Exception{
+    public static String[] listImages() throws Exception{
         CloudBlobContainer container = getContainer();
 
         Iterable<ListBlobItem> blobs = container.listBlobs();
@@ -70,7 +76,7 @@ public class ImageManager {
         return blobNames.toArray(new String[blobNames.size()]);
     }
 
-    public static void GetImage(String name, OutputStream imageStream, long imageLength) throws Exception {
+    public static void getImage(String name, OutputStream imageStream, long imageLength) throws Exception {
         CloudBlobContainer container = getContainer();
 
         CloudBlockBlob blob = container.getBlockBlobReference(name);
@@ -85,7 +91,7 @@ public class ImageManager {
     }
 
 
-    public static void DeleteImage(String name) throws Exception {
+    public static void deleteImage(String name) throws Exception {
         CloudBlobContainer container = getContainer();
 
         CloudBlockBlob blob = container.getBlockBlobReference(name);
@@ -103,5 +109,25 @@ public class ImageManager {
         for( int i = 0; i < len; i++ )
             sb.append( validChars.charAt( rnd.nextInt(validChars.length()) ) );
         return sb.toString();
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
+    public static InputStream bitmapToInputStream(Bitmap bitmap) {
+        int size = bitmap.getHeight() * bitmap.getRowBytes();
+        ByteBuffer buffer = ByteBuffer.allocate(size);
+        bitmap.copyPixelsToBuffer(buffer);
+        return new ByteArrayInputStream(buffer.array());
     }
 }

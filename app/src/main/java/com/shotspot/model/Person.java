@@ -79,7 +79,7 @@ public class Person {
         long imageLength = 0;
         Bitmap bitmap = null;
         try {
-            ImageManager.GetImage(getImageURL(), imageStream, imageLength);
+            ImageManager.getImage(getImageURL(), imageStream, imageLength);
 
             byte[] buffer = imageStream.toByteArray();
 
