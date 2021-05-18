@@ -39,6 +39,23 @@ public class Spot_CRUD {
         return spot;
     }
 
+    public static int getSpotId(int idUser){
+        Spot spot= new Spot();
+        try{
+            String sql = "SELECT Top 1 * FROM  Spot WHERE id_user = ? ORDER BY id_spot desc ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,idUser);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()){
+                spot.setIdUser(rs.getInt(2));
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return spot.getIdSpot();
+    }
+
     public static List<Spot> getAll(){
         List<Spot> spots= new ArrayList<>();
         try{
