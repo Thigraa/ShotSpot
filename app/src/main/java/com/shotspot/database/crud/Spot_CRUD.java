@@ -42,7 +42,7 @@ public class Spot_CRUD {
     public static int getSpotId(int idUser){
         Spot spot= new Spot();
         try{
-            String sql = "SELECT Top 1 * FROM  Spot WHERE id_user = ? ORDER BY id_spot desc ";
+            String sql = "SELECT Top 1 * FROM  dbo.Spot WHERE id_user = ? ORDER BY id_spot desc ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,idUser);
             ResultSet rs = statement.executeQuery();
