@@ -52,9 +52,11 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -81,7 +83,6 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     private LatLng postLocation;
     private CameraPosition camera;
     private TextView mapTheme;
-    Bitmap thumb_bitmap;
     String nombreImagen;
     byte[] thumb_byte;
     File url;
@@ -109,6 +110,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         mapView = v.findViewById(R.id.mapViewPost);
         mapTheme = v.findViewById(R.id.mapTheme);
         image1 = v.findViewById(R.id.imageButton1);
+        postLocation = null;
         image1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -180,16 +182,51 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                         }
                         long millis=System.currentTimeMillis();
                         Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
+                        String imageName1="";
+                        String imageName2="";
+                        String imageName3="";
                         if(Spot_CRUD.insert(spot)){
                             int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
                             if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-//                                ImageManager.UploadImage();
-//                                SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId, ))
+                                Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
+                                InputStream inputStream = comprimirImagen(bitmap1);
+                                try {
+                                    imageName1 = ImageManager.uploadImage(inputStream, inputStream.available());
+                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
+                                } catch (Exception e) {
+                                    e.getMessage();
+                                }
                             }
+                            if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
+                                InputStream inputStream = comprimirImagen(bitmap2);
+                                try {
+                                    imageName2 = ImageManager.uploadImage(inputStream, inputStream.available());
+                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
+                                } catch (Exception e) {
+                                    e.getMessage();
+                                }
+                            }
+                            if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
+                                InputStream inputStream = comprimirImagen(bitmap3);
+                                try {
+                                    imageName3 = ImageManager.uploadImage(inputStream, inputStream.available());
+                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
+                                } catch (Exception e) {
+                                    e.getMessage();
+                                }
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "The upload failed, try again later", Toast.LENGTH_SHORT).show();
                         }
 
 
+                    }else{
+                        Toast.makeText(getContext(), "Please insert an image", Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Toast.makeText(getContext(), "Please select a location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -388,7 +425,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 .setAspectRatio(16,9).start(getContext(), PostFragment.this);
     }
 
-    private void comprimirImagen(){
+    private InputStream comprimirImagen(Bitmap thumb_bitmap){
         try {
             thumb_bitmap = new Compressor(getContext())
                     .setMaxHeight(720)
@@ -401,6 +438,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
         thumb_byte = byteArrayOutputStream.toByteArray();
+        return new ByteArrayInputStream(thumb_byte);
+
     }
 //
 }

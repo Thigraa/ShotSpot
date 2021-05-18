@@ -72,7 +72,12 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             holder.usernameTV.setText(user.getUsername());
             holder.descriptionTV.setText(spot.getDescription());
             holder.tagsTV.setText(spot.getTags());
-            ImageManager.getImage(user.getImageURL(), imageStream, imageLength);
+            try {
+                ImageManager.getImage(user.getImageURL(), imageStream, imageLength);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             byte[] buffer = imageStream.toByteArray();
 
@@ -80,12 +85,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
             holder.profileImg.setImageBitmap(bitmap);
             List<SpotImage> images = SpotImage_CRUD.getImagesBySpotId(spot.getIdSpot());
-            int numPhotos= images.size();
-            if (numPhotos>10){
-                numPhotos=10;
-                Collections.shuffle(images);
-            }
-            holder.carouselView.setSize(numPhotos);
+            holder.carouselView.setSize(images.size());
             holder.carouselView.setAutoPlay(false);
             holder.carouselView.setAutoPlayDelay(3000);
             holder.carouselView.setResource(R.layout.center_carousel_item);

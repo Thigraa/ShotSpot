@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -53,8 +54,9 @@ public class ImageManager {
         CloudBlobContainer container = getContainer();
 
         container.createIfNotExists();
-        String date = new Date().toString();
-        String imageName = randomString(10)+date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = sdf.format(new Date());
+        String imageName = (randomString(10)+timestamp+".jpg").replaceAll(" ", "");
 
         CloudBlockBlob imageBlob = container.getBlockBlobReference(imageName);
         imageBlob.upload(image, imageLength);

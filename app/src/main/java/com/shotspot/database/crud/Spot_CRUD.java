@@ -47,7 +47,7 @@ public class Spot_CRUD {
             statement.setInt(1,idUser);
             ResultSet rs = statement.executeQuery();
             if (rs.next()){
-                spot.setIdUser(rs.getInt(2));
+                spot.setIdSpot(rs.getInt(1));
 
             }
         } catch (SQLException throwables) {
