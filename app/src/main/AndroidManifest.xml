@@ -29,7 +29,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".activities.PruebaActivity" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".activities.MainActivity"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustPan">

@@ -1,13 +1,18 @@
 package com.shotspot.fragments.navigation;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -18,7 +23,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +43,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.shotspot.R;
 import com.shotspot.adapter.RecyclerAdapterTags;
+import com.shotspot.database.crud.Spot_CRUD;
+import com.shotspot.model.Spot;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
+import id.zelory.compressor.Compressor;
+
+import static android.app.Activity.RESULT_OK;
 import static com.shotspot.activities.MainActivity.bottomNavigationView;
+import static com.shotspot.activities.MainActivity.currentUser;
 
 
 public class PostFragment extends Fragment implements OnMapReadyCallback {
@@ -49,6 +68,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     EditText descriptionEdittext, tagsEdittext;
     public static RecyclerView recyclerViewTags;
     public static ArrayList <String> myTags;
+    private Button addSpot;
+    private ImageView image1, image2, image3;
     RecyclerAdapterTags adapterTags;
     LinearLayoutManager manager;
     private MapView mapView;
@@ -57,6 +78,10 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     private LatLng postLocation;
     private CameraPosition camera;
     private TextView mapTheme;
+    Bitmap thumb_bitmap;
+    String nombreImagen;
+    byte[] thumb_byte;
+    File url;
 
     public PostFragment() {
         // Required empty public constructor
@@ -80,6 +105,76 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         recyclerViewTags = v.findViewById(R.id.recyclerTags);
         mapView = v.findViewById(R.id.mapViewPost);
         mapTheme = v.findViewById(R.id.mapTheme);
+        image1 = v.findViewById(R.id.imageButton1);
+        image1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                image1.setImageDrawable(defaultImage);
+                return true;
+            }
+
+        });
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                if(image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    CropImage.startPickImageActivity(getContext(), PostFragment.this);
+                }
+            }
+        });
+        image2 = v.findViewById(R.id.imageButton2);
+        image2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                image2.setImageDrawable(defaultImage);
+                return true;
+            }
+
+        });
+        image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                if(image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    CropImage.startPickImageActivity(getContext(), PostFragment.this);
+                }
+            }
+        });
+        image3 = v.findViewById(R.id.imageButton3);
+        image3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                image3.setImageDrawable(defaultImage);
+                return true;
+            }
+
+        });
+        image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                if(image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    CropImage.startPickImageActivity(getContext(), PostFragment.this);
+                }
+            }
+        });
+        addSpot = v.findViewById(R.id.buttonAddPost);
+        addSpot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tags="";
+                for(String s : myTags){
+                    tags+=s;
+                }
+                long millis=System.currentTimeMillis();
+                Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
+                Spot_CRUD.insert(spot);
+            }
+        });
         setUpRecyclerTags();
         setUpMap();
 
@@ -245,6 +340,49 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 gMap.setMyLocationEnabled(true);
             }
         }
+    }
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK){
+            Uri imageUri = CropImage.getPickImageResultUri(getContext(), data);
+            recortarImagen(imageUri);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode == RESULT_OK){
+                Uri resultUri = result.getUri();
+                url = new File(resultUri.getPath());
+                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                if(image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                    Picasso.with(getContext()).load(url).into(image1);
+                }
+                else if(image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                    Picasso.with(getContext()).load(url).into(image2);
+                }else{
+                    Picasso.with(getContext()).load(url).into(image3);
+                }
+            }
+        }
+    }
+    private void recortarImagen(Uri imagenUri){
+        CropImage.activity(imagenUri).setGuidelines(CropImageView.Guidelines.ON)
+                .setRequestedSize(1280, 720)
+                .setAspectRatio(16,9).start(getContext(), PostFragment.this);
+    }
+
+    private void comprimirImagen(){
+        try {
+            thumb_bitmap = new Compressor(getContext())
+                    .setMaxHeight(720)
+                    .setMaxWidth(1280)
+                    .setQuality(90)
+                    .compressToBitmap(url);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+        thumb_byte = byteArrayOutputStream.toByteArray();
     }
 //
 }

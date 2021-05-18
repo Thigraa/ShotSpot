@@ -16,8 +16,7 @@ public class SpotImage {
     public SpotImage() {
     }
 
-    public SpotImage(int idImage, int idUser, int idSpot, String imageURL) {
-        this.idImage = idImage;
+    public SpotImage(int idUser, int idSpot, String imageURL) {
         this.idUser = idUser;
         this.idSpot = idSpot;
         this.imageURL = imageURL;

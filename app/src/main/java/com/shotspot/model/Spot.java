@@ -14,8 +14,7 @@ public class Spot {
     public Spot() {
     }
 
-    public Spot(int idSpot, int idUser, double latitde, double longitude, String description, String tags, Date datePost) {
-        this.idSpot = idSpot;
+    public Spot(int idUser, double latitde, double longitude, String description, String tags, Date datePost) {
         this.idUser = idUser;
         this.latitde = latitde;
         this.longitude = longitude;
