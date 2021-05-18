@@ -43,8 +43,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.shotspot.R;
 import com.shotspot.adapter.RecyclerAdapterTags;
+import com.shotspot.database.crud.SpotImage_CRUD;
 import com.shotspot.database.crud.Spot_CRUD;
+import com.shotspot.database.storage.ImageManager;
 import com.shotspot.model.Spot;
+import com.shotspot.model.SpotImage;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -166,13 +169,28 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         addSpot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tags="";
-                for(String s : myTags){
-                    tags+=s;
+                if(postLocation != null){
+                    Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                    if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState()) ||
+                            !image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())||
+                            !image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                        String tags="";
+                        for(String s : myTags){
+                            tags+=s;
+                        }
+                        long millis=System.currentTimeMillis();
+                        Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
+                        if(Spot_CRUD.insert(spot)){
+                            int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
+                            if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+//                                ImageManager.UploadImage();
+//                                SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId, ))
+                            }
+                        }
+
+
+                    }
                 }
-                long millis=System.currentTimeMillis();
-                Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
-                Spot_CRUD.insert(spot);
             }
         });
         setUpRecyclerTags();
