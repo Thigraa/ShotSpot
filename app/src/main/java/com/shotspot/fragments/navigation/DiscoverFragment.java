@@ -40,6 +40,7 @@ import com.shotspot.model.MyCluster;
 import com.shotspot.model.Spot;
 
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 

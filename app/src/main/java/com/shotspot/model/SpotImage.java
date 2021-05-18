@@ -60,7 +60,7 @@ public class SpotImage {
         Bitmap bitmap = null;
         try {
 
-            ImageManager.GetImage(getImageURL(), imageStream, imageLength);
+            ImageManager.getImage(getImageURL(), imageStream, imageLength);
 
             byte[] buffer = imageStream.toByteArray();
 

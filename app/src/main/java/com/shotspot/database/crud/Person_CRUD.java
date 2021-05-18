@@ -151,7 +151,7 @@ public class Person_CRUD {
         String sql ="UPDATE Person SET image_url = ? WHERE id_user = ? ";
 
         try {
-            ImageManager.DeleteImage(getPerson(person.getIdUser()).getImageURL());
+            ImageManager.deleteImage(getPerson(person.getIdUser()).getImageURL());
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,person.getImageURL());
             statement.setInt(2,person.getIdUser());
