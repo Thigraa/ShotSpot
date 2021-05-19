@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -41,6 +40,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.shotspot.R;
 import com.shotspot.adapter.RecyclerAdapterTags;
 import com.shotspot.database.crud.SpotImage_CRUD;
@@ -125,6 +126,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
                 if(image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
@@ -144,6 +146,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
                 if(image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
@@ -163,6 +166,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
                 if(image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
@@ -218,15 +222,17 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                                 }
                             }
                         }else{
-                            Toast.makeText(getContext(), "The upload failed, try again later", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(v, "The upload failed, try again later", BaseTransientBottomBar.LENGTH_SHORT).show();
                         }
 
 
                     }else{
-                        Toast.makeText(getContext(), "Please insert an image", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(v, "Please insert an image", BaseTransientBottomBar.LENGTH_SHORT).show();
+
                     }
                 }else{
-                    Toast.makeText(getContext(), "Please select a location", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Please select a location", BaseTransientBottomBar.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -265,7 +271,6 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             {
                 if (event.getAction() == KeyEvent.ACTION_UP)
                 {
-                    Toast.makeText(getContext(), ""+keyCode, Toast.LENGTH_SHORT).show();
                     switch (keyCode)
                     {
                         case KeyEvent.KEYCODE_SPACE:
@@ -440,6 +445,13 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         thumb_byte = byteArrayOutputStream.toByteArray();
         return new ByteArrayInputStream(thumb_byte);
 
+    }
+    private void checkReadStorage() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
     }
 //
 }

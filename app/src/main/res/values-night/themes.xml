@@ -20,5 +20,6 @@
         <item name="bgEdittext">#323232</item>
         <item name="rippleColor">#42EEEEEE</item>
         <item name="mapTheme">dark_map_style</item>
+        <item name="snackbarStyle">@style/snackbarFragment</item>
     </style>
 </resources>

@@ -14,15 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.shotspot.R;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.fragments.navigation.HomeFragment;
 import com.shotspot.helper.Encryptor;
 import com.shotspot.model.Person;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.shotspot.activities.MainActivity.currentUser;
@@ -109,14 +111,15 @@ public class LoginFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
             }else{
                 //NOT MATCHES
-                Toast.makeText(getContext(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getView()), "Username or password are incorrect", BaseTransientBottomBar.LENGTH_SHORT).show();
                 login.setFocusable(true);
                 login.setClickable(true);
                 progressBar.setVisibility(View.INVISIBLE);
             }
         }else{
             //Not all the fields are filled
-            Toast.makeText(getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
+            Snackbar.make(getView(), "Please fill all the fields", BaseTransientBottomBar.LENGTH_SHORT).show();
+
         }
     }
     //Method to replace fragments
