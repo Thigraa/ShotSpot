@@ -16,12 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/bgColor">
+
             <TextView
                 android:id="@+id/usernameTextViewItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="@font/raleway_bold"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/raleway_light"
                 android:textColor="?attr/mainText"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,12 +33,12 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileUserImageItem"
-                app:civ_border_color="?attr/mainText"
-                app:civ_border_width="1sp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:src="@mipmap/ic_launcher_round"
+                app:civ_border_color="?attr/mainText"
+                app:civ_border_width="1sp"
                 app:layout_constraintEnd_toStartOf="@+id/usernameTextViewItem"
                 app:layout_constraintHorizontal_bias="0.695"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,14 +65,16 @@
                 android:id="@+id/descriptionTextViewItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/raleway_bold"
-                android:textColor="?attr/mainText"
-                tools:text="This is a beautiful place where you can see a fishy cat and stranges rooms"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/raleway_light"
                 android:gravity="center"
+                android:textColor="?attr/mainText"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/carouselRecyclerViewItem">
+                app:layout_constraintTop_toBottomOf="@id/carouselRecyclerViewItem"
+                tools:text="This is a beautiful place where you can see a fishy cat and stranges rooms">
 
             </TextView>
 

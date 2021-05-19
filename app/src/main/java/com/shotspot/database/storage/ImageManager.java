@@ -56,7 +56,7 @@ public class ImageManager {
         container.createIfNotExists();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String timestamp = sdf.format(new Date());
-        String imageName = (randomString(10)+timestamp+".jpg").replaceAll(" ", "");
+        String imageName = (timestamp+randomString(10)+".jpg").replaceAll(" ", "");
 
         CloudBlockBlob imageBlob = container.getBlockBlobReference(imageName);
         imageBlob.upload(image, imageLength);

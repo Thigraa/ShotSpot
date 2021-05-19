@@ -193,9 +193,9 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                             int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
                             if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                 Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
-                                InputStream inputStream = comprimirImagen(bitmap1);
+                                InputStream inputStream1 = comprimirImagen(bitmap1);
                                 try {
-                                    imageName1 = ImageManager.uploadImage(inputStream, inputStream.available());
+                                    imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());
                                     SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
                                 } catch (Exception e) {
                                     e.getMessage();
@@ -203,9 +203,9 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                             }
                             if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                 Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
-                                InputStream inputStream = comprimirImagen(bitmap2);
+                                InputStream inputStream2 = comprimirImagen(bitmap2);
                                 try {
-                                    imageName2 = ImageManager.uploadImage(inputStream, inputStream.available());
+                                    imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());
                                     SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
                                 } catch (Exception e) {
                                     e.getMessage();
@@ -213,9 +213,9 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                             }
                             if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                 Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
-                                InputStream inputStream = comprimirImagen(bitmap3);
+                                InputStream inputStream3 = comprimirImagen(bitmap3);
                                 try {
-                                    imageName3 = ImageManager.uploadImage(inputStream, inputStream.available());
+                                    imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());
                                     SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
                                 } catch (Exception e) {
                                     e.getMessage();
