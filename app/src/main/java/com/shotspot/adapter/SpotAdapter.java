@@ -3,6 +3,7 @@ package com.shotspot.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
     private List<Spot> spots;
     private Context context;
-
+    final Handler handler = new Handler();
     public SpotAdapter(List<Spot> spots) {
         this.spots = spots;
     }
@@ -63,22 +64,16 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SpotAdapter.SpotHolder holder, int position) {
-
-        final ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
-        long imageLength = 0;
         try {
             Spot spot = spots.get(position);
             Person user = Person_CRUD.getPerson(spot.getIdUser());
             holder.usernameTV.setText(user.getUsername());
             holder.descriptionTV.setText(spot.getDescription());
             holder.tagsTV.setText(spot.getTags());
-            ImageManager.getImage(user.getImageURL(), imageStream, imageLength);
+            if (user.getImageURL()!=null ){
+                searchUserImage(user,holder);
+            }
 
-            byte[] buffer = imageStream.toByteArray();
-
-            Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
-
-            holder.profileImg.setImageBitmap(bitmap);
             List<SpotImage> images = SpotImage_CRUD.getImagesBySpotId(spot.getIdSpot());
             int numPhotos= images.size();
             if (numPhotos>10){
@@ -94,13 +89,32 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 @Override
                 public void onBindView(View view, int position) {
                     ImageView imageView = view.findViewById(R.id.imageView);
-                    imageView.setImageBitmap(images.get(position).getBitmap());
+//                    imageView.setImageBitmap(images.get(position).getBitmap());
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //TODO Zoom Image onClick
                         }
                     });
+                    Thread th = new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        imageView.setImageBitmap(images.get(position).getBitmap());
+                                    }
+                                });
+                            }
+                            catch(Exception ex) {
+                                final String exceptionMessage = ex.getMessage();
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(getContext(), exceptionMessage, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }});
+                    th.start();
                 }
             });
             holder.carouselView.show();
@@ -108,6 +122,42 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    private void searchUserImage(Person user,SpotAdapter.SpotHolder holder) {
+        final String image = user.getImageURL();
+        final ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+        Thread th = new Thread(new Runnable() {
+            public void run() {
+
+                try {
+
+                    long imageLength = 0;
+
+                    ImageManager.getImage(image, imageStream, imageLength);
+
+                    handler.post(new Runnable() {
+
+                        public void run() {
+                            byte[] buffer = imageStream.toByteArray();
+
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+
+                            holder.profileImg.setImageBitmap(bitmap);
+                        }
+                    });
+                }
+                catch(Exception ex) {
+                    final String exceptionMessage = ex.getMessage();
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), exceptionMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }});
+        th.start();
+
     }
 
     @Override
@@ -130,5 +180,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
         }
     }
+
+
 
 }
