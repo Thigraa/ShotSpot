@@ -52,6 +52,20 @@
 
                    </TextView>
 
+                   <EditText
+                       android:id="@+id/profileUsernameEditText"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:layout_gravity="center"
+                       android:textColor="?attr/mainText"
+                       android:inputType="text"
+                       android:layout_marginHorizontal="4sp"
+                       android:layout_marginBottom="42sp"
+                       android:textSize="24sp"
+                       tools:text="Username">
+                   </EditText>
+
                </LinearLayout>
                <ImageButton
                    android:id="@+id/logOutProfileButton"

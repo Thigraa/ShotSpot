@@ -127,15 +127,14 @@ public class Person_CRUD {
         return isDeleted;
     }
 
-    public static boolean updateUsernameAndToken(Person person){
+    public static boolean updateUsername(Person person){
         boolean inserted = false;
-        String sql ="UPDATE Person SET  username = ? , token = ? WHERE  id_user = ?";
+        String sql ="UPDATE Person SET  username = ? WHERE  id_user = ?";
         try {
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,person.getUsername());
-            statement.setString(2,person.getToken());
-            statement.setInt(3,person.getIdUser());
+            statement.setInt(2,person.getIdUser());
             int updeated = statement.executeUpdate();
             if (updeated>=1) inserted=true;
         } catch (SQLException throwables) {
