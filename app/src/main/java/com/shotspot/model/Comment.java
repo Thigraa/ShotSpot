@@ -9,16 +9,12 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int idComment, int idSpot, int idUser, String comment) {
-        this.idComment = idComment;
+    public Comment(int idSpot, int idUser, String comment) {
         this.idSpot = idSpot;
         this.idUser = idUser;
         this.comment = comment;
     }
 
-    public int getIdComment() {
-        return idComment;
-    }
 
     public void setIdComment(int idComment) {
         this.idComment = idComment;

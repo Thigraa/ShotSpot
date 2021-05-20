@@ -7,4 +7,8 @@
     <attr name="invertedText" format="color"/>
     <attr name="bgEdittext" format="color"/>
     <attr name="mapTheme" format="string"/>
+    <attr name="like_filled" format="reference"/>
+    <attr name="like_unfilled" format="reference"/>
+    <attr name="locationIcon" format="reference"/>
+    <attr name="commentIcon" format="reference"/>
 </resources>
