@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -105,12 +104,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                                 });
                             }
                             catch(Exception ex) {
-                                final String exceptionMessage = ex.getMessage();
-                                handler.post(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(getContext(), exceptionMessage, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                ex.printStackTrace();
                             }
                         }});
                     th.start();
@@ -127,7 +121,6 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -156,12 +149,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                     });
                 }
                 catch(Exception ex) {
-                    final String exceptionMessage = ex.getMessage();
-                    handler.post(new Runnable() {
-                        public void run() {
-                            Toast.makeText(getContext(), exceptionMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    ex.printStackTrace();
                 }
             }});
         th.start();
