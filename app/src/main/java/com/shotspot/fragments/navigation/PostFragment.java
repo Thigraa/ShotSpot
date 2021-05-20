@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -34,7 +33,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -85,8 +83,9 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     private CameraPosition camera;
     private TextView mapTheme;
     String nombreImagen;
+    Drawable defaultImage;
     byte[] thumb_byte;
-    File url;
+    File url1, url2, url3;
 
     public PostFragment() {
         // Required empty public constructor
@@ -112,10 +111,11 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         mapTheme = v.findViewById(R.id.mapTheme);
         image1 = v.findViewById(R.id.imageButton1);
         postLocation = null;
+        defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
         image1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                 image1.setImageDrawable(defaultImage);
                 return true;
             }
@@ -124,7 +124,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                 if(image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
                     checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
@@ -135,7 +135,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         image2.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                 image2.setImageDrawable(defaultImage);
                 return true;
             }
@@ -144,7 +144,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                 if(image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
                     checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
@@ -155,7 +155,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         image3.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                 image3.setImageDrawable(defaultImage);
                 return true;
             }
@@ -164,7 +164,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         image3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                 if(image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
                     checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
@@ -176,7 +176,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 if(postLocation != null){
-                    Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+
                     if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState()) ||
                             !image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())||
                             !image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
@@ -192,8 +192,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                         if(Spot_CRUD.insert(spot)){
                             int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
                             if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                                Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
-                                InputStream inputStream1 = comprimirImagen(bitmap1);
+                                 Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
+                                InputStream inputStream1 = comprimirImagen(bitmap1,url1);
                                 try {
                                     imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());
                                     SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
@@ -202,8 +202,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                                 }
                             }
                             if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                                Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
-                                InputStream inputStream2 = comprimirImagen(bitmap2);
+                                 Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
+                                InputStream inputStream2 = comprimirImagen(bitmap2,url2);
                                 try {
                                     imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());
                                     SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
@@ -213,7 +213,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                             }
                             if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                 Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
-                                InputStream inputStream3 = comprimirImagen(bitmap3);
+                                InputStream inputStream3 = comprimirImagen(bitmap3,url3);
                                 try {
                                     imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());
                                     SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
@@ -410,16 +410,23 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if(resultCode == RESULT_OK){
-                Uri resultUri = result.getUri();
-                url = new File(resultUri.getPath());
-                Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
-                if(image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                    Picasso.with(getContext()).load(url).into(image1);
-                }
-                else if(image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                    Picasso.with(getContext()).load(url).into(image2);
-                }else{
-                    Picasso.with(getContext()).load(url).into(image3);
+                try {
+                    if (image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                        Uri resultUri = result.getUri();
+                        url1 = new File(resultUri.getPath());
+                        Picasso.with(getContext()).load(url1).into(image1);
+                    } else if (image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                        Uri resultUri = result.getUri();
+                        url2 = new File(resultUri.getPath());
+                        Picasso.with(getContext()).load(url2).into(image2);
+                    } else {
+                        Uri resultUri = result.getUri();
+                        url3 = new File(resultUri.getPath());
+                        Picasso.with(getContext()).load(url3).into(image3);
+
+                    }
+                }catch (Exception e){
+
                 }
             }
         }
@@ -430,13 +437,13 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 .setAspectRatio(16,9).start(getContext(), PostFragment.this);
     }
 
-    private InputStream comprimirImagen(Bitmap thumb_bitmap){
+    private InputStream comprimirImagen(Bitmap thumb_bitmap,File file){
         try {
             thumb_bitmap = new Compressor(getContext())
                     .setMaxHeight(720)
                     .setMaxWidth(1280)
                     .setQuality(90)
-                    .compressToBitmap(url);
+                    .compressToBitmap(file);
         }catch (IOException e){
             e.printStackTrace();
         }

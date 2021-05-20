@@ -59,7 +59,7 @@ public class Spot_CRUD {
     public static List<Spot> getAll(){
         List<Spot> spots= new ArrayList<>();
         try{
-            String sql = "SELECT * FROM dbo.Spot";
+            String sql = "SELECT * FROM dbo.Spot ORDER BY id_spot DESC";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
 

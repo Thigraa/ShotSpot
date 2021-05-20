@@ -182,32 +182,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         getPosition();
 
 //        TODO personalize the window to show on the marker
-//        gMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-//            @Nullable
-//            @Override
-//            public View getInfoWindow(@NonNull Marker marker) {
-//                return null;
-//            }
-//
-//            @Nullable
-//            @Override
-//            public View getInfoContents(@NonNull Marker marker) {
-//                View v = getLayoutInflater().inflate(R.layout.item_recycler_home,null);
-//                TextView usernameTV, descriptionTV, tagsTV;
-//                CircleImageView profileImg;
-//                profileImg = v.findViewById(R.id.profileUserImageItem);
-//                profileImg.setVisibility(View.INVISIBLE);
-//                usernameTV = v.findViewById(R.id.usernameTextViewItem);
-//                usernameTV.setVisibility(View.INVISIBLE);
-//                descriptionTV = v.findViewById(R.id.descriptionTextViewItem);
-//                tagsTV = v.findViewById(R.id.tagsTextViewItem);
-//                descriptionTV.setText(marker.getTitle());
-//                tagsTV.setText(marker.getSnippet());
-//                CarouselView carouselView = v.findViewById(R.id.carouselRecyclerViewItem);
-//
-//                return v;
-//            }
-//        });
+
 
         gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
