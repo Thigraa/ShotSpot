@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -41,6 +40,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.shotspot.R;
 import com.shotspot.adapter.RecyclerAdapterTags;
 import com.shotspot.database.crud.SpotImage_CRUD;
@@ -52,9 +53,11 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -81,7 +84,6 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     private LatLng postLocation;
     private CameraPosition camera;
     private TextView mapTheme;
-    Bitmap thumb_bitmap;
     String nombreImagen;
     byte[] thumb_byte;
     File url;
@@ -109,6 +111,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         mapView = v.findViewById(R.id.mapViewPost);
         mapTheme = v.findViewById(R.id.mapTheme);
         image1 = v.findViewById(R.id.imageButton1);
+        postLocation = null;
         image1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -123,6 +126,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
                 if(image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
@@ -142,6 +146,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
                 if(image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
@@ -161,6 +166,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 Drawable defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
                 if(image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                    checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
@@ -180,16 +186,53 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                         }
                         long millis=System.currentTimeMillis();
                         Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
+                        String imageName1="";
+                        String imageName2="";
+                        String imageName3="";
                         if(Spot_CRUD.insert(spot)){
                             int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
                             if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-//                                ImageManager.UploadImage();
-//                                SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId, ))
+                                Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
+                                InputStream inputStream1 = comprimirImagen(bitmap1);
+                                try {
+                                    imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());
+                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
+                                } catch (Exception e) {
+                                    e.getMessage();
+                                }
                             }
+                            if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
+                                InputStream inputStream2 = comprimirImagen(bitmap2);
+                                try {
+                                    imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());
+                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
+                                } catch (Exception e) {
+                                    e.getMessage();
+                                }
+                            }
+                            if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
+                                InputStream inputStream3 = comprimirImagen(bitmap3);
+                                try {
+                                    imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());
+                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
+                                } catch (Exception e) {
+                                    e.getMessage();
+                                }
+                            }
+                        }else{
+                            Snackbar.make(v, "The upload failed, try again later", BaseTransientBottomBar.LENGTH_SHORT).show();
                         }
 
 
+                    }else{
+                        Snackbar.make(v, "Please insert an image", BaseTransientBottomBar.LENGTH_SHORT).show();
+
                     }
+                }else{
+                    Snackbar.make(v, "Please select a location", BaseTransientBottomBar.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -228,7 +271,6 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             {
                 if (event.getAction() == KeyEvent.ACTION_UP)
                 {
-                    Toast.makeText(getContext(), ""+keyCode, Toast.LENGTH_SHORT).show();
                     switch (keyCode)
                     {
                         case KeyEvent.KEYCODE_SPACE:
@@ -388,7 +430,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 .setAspectRatio(16,9).start(getContext(), PostFragment.this);
     }
 
-    private void comprimirImagen(){
+    private InputStream comprimirImagen(Bitmap thumb_bitmap){
         try {
             thumb_bitmap = new Compressor(getContext())
                     .setMaxHeight(720)
@@ -401,6 +443,15 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
         thumb_byte = byteArrayOutputStream.toByteArray();
+        return new ByteArrayInputStream(thumb_byte);
+
+    }
+    private void checkReadStorage() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
     }
 //
 }

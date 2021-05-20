@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.shotspot.R;
 import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.database.crud.Person_CRUD;
@@ -139,31 +141,31 @@ public class RegisterFragment extends Fragment {
                                     replaceFragment(new LoginFragment());
 
                                 }else{
-                                    Toast.makeText(getContext(), "Email in use", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(getView(), "Email is already in use", BaseTransientBottomBar.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.INVISIBLE);
                                     register.setFocusable(true);
                                     register.setClickable(true);
                                 }
                             }else{
-                                Toast.makeText(getContext(), "Username in use", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(getView(), "Username is already in use", BaseTransientBottomBar.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.INVISIBLE);
                                 register.setFocusable(true);
                                 register.setClickable(true);
                             }
                         }else{
-                            Toast.makeText(getContext(), "Please type a valid format email", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(getView(), "Please type a valid format email", BaseTransientBottomBar.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(getContext(), "Terms and Conditions must be accepted", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(getView(), "Terms and Conditions must be accepted", BaseTransientBottomBar.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(getContext(), "Passwords must match", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "Passwords must match", BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
             }else{
-                Toast.makeText(getContext(), "Password must contain minimum 8 characters", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Password must contain minimum 8 characters", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         }else{
-            Toast.makeText(getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
+            Snackbar.make(getView(), "Please fill all the fields", BaseTransientBottomBar.LENGTH_SHORT).show();
         }
     }
     //Method to replace fragments

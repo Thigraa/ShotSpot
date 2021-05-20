@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,12 +20,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -31,8 +35,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.clustering.ClusterManager;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
@@ -40,10 +47,12 @@ import com.shotspot.model.MyCluster;
 import com.shotspot.model.Spot;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.shotspot.activities.MainActivity.bottomNavigationView;
 
 public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
@@ -60,6 +69,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     static LatLng myPosition;
     CameraPosition cameraPosition;
     private ClusterManager<MyCluster> clusterManager;
+    SearchView searchView;
 
     TextView mapTheme;
 
@@ -77,6 +87,36 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         rootView = inflater.inflate(R.layout.fragment_discover, container, false);
         pedirPermiso();
         bottomNavigationView.setVisibility(View.VISIBLE);
+        searchView = rootView.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if(location != null || !location.equals("")){
+                    Geocoder geocoder = new Geocoder(getContext());
+                    try{
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    if(addressList.size()>=1) {
+                        Address address = addressList.get(0);
+                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    }else{
+                        Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return rootView;
     }
 
@@ -104,30 +144,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-//    private void startOpenMap(View v) {
-//        MapView openMapView;
-//        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
-//        openMapView = v.findViewById(R.id.open_gMap_view);
-//        gMapController = (MapController) openMapView.getController();
-//        gMapController.setCenter(itb);
-//        gMapController.setZoom(17);
-//        openMapView.setMultiTouchControls(true);
-//        openMapView.setBuiltInZoomControls(false);
-//
-//        Marker marker = new Marker(openMapView,getContext());
-//        marker.setPosition(itb);
-//        marker.setAnchor(Marker.ANCHOR_CENTER,Marker.ANCHOR_BOTTOM);
-////        marker.setIcon(getContext().getResources().getDrawable(R.drawable.btn_moreinfo));
-//        openMapView.getOverlays().add(marker);
-//    }
 
-    private void checkReadStorage() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-    }
 
     private boolean pedirPermiso() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
@@ -139,7 +156,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (gMap != null) {
                 gMap.setMyLocationEnabled(true);
-
+                gMap.getUiSettings().setCompassEnabled(false);
+                gMap.getUiSettings().setMyLocationButtonEnabled(false);
             }
         } else {
             pedirPermiso();
@@ -222,7 +240,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                     gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 } else {
-                    Toast.makeText(getContext(), "Activate the location please", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(rootView, "Enable the location please", BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
 
             }

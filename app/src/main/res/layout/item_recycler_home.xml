@@ -16,28 +16,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/bgColor">
+
             <TextView
                 android:id="@+id/usernameTextViewItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="@font/raleway_bold"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/raleway_light"
                 android:textColor="?attr/mainText"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.226"
+                app:layout_constraintHorizontal_bias="0.15"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Username" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileUserImageItem"
-                app:civ_border_color="?attr/mainText"
-                app:civ_border_width="1sp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:src="@mipmap/ic_launcher_round"
+                app:civ_border_color="?attr/mainText"
+                app:civ_border_width="1sp"
                 app:layout_constraintEnd_toStartOf="@+id/usernameTextViewItem"
                 app:layout_constraintHorizontal_bias="0.695"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,20 +61,64 @@
                 app:scaleOnScroll="false"
                 app:setAutoPlay="false" />
 
+
+            <com.like.LikeButton
+                android:id="@+id/likeButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                app:circle_end_color="?attr/bgEdittext"
+                app:circle_start_color="?attr/mainText"
+                app:dots_primary_color="?attr/bgColor"
+                app:dots_secondary_color="?attr/bgColor"
+                app:icon_size="32dp"
+                app:icon_type="heart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/carouselRecyclerViewItem"
+                app:like_drawable="?attr/like_filled"
+                app:liked="false"
+                app:unlike_drawable="?attr/like_unfilled" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:src="?attr/locationIcon"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/likeButton"
+                app:layout_constraintTop_toBottomOf="@+id/carouselRecyclerViewItem" />
+
+            <ImageView
+                android:id="@+id/comment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:src="?attr/commentIcon"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/likeButton"
+                app:layout_constraintTop_toBottomOf="@+id/carouselRecyclerViewItem" />
+
             <TextView
                 android:id="@+id/descriptionTextViewItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/raleway_bold"
-                android:textColor="?attr/mainText"
-                tools:text="This is a beautiful place where you can see a fishy cat and stranges rooms"
+                android:fontFamily="@font/raleway_light"
                 android:gravity="center"
+                android:textColor="?attr/mainText"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/carouselRecyclerViewItem">
-
-            </TextView>
+                app:layout_constraintTop_toBottomOf="@+id/likeButton"
+                tools:text="This is a beautiful place where you can see a fishy cat and stranges rooms" />
 
             <TextView
                 android:id="@+id/tagsTextViewItem"
@@ -90,6 +135,8 @@
                 android:padding="4sp">
 
             </TextView>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 

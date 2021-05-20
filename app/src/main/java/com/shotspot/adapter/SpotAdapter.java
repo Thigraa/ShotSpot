@@ -12,14 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.OffsetType;
 import com.shotspot.R;
+import com.shotspot.activities.MainActivity;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.database.crud.SpotImage_CRUD;
+import com.shotspot.fragments.CommentsFragment;
 import com.shotspot.model.Person;
 import com.shotspot.model.Spot;
 import com.shotspot.model.SpotImage;
@@ -75,12 +79,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             }
 
             List<SpotImage> images = SpotImage_CRUD.getImagesBySpotId(spot.getIdSpot());
-            int numPhotos= images.size();
-            if (numPhotos>10){
-                numPhotos=10;
-                Collections.shuffle(images);
-            }
-            holder.carouselView.setSize(numPhotos);
+            holder.carouselView.setSize(images.size());
             holder.carouselView.setAutoPlay(false);
             holder.carouselView.setAutoPlayDelay(3000);
             holder.carouselView.setResource(R.layout.center_carousel_item);
@@ -118,6 +117,15 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 }
             });
             holder.carouselView.show();
+            holder.commentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment f = new CommentsFragment(spot.getIdSpot());
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.navHost, f)
+                            .commit();
+                }
+            });
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -169,6 +177,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
         TextView usernameTV, descriptionTV, tagsTV;
         CircleImageView profileImg;
         CarouselView carouselView;
+        ImageView commentButton;
 
         public SpotHolder(@NonNull View itemView) {
             super(itemView);
@@ -177,6 +186,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             carouselView = itemView.findViewById(R.id.carouselRecyclerViewItem);
             descriptionTV = itemView.findViewById(R.id.descriptionTextViewItem);
             tagsTV = itemView.findViewById(R.id.tagsTextViewItem);
+            commentButton = itemView.findViewById(R.id.comment_button);
 
         }
     }

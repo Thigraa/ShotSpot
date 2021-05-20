@@ -46,7 +46,7 @@ public class Comment_CRUD {
             statement.setInt(1,idSpot);
             ResultSet rs = statement.executeQuery();
 
-            if (rs.next()){
+            while (rs.next()){
                 Comment comment = new Comment();
                 comment.setIdComment(rs.getInt(1));
                 comment.setIdSpot(rs.getInt(2));

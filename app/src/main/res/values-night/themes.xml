@@ -20,5 +20,10 @@
         <item name="bgEdittext">#323232</item>
         <item name="rippleColor">#42EEEEEE</item>
         <item name="mapTheme">dark_map_style</item>
+        <item name="snackbarStyle">@style/snackbarFragment</item>
+        <item name="like_filled">@drawable/like_white_filled_24</item>
+        <item name="like_unfilled">@drawable/like_white_24</item>
+        <item name="locationIcon">@drawable/ic_outline_location_white_on_24</item>
+        <item name="commentIcon">@drawable/ic_outline_mode_comment_white_24</item>
     </style>
 </resources>

@@ -10,12 +10,13 @@
         android:id="@+id/gMapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <include layout="@layout/search_view_discover"/>
 
     <TextView
         android:id="@+id/discoverMapTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:focusable="false"
         android:clickable="false"
         android:text="?attr/mapTheme">
