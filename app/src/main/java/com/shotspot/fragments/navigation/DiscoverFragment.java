@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,20 +94,28 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             public boolean onQueryTextSubmit(String query) {
                 String location = searchView.getQuery().toString();
                 List<Address> addressList = null;
-
                 if(location != null || !location.equals("")){
-                    Geocoder geocoder = new Geocoder(getContext());
-                    try{
-                        addressList = geocoder.getFromLocationName(location, 1);
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                    if(addressList.size()>=1) {
-                        Address address = addressList.get(0);
-                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    if(location.contains("#")){
+//                        TODO Descomentar cuando se haga Merge y exista SearchResultFragment
+//                      location.replace("#", "");
+//                      Fragment f = SearchResultFragment(Spot_CRUD.searchByTags(location));
+//                        ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+//                                .replace(R.id.navHost, f)
+//                                .commit();
                     }else{
-                        Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        Geocoder geocoder = new Geocoder(getContext());
+                        try{
+                            addressList = geocoder.getFromLocationName(location, 1);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                        if(addressList.size()>=1) {
+                            Address address = addressList.get(0);
+                            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        }else{
+                            Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 return false;

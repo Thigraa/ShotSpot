@@ -185,7 +185,12 @@ public class Spot_CRUD {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setDouble(1,location.latitude);
             statement.setDouble(2,location.longitude);
-            exists= statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+            int num=0;
+            while (resultSet.next()){
+                num++;
+            }
+            if (num>0) exists=true;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
