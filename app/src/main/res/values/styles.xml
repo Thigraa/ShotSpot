@@ -6,6 +6,7 @@
     <style name="snackbarFragment" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:layout_marginBottom">65dp</item>
         <item name="android:layout_marginHorizontal" tools:ignore="NewApi">16dp</item>
+        <item name="android:textColor">?attr/invertedText</item>
         <item name="elevation">10dp</item>
     </style>
 </resources>
