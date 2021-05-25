@@ -3,6 +3,7 @@ package com.shotspot.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.shotspot.database.crud.Like_CRUD;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.database.crud.SpotImage_CRUD;
 import com.shotspot.fragments.CommentsFragment;
+import com.shotspot.fragments.navigation.DiscoverFragment;
 import com.shotspot.helper.DoubleClickListener;
 import com.shotspot.model.Like;
 import com.shotspot.model.Person;
@@ -141,6 +143,22 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                     Like_CRUD.delete(like);
                 }
             });
+            holder.spotButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment f = new DiscoverFragment();
+                    Bundle bundle = new Bundle();
+                    double latitude = spot.getLatitde();
+                    double longitude = spot.getLongitude();
+                    bundle.putDouble("latitude", latitude);
+                    bundle.putDouble("longitude", longitude);
+                    f.setArguments(bundle);
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.navHost, f)
+                            .commit();
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -188,6 +206,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
         CarouselView carouselView;
         ImageView commentButton;
         LikeButton likeButton;
+        ImageView spotButton;
 
         public SpotHolder(@NonNull View itemView) {
             super(itemView);
@@ -198,6 +217,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             tagsTV = itemView.findViewById(R.id.tagsTextViewItem);
             commentButton = itemView.findViewById(R.id.comment_button);
             likeButton = itemView.findViewById(R.id.likeButton);
+            spotButton = itemView.findViewById(R.id.goToSpot_button);
 
         }
     }

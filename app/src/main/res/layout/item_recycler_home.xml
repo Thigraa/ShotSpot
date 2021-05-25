@@ -82,6 +82,7 @@
                 app:unlike_drawable="?attr/like_unfilled" />
 
             <ImageView
+                android:id="@+id/goToSpot_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
@@ -110,8 +111,8 @@
                 android:id="@+id/descriptionTextViewItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/raleway_light"
-                android:gravity="center"
                 android:textColor="?attr/mainText"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"

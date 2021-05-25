@@ -179,7 +179,20 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
         setUpClusterer();
-        getPosition();
+        Bundle positionBundle = getArguments();
+        if(positionBundle == null){
+            getPosition();
+        }
+        else{
+            LatLng target = new LatLng(positionBundle.getDouble("latitude"), positionBundle.getDouble("longitude"));
+            cameraPosition = new CameraPosition.Builder()
+                    .target(target)
+                    .zoom(15)
+                    .bearing(0)
+                    .tilt(30)
+                    .build();
+            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
 
 //        TODO personalize the window to show on the marker
 
