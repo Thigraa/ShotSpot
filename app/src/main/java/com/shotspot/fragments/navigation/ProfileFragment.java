@@ -1,7 +1,10 @@
 package com.shotspot.fragments.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,17 +22,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.shotspot.R;
 import com.shotspot.activities.MainActivity;
 import com.shotspot.database.crud.Person_CRUD;
+import com.shotspot.database.storage.ImageManager;
 import com.shotspot.fragments.navigation.profile.EditProfileFragment;
 import com.shotspot.fragments.navigation.profile.LikedSpotsFragment;
 import com.shotspot.fragments.navigation.profile.MySpotsFragment;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
+import static android.app.Activity.RESULT_OK;
 import static com.shotspot.activities.MainActivity.bottomNavigationView;
 import static com.shotspot.activities.MainActivity.currentUser;
 
@@ -41,6 +57,8 @@ public class ProfileFragment extends Fragment {
     ImageButton logOutButton, editProfileButton;
     BottomNavigationView profileSpotsNavigation;
     EditText usernameET;
+    File url;
+    Bitmap bitmap= null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +81,7 @@ public class ProfileFragment extends Fragment {
         usernameTV.setText(currentUser.getUsername());
         usernameET.setText(currentUser.getUsername());
         try {
-            if (currentUser.getBitmap()!= null){
+            if (currentUser.getImageURL() != null){
                 profileImageView.setImageBitmap(currentUser.getBitmap());
             }
         } catch (Exception e) {
@@ -108,7 +126,7 @@ public class ProfileFragment extends Fragment {
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                CropImage.startPickImageActivity(getContext(), ProfileFragment.this);
             }
         });
 
@@ -126,6 +144,7 @@ public class ProfileFragment extends Fragment {
                                 usernameTV.setText(newName);
                                 usernameTV.setVisibility(View.VISIBLE);
                                 editProfileButton.setClickable(true);
+                                uploadImage();
                             }
                         default:
                             break;
@@ -157,5 +176,60 @@ public class ProfileFragment extends Fragment {
                 getFragmentManager().beginTransaction()
                 .replace(R.id.profileSpots, f, f.getClass().getSimpleName()).addToBackStack(null)
                 .commit();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK){
+            Uri imageUri = CropImage.getPickImageResultUri(getContext(), data);
+            recortarImagen(imageUri);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode == RESULT_OK){
+                Uri resultUri = result.getUri();
+                url = new File(resultUri.getPath());
+                Picasso.with(getContext()).load(url).into(profileImageView);
+            }
+        }
+    }
+    private void recortarImagen(Uri imagenUri){
+        CropImage.activity(imagenUri).setGuidelines(CropImageView.Guidelines.ON)
+                .setRequestedSize(1280, 720)
+                .setAspectRatio(1,1).start(getContext(), ProfileFragment.this);
+    }
+
+    private InputStream comprimirImagen(Bitmap thumb_bitmap,File file){
+        try {
+            thumb_bitmap = new Compressor(getContext())
+                    .setMaxHeight(720)
+                    .setMaxWidth(1280)
+                    .setQuality(90)
+                    .compressToBitmap(file);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+        byte[] thumb_byte = byteArrayOutputStream.toByteArray();
+        return new ByteArrayInputStream(thumb_byte);
+
+    }
+
+    private void uploadImage(){
+        try {
+            bitmap = ImageManager.drawableToBitmap(profileImageView.getDrawable());
+            if (bitmap != null){
+                InputStream inputStream = comprimirImagen(bitmap,url);
+                String newImage = ImageManager.uploadImage(inputStream,inputStream.available());
+                currentUser.setImageURL(newImage);
+                Person_CRUD.updateImage(newImage,currentUser.getIdUser());
+            }else {
+                System.out.println("===============================No se pudo"+ bitmap);
+                Snackbar.make(profileImageView.getRootView(),"Couldn't upload your profile image, try it later", BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
