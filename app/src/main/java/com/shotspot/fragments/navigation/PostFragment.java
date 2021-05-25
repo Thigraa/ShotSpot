@@ -249,7 +249,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                                         .replace(R.id.navHost, f)
                                         .commit();
                             }
-                        }).setActionTextColor(R.attr.bgEdittext).show();
+                        }).setActionTextColor(Color.GRAY).show();
 
 
 
