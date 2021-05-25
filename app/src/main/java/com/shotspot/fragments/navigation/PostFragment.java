@@ -249,7 +249,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                                         .replace(R.id.navHost, f)
                                         .commit();
                             }
-                        }).setActionTextColor(R.attr.bgEdittext).show();
+                        }).show();
 
 
 
@@ -259,6 +259,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                     Snackbar.make(v, "Please select a location", BaseTransientBottomBar.LENGTH_SHORT).show();
 
                 }
+                replaceFragment(new HomeFragment());
             }
         });
         setUpRecyclerTags();
@@ -484,6 +485,11 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                     && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
+    }
+    public void replaceFragment(Fragment f) {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .commit();
     }
 //
 }
