@@ -36,7 +36,7 @@ public class SearchResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_search_result, container, false);
         //Connect layout to class
         bottomNavigationView.setVisibility(View.VISIBLE);
         rSpots = v.findViewById(R.id.recyclerSpots);

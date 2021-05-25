@@ -44,6 +44,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.clustering.ClusterManager;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
+import com.shotspot.fragments.SearchResultFragment;
 import com.shotspot.model.MyCluster;
 import com.shotspot.model.Spot;
 
@@ -96,12 +97,17 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                 List<Address> addressList = null;
                 if(location != null || !location.equals("")){
                     if(location.contains("#")){
-//                        TODO Descomentar cuando se haga Merge y exista SearchResultFragment
-//                      location.replace("#", "");
-//                      Fragment f = SearchResultFragment(Spot_CRUD.searchByTags(location));
-//                        ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
-//                                .replace(R.id.navHost, f)
-//                                .commit();
+                      location = location.replaceAll("#", "");
+                      List<Spot> spotList = Spot_CRUD.searchByTags(location);
+                      if(spotList.size()>0) {
+                          Fragment f = new SearchResultFragment(spotList);
+                          ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                  .replace(R.id.navHost, f)
+                                  .commit();
+                      }
+                      else{
+                          Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                      }
                     }else{
                         Geocoder geocoder = new Geocoder(getContext());
                         try{
