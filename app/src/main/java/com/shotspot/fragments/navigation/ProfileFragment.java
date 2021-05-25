@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
 
     CircleImageView profileImageView;
     TextView usernameTV;
-    ImageButton logOutButton, editProfileButton;
+    ImageButton logOutButton, editProfileButton, uploadImageButton;
     BottomNavigationView profileSpotsNavigation;
     EditText usernameET;
     File url;
@@ -77,6 +77,7 @@ public class ProfileFragment extends Fragment {
         profileImageView.setClickable(false);
         logOutButton = v.findViewById(R.id.logOutProfileButton);
         editProfileButton = v.findViewById(R.id.editProfileButton);
+        uploadImageButton = v.findViewById(R.id.uploadImageButton);
         profileSpotsNavigation = v.findViewById(R.id.profileSpotNavigation);
         usernameTV.setText(currentUser.getUsername());
         usernameET.setText(currentUser.getUsername());
@@ -123,6 +124,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        uploadImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImage();
+                uploadImageButton.setVisibility(View.GONE);
+
+            }
+        });
+
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +154,6 @@ public class ProfileFragment extends Fragment {
                                 usernameTV.setText(newName);
                                 usernameTV.setVisibility(View.VISIBLE);
                                 editProfileButton.setClickable(true);
-                                uploadImage();
                             }
                         default:
                             break;
@@ -190,6 +199,7 @@ public class ProfileFragment extends Fragment {
                 Uri resultUri = result.getUri();
                 url = new File(resultUri.getPath());
                 Picasso.with(getContext()).load(url).into(profileImageView);
+                uploadImageButton.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -224,6 +234,7 @@ public class ProfileFragment extends Fragment {
                 String newImage = ImageManager.uploadImage(inputStream,inputStream.available());
                 currentUser.setImageURL(newImage);
                 Person_CRUD.updateImage(newImage,currentUser.getIdUser());
+                Snackbar.make(profileImageView.getRootView(),"Image Uploaded",BaseTransientBottomBar.LENGTH_SHORT).show();
             }else {
                 System.out.println("===============================No se pudo"+ bitmap);
                 Snackbar.make(profileImageView.getRootView(),"Couldn't upload your profile image, try it later", BaseTransientBottomBar.LENGTH_SHORT).show();
