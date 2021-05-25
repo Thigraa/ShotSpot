@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,11 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.OffsetType;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.shotspot.R;
 import com.shotspot.activities.MainActivity;
+import com.shotspot.database.crud.Like_CRUD;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.database.crud.SpotImage_CRUD;
 import com.shotspot.fragments.CommentsFragment;
+import com.shotspot.helper.DoubleClickListener;
+import com.shotspot.model.Like;
 import com.shotspot.model.Person;
 import com.shotspot.model.Spot;
 import com.shotspot.model.SpotImage;
@@ -34,6 +38,8 @@ import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.shotspot.activities.MainActivity.currentUser;
 
 public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
@@ -70,6 +76,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
     public void onBindViewHolder(@NonNull SpotAdapter.SpotHolder holder, int position) {
         try {
             Spot spot = spots.get(position);
+            Like like = new Like(spot.getIdSpot(),currentUser.getIdUser());
             Person user = Person_CRUD.getPerson(spot.getIdUser());
             holder.usernameTV.setText(user.getUsername());
             holder.descriptionTV.setText(spot.getDescription());
@@ -77,7 +84,9 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             if (user.getImageURL()!=null ){
                 searchUserImage(user,holder);
             }
-
+            if (Like_CRUD.getLike(like.getId_spot(),like.getId_user()) != null){
+                holder.likeButton.setLiked(true);
+            }
             List<SpotImage> images = SpotImage_CRUD.getImagesBySpotId(spot.getIdSpot());
             holder.carouselView.setSize(images.size());
             holder.carouselView.setAutoPlay(false);
@@ -88,11 +97,10 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 @Override
                 public void onBindView(View view, int position) {
                     ImageView imageView = view.findViewById(R.id.imageView);
-//                    imageView.setImageBitmap(images.get(position).getBitmap());
-                    imageView.setOnClickListener(new View.OnClickListener() {
+                    imageView.setOnClickListener(new DoubleClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            //TODO Zoom Image onClick
+                        public void onDoubleClick() {
+
                         }
                     });
                     Thread th = new Thread(new Runnable() {
@@ -105,12 +113,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                                 });
                             }
                             catch(Exception ex) {
-                                final String exceptionMessage = ex.getMessage();
-                                handler.post(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(getContext(), exceptionMessage, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                ex.printStackTrace();
                             }
                         }});
                     th.start();
@@ -126,8 +129,19 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                             .commit();
                 }
             });
+
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    Like_CRUD.insert(like);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    Like_CRUD.delete(like);
+                }
+            });
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -156,12 +170,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                     });
                 }
                 catch(Exception ex) {
-                    final String exceptionMessage = ex.getMessage();
-                    handler.post(new Runnable() {
-                        public void run() {
-                            Toast.makeText(getContext(), exceptionMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    ex.printStackTrace();
                 }
             }});
         th.start();
@@ -178,6 +187,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
         CircleImageView profileImg;
         CarouselView carouselView;
         ImageView commentButton;
+        LikeButton likeButton;
 
         public SpotHolder(@NonNull View itemView) {
             super(itemView);
@@ -187,6 +197,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             descriptionTV = itemView.findViewById(R.id.descriptionTextViewItem);
             tagsTV = itemView.findViewById(R.id.tagsTextViewItem);
             commentButton = itemView.findViewById(R.id.comment_button);
+            likeButton = itemView.findViewById(R.id.likeButton);
 
         }
     }

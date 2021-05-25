@@ -26,7 +26,7 @@ public class Like_CRUD {
             if (rs.next()){
                 like.setId_user(rs.getInt(1));
                 like.setId_spot(rs.getInt(2));
-            }
+            }else like=null;
 
 
         } catch (SQLException throwables) {
