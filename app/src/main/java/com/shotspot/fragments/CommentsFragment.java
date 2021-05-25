@@ -18,6 +18,8 @@ import com.shotspot.adapter.CommentsAdapter;
 import com.shotspot.database.crud.Comment_CRUD;
 import com.shotspot.model.Comment;
 
+import java.util.List;
+
 import static com.shotspot.activities.MainActivity.bottomNavigationView;
 import static com.shotspot.activities.MainActivity.currentUser;
 
@@ -34,6 +36,7 @@ public class CommentsFragment extends Fragment {
     private RecyclerView recyclerView;
     private CommentsAdapter adapter;
     private LinearLayoutManager manager;
+    List<Comment> commentList;
 
     public CommentsFragment(int idSpot) {
         this.idSpot = idSpot;
@@ -53,17 +56,20 @@ public class CommentsFragment extends Fragment {
         editTextComment = v.findViewById(R.id.edittextComment);
         buttonPost = v.findViewById(R.id.buttonPostComment);
         recyclerView = v.findViewById(R.id.recyclerComments);
-        adapter = new CommentsAdapter(Comment_CRUD.getCommentBySpotID(idSpot));
+        commentList = Comment_CRUD.getCommentBySpotID(idSpot);
+        adapter = new CommentsAdapter(commentList);
         manager = new LinearLayoutManager(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(false);
 
         buttonPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Comment comment = new Comment(idSpot, currentUser.getIdUser(), editTextComment.getText().toString());
+                editTextComment.setText("");
                 Comment_CRUD.insert(comment);
-
+                commentList.add(comment);
                 adapter.notifyDataSetChanged();
             }
         });

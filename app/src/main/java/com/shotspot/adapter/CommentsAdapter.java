@@ -47,8 +47,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             commentTextView = itemView.findViewById(R.id.commentTextViewComment);
         }
         public void bindData(Comment comment){
+            System.out.println(comment.getIdUser());
             Person person = Person_CRUD.getPerson(comment.getIdUser());
-            commentTextView.setText(person.getUsername());
+            System.out.println(person.getUsername());
+            usernameTextView.setText(person.getUsername());
             commentTextView.setText(comment.getComment());
 
         }
