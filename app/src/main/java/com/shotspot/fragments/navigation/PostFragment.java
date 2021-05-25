@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -138,6 +140,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
 
                 image2.setImageDrawable(defaultImage);
                 return true;
+
             }
 
         });
@@ -177,58 +180,80 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 if(postLocation != null){
 
-                    if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState()) ||
-                            !image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())||
-                            !image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                        String tags="";
-                        for(String s : myTags){
-                            tags+=s;
-                        }
-                        long millis=System.currentTimeMillis();
-                        Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
-                        String imageName1="";
-                        String imageName2="";
-                        String imageName3="";
-                        if(Spot_CRUD.insert(spot)){
-                            int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
-                            if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                                 Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
-                                InputStream inputStream1 = comprimirImagen(bitmap1,url1);
-                                try {
-                                    imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());
-                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
-                                } catch (Exception e) {
-                                    e.getMessage();
-                                }
+                    if (!Spot_CRUD.checkLocation(postLocation)){
+
+                        if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState()) ||
+                                !image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())||
+                                !image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                            String tags="";
+                            for(String s : myTags){
+                                tags+=s;
                             }
-                            if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                                 Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
-                                InputStream inputStream2 = comprimirImagen(bitmap2,url2);
-                                try {
-                                    imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());
-                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
-                                } catch (Exception e) {
-                                    e.getMessage();
+                            long millis=System.currentTimeMillis();
+                            Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
+                            String imageName1="";
+                            String imageName2="";
+                            String imageName3="";
+                            if(Spot_CRUD.insert(spot)){
+                                int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
+                                if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                    Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
+                                    InputStream inputStream1 = comprimirImagen(bitmap1,url1);
+                                    try {
+                                        imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());
+                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
+                                    } catch (Exception e) {
+                                        e.getMessage();
+                                    }
                                 }
-                            }
-                            if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
-                                Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
-                                InputStream inputStream3 = comprimirImagen(bitmap3,url3);
-                                try {
-                                    imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());
-                                    SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
-                                } catch (Exception e) {
-                                    e.getMessage();
+                                if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                    Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
+                                    InputStream inputStream2 = comprimirImagen(bitmap2,url2);
+                                    try {
+                                        imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());
+                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
+                                    } catch (Exception e) {
+                                        e.getMessage();
+                                    }
                                 }
+                                if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
+                                    Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
+                                    InputStream inputStream3 = comprimirImagen(bitmap3,url3);
+                                    try {
+                                        imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());
+                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
+                                    } catch (Exception e) {
+                                        e.getMessage();
+                                    }
+                                }
+                            }else{
+                                Snackbar.make(v, "The upload failed, try again later", BaseTransientBottomBar.LENGTH_SHORT).show();
                             }
+
+
                         }else{
-                            Snackbar.make(v, "The upload failed, try again later", BaseTransientBottomBar.LENGTH_SHORT).show();
+                            Snackbar.make(v, "Please insert an image", BaseTransientBottomBar.LENGTH_SHORT).show();
+
                         }
+                    }else {
+                        Snackbar.make(v,"That Location already exits",BaseTransientBottomBar.LENGTH_SHORT)
+                        .setAction("See", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Fragment f = new DiscoverFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putDouble("latitude",postLocation.latitude);
+                                bundle.putDouble("longitude",postLocation.longitude);
+                                f.setArguments(bundle);
+                                ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                        .replace(R.id.navHost, f)
+                                        .commit();
+                            }
+                        }).setActionTextColor(R.attr.bgEdittext).show();
 
 
-                    }else{
-                        Snackbar.make(v, "Please insert an image", BaseTransientBottomBar.LENGTH_SHORT).show();
 
+                        
                     }
                 }else{
                     Snackbar.make(v, "Please select a location", BaseTransientBottomBar.LENGTH_SHORT).show();

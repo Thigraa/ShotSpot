@@ -1,5 +1,6 @@
 package com.shotspot.database.crud;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.shotspot.database.connection.DatabaseConnection;
 import com.shotspot.model.Spot;
 
@@ -176,4 +177,19 @@ public class Spot_CRUD {
     }
 
 
+    public static boolean checkLocation(LatLng location){
+        String sql ="SELECT * FROM Spot WHERE latitude = ? AND longitude = ?";
+        boolean exists = false;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setDouble(1,location.latitude);
+            statement.setDouble(2,location.longitude);
+            exists= statement.execute();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return exists;
+    }
 }
