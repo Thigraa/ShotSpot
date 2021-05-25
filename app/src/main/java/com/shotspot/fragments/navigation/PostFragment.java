@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -248,7 +249,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                                         .replace(R.id.navHost, f)
                                         .commit();
                             }
-                        }).show();
+                        }).setActionTextColor(R.attr.bgEdittext).show();
 
 
 
