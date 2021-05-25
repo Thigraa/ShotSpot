@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeButton"
+        android:title="Home"
+        android:enabled="true"
+        android:icon="@drawable/ic_outline_camera_24"/>
+    <item android:title="Discover"
+        android:id="@+id/discover"
+            android:icon="@drawable/ic_outline_explore_24"/>
+    <item android:title="Add Spot"
+        android:id="@+id/addSpot"
+        android:icon="@drawable/ic_outline_add_circle_outline_24"/>
+    <item android:title="My Spots"
+            android:id="@+id/profile"
+        android:enabled="true"
+            android:icon="@drawable/ic_outline_person_24"/>
+</menu>
