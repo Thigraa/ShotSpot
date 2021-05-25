@@ -192,4 +192,26 @@ public class Spot_CRUD {
         }
         return exists;
     }
+
+    public static List<Spot> searchByTags(String tags){
+        String sql = "SELECT * FROM Spot WHERE tags LIKE '%"+tags+"%'";
+        List<Spot> spots= new ArrayList<>();
+        try{
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Spot spot= new Spot();
+                spot.setIdSpot(rs.getInt(1));
+                spot.setIdUser(rs.getInt(2));
+                spot.setLatitde(rs.getDouble(3));
+                spot.setLongitude(rs.getDouble(4));
+                spot.setDescription(rs.getString(5));
+                spot.setTags(rs.getString(6));
+                spots.add(spot);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return spots;
+    }
 }
