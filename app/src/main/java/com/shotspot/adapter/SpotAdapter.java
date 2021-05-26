@@ -122,6 +122,22 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                                 handler.post(new Runnable() {
                                     public void run() {
                                         imageView.setImageBitmap(images.get(position).getBitmap());
+                                        imageView.setOnClickListener(new DoubleClickListener() {
+                                            @Override
+                                            public void onDoubleClick() {
+                                                Fragment f = new DiscoverFragment();
+                                                Bundle bundle = new Bundle();
+                                                double latitude = spot.getLatitde();
+                                                double longitude = spot.getLongitude();
+                                                bundle.putDouble("latitude", latitude);
+                                                bundle.putDouble("longitude", longitude);
+                                                f.setArguments(bundle);
+                                                //Change fragment
+                                                ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                                        .replace(R.id.navHost, f)
+                                                        .commit();
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -183,6 +199,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
                 }
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
