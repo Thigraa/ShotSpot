@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jama.carouselview.CarouselView;
@@ -36,6 +37,8 @@ import com.shotspot.model.SpotImage;
 import com.shotspot.database.storage.ImageManager;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,8 +84,21 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             Like like = new Like(spot.getIdSpot(),currentUser.getIdUser());
             Person user = Person_CRUD.getPerson(spot.getIdUser());
             holder.usernameTV.setText(user.getUsername());
-            holder.descriptionTV.setText(spot.getDescription());
-            holder.tagsTV.setText(spot.getTags());
+            holder.descriptionTV.setText(spot.getDescription());;
+            String[] tags = spot.getTags().split("#");
+            List<String> tagsToAdapter = new ArrayList<>();
+            int i = 0;
+            for(String tag : tags){
+                tag = "#"+tag;
+                if(i != 0){
+                    tagsToAdapter.add(tag);
+                }
+                i++;
+            }
+            holder.tagsRV.setAdapter(new RecyclerAdapterTagsHome(tagsToAdapter));
+            LinearLayoutManager manager = new LinearLayoutManager(getContext());
+            manager.setOrientation(RecyclerView.HORIZONTAL);
+            holder.tagsRV.setLayoutManager(manager);
             if (user.getImageURL()!=null ){
                 searchUserImage(user,holder);
             }
@@ -90,6 +106,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 holder.likeButton.setLiked(true);
             }
             List<SpotImage> images = SpotImage_CRUD.getImagesBySpotId(spot.getIdSpot());
+            //setting up carousel view
             holder.carouselView.setSize(images.size());
             holder.carouselView.setAutoPlay(false);
             holder.carouselView.setAutoPlayDelay(3000);
@@ -99,12 +116,6 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 @Override
                 public void onBindView(View view, int position) {
                     ImageView imageView = view.findViewById(R.id.imageView);
-                    imageView.setOnClickListener(new DoubleClickListener() {
-                        @Override
-                        public void onDoubleClick() {
-
-                        }
-                    });
                     Thread th = new Thread(new Runnable() {
                         public void run() {
                             try {
@@ -122,9 +133,12 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 }
             });
             holder.carouselView.show();
+            i= 0;
+            holder.likesCount.setText(Like_CRUD.getNumLikes(spot.getIdSpot())+" likes");
             holder.commentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Click to comment
                     Fragment f = new CommentsFragment(spot.getIdSpot());
                     ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.navHost, f)
@@ -136,16 +150,25 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                 @Override
                 public void liked(LikeButton likeButton) {
                     Like_CRUD.insert(like);
+                    String likes = holder.likesCount.getText().toString().split(" ")[0]; //Only take the number part
+                    int numLikes = Integer.parseInt(likes);
+                    numLikes++;
+                    holder.likesCount.setText(numLikes+" likes");
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
                     Like_CRUD.delete(like);
+                    String likes = holder.likesCount.getText().toString().split(" ")[0]; //Only take the number part
+                    int numLikes = Integer.parseInt(likes);
+                    numLikes--;
+                    holder.likesCount.setText(numLikes+" likes");
                 }
             });
             holder.spotButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Click to move to the spot in the map
                     Fragment f = new DiscoverFragment();
                     Bundle bundle = new Bundle();
                     double latitude = spot.getLatitde();
@@ -153,6 +176,7 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                     bundle.putDouble("latitude", latitude);
                     bundle.putDouble("longitude", longitude);
                     f.setArguments(bundle);
+                    //Change fragment
                     ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.navHost, f)
                             .commit();
@@ -201,12 +225,13 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
     }
 
     public static class SpotHolder extends RecyclerView.ViewHolder {
-        TextView usernameTV, descriptionTV, tagsTV;
+        TextView usernameTV, descriptionTV, likesCount;
         CircleImageView profileImg;
         CarouselView carouselView;
         ImageView commentButton;
         LikeButton likeButton;
         ImageView spotButton;
+        RecyclerView tagsRV;
 
         public SpotHolder(@NonNull View itemView) {
             super(itemView);
@@ -214,10 +239,11 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
             usernameTV = itemView.findViewById(R.id.usernameTextViewItem);
             carouselView = itemView.findViewById(R.id.carouselRecyclerViewItem);
             descriptionTV = itemView.findViewById(R.id.descriptionTextViewItem);
-            tagsTV = itemView.findViewById(R.id.tagsTextViewItem);
+            tagsRV = itemView.findViewById(R.id.recyclerTagsHome);
             commentButton = itemView.findViewById(R.id.comment_button);
             likeButton = itemView.findViewById(R.id.likeButton);
             spotButton = itemView.findViewById(R.id.goToSpot_button);
+            likesCount = itemView.findViewById(R.id.likesCount);
 
         }
     }

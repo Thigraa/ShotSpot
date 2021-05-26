@@ -14,6 +14,8 @@ public class Like_CRUD {
 
     private  static Connection connection = DatabaseConnection.connect();
 
+
+    //Get like by SpotID and UserID
     public static Like getLike(int idSpot, int idUser){
         String sql = "SELECT * FROM Liked where id_spot = ? AND id_user =?";
         Like like = new Like();
@@ -34,6 +36,8 @@ public class Like_CRUD {
         }
         return like;
     }
+
+    //Get like count from a Spot
     public static int getNumLikes(int idSpot){
         String sql = "SELECT COUNT(*) FROM Liked WHERE id_spot = ?";
         int likes=0;

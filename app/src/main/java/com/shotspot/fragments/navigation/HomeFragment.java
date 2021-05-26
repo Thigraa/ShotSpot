@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
         //Set the adapter of the recycler which a List of Spots and a LayoutManager
         SpotAdapter spotAdapter = new SpotAdapter(Spot_CRUD.getAll());
         rHome.setAdapter(spotAdapter);
+        rHome.setOnFlingListener(null);
         rHome.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;
     }

@@ -2,6 +2,7 @@ package com.shotspot.fragments.navigation;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
@@ -100,6 +101,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                       location = location.replaceAll("#", "");
                       List<Spot> spotList = Spot_CRUD.searchByTags(location);
                       if(spotList.size()>0) {
+                          InputMethodManager imm =(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                          imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
                           Fragment f = new SearchResultFragment(spotList);
                           ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
                                   .replace(R.id.navHost, f)
