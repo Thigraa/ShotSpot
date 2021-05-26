@@ -1,16 +1,20 @@
 package com.shotspot.fragments.navigation;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -59,6 +63,7 @@ public class ProfileFragment extends Fragment {
     EditText usernameET;
     File url;
     Bitmap bitmap= null;
+    final Handler handler = new Handler();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +88,26 @@ public class ProfileFragment extends Fragment {
         usernameET.setText(currentUser.getUsername());
         try {
             if (currentUser.getImageURL() != null){
-                profileImageView.setImageBitmap(currentUser.getBitmap());
+                Thread th = new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    profileImageView.setImageBitmap(currentUser.getBitmap());
+                                }
+                            });
+                        }
+                        catch(Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }});
+                th.start();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setProfileSpotsNavigationViewClicks();
+
 
         return v;
     }
@@ -96,6 +115,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setProfileSpotsNavigationViewClicks();
         bottomNavigationView.setVisibility(View.VISIBLE);
         replaceFragment(new MySpotsFragment());
         logOutButton.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +149,8 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 uploadImage();
                 uploadImageButton.setVisibility(View.GONE);
+                logOutButton.setVisibility(View.VISIBLE);
+                editProfileButton.setVisibility(View.VISIBLE);
 
             }
         });
@@ -136,7 +158,9 @@ public class ProfileFragment extends Fragment {
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkReadStorage();
                 CropImage.startPickImageActivity(getContext(), ProfileFragment.this);
+
             }
         });
 
@@ -170,10 +194,37 @@ public class ProfileFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.mySpots:
-                        replaceFragment(new MySpotsFragment());
+                        Thread th = new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    handler.post(new Runnable() {
+                                        public void run() {
+                                            replaceFragment(new MySpotsFragment());
+                                        }
+                                    });
+                                }
+                                catch(Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }});
+                        th.start();
+
                         return true;
                     case R.id.likedSpots:
-                        replaceFragment(new LikedSpotsFragment());
+                        Thread th2 = new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    handler.post(new Runnable() {
+                                        public void run() {
+                                            replaceFragment(new LikedSpotsFragment());
+                                        }
+                                    });
+                                }
+                                catch(Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }});
+                        th2.start();
                         return true;
                 }
                 return true;
@@ -200,6 +251,8 @@ public class ProfileFragment extends Fragment {
                 url = new File(resultUri.getPath());
                 Picasso.with(getContext()).load(url).into(profileImageView);
                 uploadImageButton.setVisibility(View.VISIBLE);
+                logOutButton.setVisibility(View.GONE);
+                editProfileButton.setVisibility(View.GONE);
             }
         }
     }
@@ -242,5 +295,13 @@ public class ProfileFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkReadStorage() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
     }
 }

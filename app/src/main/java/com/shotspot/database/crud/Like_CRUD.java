@@ -41,12 +41,9 @@ public class Like_CRUD {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,idSpot);
             ResultSet rs = statement.executeQuery();
-
             if (rs.next()){
                 likes =rs.getInt(1);
-
             }
-
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
