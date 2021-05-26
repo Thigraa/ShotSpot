@@ -52,19 +52,24 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
        View v = inflater.inflate(R.layout.fragment_register, container, false);
        //Connect layout to class
-       username = v.findViewById(R.id.usernameEdittextLogin);
-       email = v.findViewById(R.id.emailEdittextRegister);
-       password = v.findViewById(R.id.passwordEdittextLogin);
-       repeatPassword = v.findViewById(R.id.repeatpasswordEdittextRegister);
-       checkBox = v.findViewById(R.id.materialCheckBox);
-       checkBoxText = v.findViewById(R.id.termsAndConditions);
-       register = v.findViewById(R.id.register_register);
-       progressBar = v.findViewById(R.id.progressBar);
-       closeButton = v.findViewById(R.id.close_register);
+        setUpLayout(v);
+        return v;
+    }
+
+    public void setUpLayout(View v){
+        username = v.findViewById(R.id.usernameEdittextLogin);
+        email = v.findViewById(R.id.emailEdittextRegister);
+        password = v.findViewById(R.id.passwordEdittextLogin);
+        repeatPassword = v.findViewById(R.id.repeatpasswordEdittextRegister);
+        checkBox = v.findViewById(R.id.materialCheckBox);
+        checkBoxText = v.findViewById(R.id.termsAndConditions);
+        register = v.findViewById(R.id.register_register);
+        progressBar = v.findViewById(R.id.progressBar);
+        closeButton = v.findViewById(R.id.close_register);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack();
             }
         });
         //Set on click listener
@@ -75,15 +80,15 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-       register.setOnClickListener(new View.OnClickListener() {
-           @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-           @Override
-           public void onClick(View v) {
-               //Manages the register
+        register.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                //Manages the register
                 registerManager();
-           }
-       });
-        return v;
+            }
+        });
+
     }
 
     //Method that manages the register process.
@@ -170,7 +175,7 @@ public class RegisterFragment extends Fragment {
     }
     //Method to replace fragments
     public void replaceFragment(Fragment f) {
-        getFragmentManager().beginTransaction()
+        getParentFragmentManager().beginTransaction()
                 .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
                 .commit();
     }

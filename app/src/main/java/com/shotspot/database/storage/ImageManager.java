@@ -24,10 +24,11 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class ImageManager {
-    public static final String storageConnectionString =
+    //Storage connection String
+    private static final String storageConnectionString =
             "DefaultEndpointsProtocol=https;AccountName=shotspot;AccountKey=/hyqj41B3TVn0HPUp+lFm+8ORM8j4dAhPFwz8eUpS2qzVHaA1dJtGoLAULG7wK3t++NtUXgO/Hc/MRwykyoI2g==;EndpointSuffix=core.windows.net";
 
-
+    //Get all the images folder
     private static CloudBlobContainer getContainer() throws Exception{
         // Retrieve storage account from connection-string.
 
@@ -50,6 +51,8 @@ public class ImageManager {
 
         return container;
     }
+
+    //Upload an image
     public static String uploadImage(InputStream image, int imageLength) throws Exception {
         CloudBlobContainer container = getContainer();
 
@@ -65,6 +68,7 @@ public class ImageManager {
 
     }
 
+    //list all the images names
     public static String[] listImages() throws Exception{
         CloudBlobContainer container = getContainer();
 
@@ -78,6 +82,7 @@ public class ImageManager {
         return blobNames.toArray(new String[blobNames.size()]);
     }
 
+    //Get image from blob storage by URL
     public static void getImage(String name, OutputStream imageStream, long imageLength) throws Exception {
         CloudBlobContainer container = getContainer();
 
@@ -92,7 +97,7 @@ public class ImageManager {
         }
     }
 
-
+    // Delete image by URL
     public static void deleteImage(String name) throws Exception {
         CloudBlobContainer container = getContainer();
 
@@ -113,6 +118,7 @@ public class ImageManager {
         return sb.toString();
     }
 
+    // Convert drawable to bitmap --> Used to convert the images from the imagesView resource
     public static Bitmap drawableToBitmap (Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable)drawable).getBitmap();
@@ -126,6 +132,7 @@ public class ImageManager {
         return bitmap;
     }
 
+    // Convert from bitmap to input stream
     public static InputStream bitmapToInputStream(Bitmap bitmap) {
         int size = bitmap.getHeight() * bitmap.getRowBytes();
         ByteBuffer buffer = ByteBuffer.allocate(size);

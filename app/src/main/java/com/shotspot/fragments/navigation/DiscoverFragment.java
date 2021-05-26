@@ -88,6 +88,11 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_discover, container, false);
+        setUpLayout(rootView);
+        return rootView;
+    }
+
+    public void setUpLayout(View rootView){
         pedirPermiso();
         bottomNavigationView.setVisibility(View.VISIBLE);
         searchView = rootView.findViewById(R.id.searchView);
@@ -96,22 +101,27 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             public boolean onQueryTextSubmit(String query) {
                 String location = searchView.getQuery().toString();
                 List<Address> addressList = null;
+                //Check if text is not null
                 if(location != null || !location.equals("")){
+                    //Check if it's searching a tag or a location
                     if(location.contains("#")){
-                      location = location.replaceAll("#", "");
-                      List<Spot> spotList = Spot_CRUD.searchByTags(location);
-                      if(spotList.size()>0) {
-                          InputMethodManager imm =(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                          imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
-                          Fragment f = new SearchResultFragment(spotList);
-                          ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                                  .replace(R.id.navHost, f)
-                                  .commit();
-                      }
-                      else{
-                          Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
-                      }
+                        //TAG
+                        location = location.replaceAll("#", "");
+                        List<Spot> spotList = Spot_CRUD.searchByTags(location);
+                        if(spotList.size()>0) {
+                            //TAG FOUND
+                            InputMethodManager imm =(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+                            Fragment f = new SearchResultFragment(spotList);
+                            ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                    .replace(R.id.navHost, f)
+                                    .commit();
+                        }
+                        else{
+                            Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        }
                     }else{
+                        //LOCATION
                         Geocoder geocoder = new Geocoder(getContext());
                         try{
                             addressList = geocoder.getFromLocationName(location, 1);
@@ -119,6 +129,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                             e.printStackTrace();
                         }
                         if(addressList.size()>=1) {
+                            //LOCATION FOUND
                             Address address = addressList.get(0);
                             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                             gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -135,13 +146,13 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-        return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startGMap();
+        //Thread to get all the spots async
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -163,13 +174,14 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    //Method to ask for permisions of location
     private boolean pedirPermiso() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    //Method to get the users position
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (gMap != null) {
@@ -181,6 +193,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             pedirPermiso();
         }
     }
+
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {

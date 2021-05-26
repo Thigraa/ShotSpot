@@ -38,11 +38,14 @@ public class LikedSpotsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_liked_spots, container, false);
+        setUpLayout(v);
+        return v;
+    }
+    public void setUpLayout(View v){
         rvProfileLiked = v.findViewById(R.id.recyclerLikedProfile);
         //Create adapter based on the like of the user
         SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getLikeds(currentUser.getIdUser()));
         rvProfileLiked.setAdapter(adapter);
         rvProfileLiked.setLayoutManager(new LinearLayoutManager(getContext()));
-        return v;
     }
 }

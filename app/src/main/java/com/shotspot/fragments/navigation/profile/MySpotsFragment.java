@@ -38,11 +38,15 @@ public class MySpotsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_spots, container, false);
+        setUpLayout(v);
+        return v;
+    }
+
+    public void setUpLayout(View v){
         rvProfileSpots = v.findViewById(R.id.recyclerSpotsProfile);
         //Set adapter based on the spot published by the current user
         SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getByUserId(currentUser.getIdUser()));
         rvProfileSpots.setAdapter(adapter);
         rvProfileSpots.setLayoutManager(new LinearLayoutManager(getContext()));
-        return v;
     }
 }

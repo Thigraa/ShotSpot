@@ -14,6 +14,7 @@ public class SpotImage_CRUD {
 
     private  static Connection connection = DatabaseConnection.connect();
 
+    //Get spot image by it's id
     public static SpotImage getSpotImage(int idImage){
         SpotImage spotImage = new SpotImage();
         try{
@@ -35,7 +36,7 @@ public class SpotImage_CRUD {
         }
         return spotImage;
     }
-
+    //Get spot image by URL --> Used to load all the images in the app
     public static SpotImage getSpotImage(String imageURL){
         SpotImage spotImage = new SpotImage();
         try{
@@ -58,6 +59,7 @@ public class SpotImage_CRUD {
         return spotImage;
     }
 
+    //Insert image
     public static boolean insert(SpotImage spotImage){
         boolean inserted = false;
         String sql ="INSERT INTO Spot_Image (id_user, id_spot, image_url) VALUES (?,?,?)";
@@ -74,11 +76,12 @@ public class SpotImage_CRUD {
         return inserted;
     }
 
+    //Delete image by Image --> redirects to delete by ID
     public static boolean delete(SpotImage spotImage){
         return delete(spotImage.getIdImage());
     }
 
-
+    //Delete image by id
     public static boolean delete(int idImage){
 
         String sql ="DELETE FROM Spot_Image WHERE id_image= ?";
@@ -93,7 +96,7 @@ public class SpotImage_CRUD {
         }
         return isDeleted;
     }
-
+    //Delete image by URL
     public static boolean delete(String imageURL){
 
         String sql ="DELETE FROM Spot_Image WHERE image_url= ?";
@@ -108,7 +111,7 @@ public class SpotImage_CRUD {
         }
         return isDeleted;
     }
-
+    //Get all the images from a spot by Spot ID
     public static List<SpotImage> getImagesBySpotId(int idSpot){
         List<SpotImage> spotImages = new ArrayList<>();
         try{
