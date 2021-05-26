@@ -18,9 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SHOTSPOT"
-            android:layout_marginLeft="8dp"
-            android:layout_marginVertical="8dp"
-            android:fontFamily="@font/barlowcondensed_extralight"
+            android:textColor="?attr/mainText"
+            android:paddingLeft="8dp"
+            android:background="?attr/bgEdittext"
+            android:paddingVertical="8dp"
+            android:fontFamily="@font/barlowcondensed_light"
             android:textSize="24sp">
 
         </TextView>
