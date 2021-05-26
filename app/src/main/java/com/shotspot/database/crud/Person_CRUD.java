@@ -145,15 +145,15 @@ public class Person_CRUD {
         return inserted;
     }
 
-    public static boolean updateImage(Person person){
+    public static boolean updateImage(String newImageName, int idUser){
         boolean inserted = false;
         String sql ="UPDATE Person SET image_url = ? WHERE id_user = ? ";
 
         try {
-            ImageManager.deleteImage(getPerson(person.getIdUser()).getImageURL());
+            if (getPerson(idUser).getImageURL()!= null) ImageManager.deleteImage(getPerson(idUser).getImageURL());
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,person.getImageURL());
-            statement.setInt(2,person.getIdUser());
+            statement.setString(1,newImageName);
+            statement.setInt(2,idUser);
 
             int updeated = statement.executeUpdate();
             if (updeated>=1) inserted=true;

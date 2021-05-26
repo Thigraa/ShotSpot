@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.navigation.HomeFragment"
     android:background="?attr/bgColor">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerHome"
-        android:layout_marginBottom="50dp"
-        />
+        android:layout_height="wrap_content"
+        tools:ignore="ScrollViewCount,UselessParent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/titleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SHOTSPOT"
+            android:layout_marginLeft="8dp"
+            android:layout_marginVertical="8dp"
+            android:fontFamily="@font/barlowcondensed_extralight"
+            android:textSize="24sp">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerHome"
+            android:layout_marginBottom="50dp"
+            />
+
+    </LinearLayout>
 
 
 </FrameLayout>

@@ -68,6 +68,17 @@
 
                </LinearLayout>
                <ImageButton
+                   android:id="@+id/uploadImageButton"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center"
+                   android:layout_margin="16dp"
+                   android:visibility="gone"
+                   android:src="@drawable/ic_baseline_cloud_upload_24"
+                   android:layout_weight="0.5">
+
+               </ImageButton>
+               <ImageButton
                    android:id="@+id/logOutProfileButton"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
