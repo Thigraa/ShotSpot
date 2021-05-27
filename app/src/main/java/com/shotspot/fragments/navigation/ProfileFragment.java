@@ -32,7 +32,6 @@ import com.shotspot.R;
 import com.shotspot.activities.MainActivity;
 import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.database.storage.ImageManager;
-import com.shotspot.fragments.navigation.profile.EditProfileFragment;
 import com.shotspot.fragments.navigation.profile.LikedSpotsFragment;
 import com.shotspot.fragments.navigation.profile.MySpotsFragment;
 import com.squareup.picasso.Picasso;

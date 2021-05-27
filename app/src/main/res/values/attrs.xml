@@ -11,4 +11,5 @@
     <attr name="like_unfilled" format="reference"/>
     <attr name="locationIcon" format="reference"/>
     <attr name="commentIcon" format="reference"/>
+    <attr name="mapIcon" format="reference"/>
 </resources>

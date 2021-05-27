@@ -37,6 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -46,6 +47,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
 import com.shotspot.fragments.SearchResultFragment;
+import com.shotspot.model.ClusterRenderer;
 import com.shotspot.model.MyCluster;
 import com.shotspot.model.Spot;
 
@@ -75,6 +77,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     SearchView searchView;
 
     TextView mapTheme;
+    TextView iconTheme;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
 
     public void setUpLayout(View rootView){
         pedirPermiso();
+        iconTheme = rootView.findViewById(R.id.iconMapTheme);
         bottomNavigationView.setVisibility(View.VISIBLE);
         searchView = rootView.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -199,6 +203,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
         mapTheme = rootView.findViewById(R.id.discoverMapTheme);
+
         int mapStyle = getResources().getIdentifier(mapTheme.getText().toString(),"raw",getContext().getPackageName());
         gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),mapStyle ));
         gMap.setMaxZoomPreference(18);
@@ -268,6 +273,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void añadirMarcadores() {
+
+        clusterManager.setRenderer(new ClusterRenderer(getContext(), gMap, clusterManager, iconTheme.getText().toString()));
         for (Spot spot :
                 spotList) {
             MyCluster marker = new MyCluster(spot.getLatitde(),spot.getLongitude(),spot.getDescription(),spot.getTags(), spot.getIdSpot());
