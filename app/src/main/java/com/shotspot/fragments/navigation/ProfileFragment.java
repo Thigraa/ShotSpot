@@ -34,6 +34,7 @@ import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.database.storage.ImageManager;
 import com.shotspot.fragments.navigation.profile.LikedSpotsFragment;
 import com.shotspot.fragments.navigation.profile.MySpotsFragment;
+import com.shotspot.model.Person;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -62,6 +63,7 @@ public class ProfileFragment extends Fragment {
     EditText usernameET;
     File url;
     Bitmap bitmap= null;
+    Person user;
     final Handler handler = new Handler();
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,25 +76,26 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        Bundle bundle = getArguments();
+        user = Person_CRUD.getPerson(bundle.getInt("id_user"));
         usernameTV = v.findViewById(R.id.profileUsernameTextView);
         usernameET = v.findViewById(R.id.profileUsernameEditText);
         usernameET.setVisibility(View.GONE);
         profileImageView = v.findViewById(R.id.profileUserCircleImage);
-        profileImageView.setClickable(false);
         logOutButton = v.findViewById(R.id.logOutProfileButton);
         editProfileButton = v.findViewById(R.id.editProfileButton);
         uploadImageButton = v.findViewById(R.id.uploadImageButton);
         profileSpotsNavigation = v.findViewById(R.id.profileSpotNavigation);
-        usernameTV.setText(currentUser.getUsername());
-        usernameET.setText(currentUser.getUsername());
+        usernameTV.setText(user.getUsername());
+        usernameET.setText(user.getUsername());
         try {
-            if (currentUser.getImageURL() != null){
+            if (user.getImageURL() != null){
                 Thread th = new Thread(new Runnable() {
                     public void run() {
                         try {
                             handler.post(new Runnable() {
                                 public void run() {
-                                    profileImageView.setImageBitmap(currentUser.getBitmap());
+                                    profileImageView.setImageBitmap(user.getBitmap());
                                 }
                             });
                         }
@@ -106,7 +109,28 @@ public class ProfileFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if(usernameTV.getText().toString().equals(currentUser.getUsername())){
+            editProfileButton.setVisibility(View.VISIBLE);
+            logOutButton.setVisibility(View.VISIBLE);
+            profileImageView.setClickable(true);
+            profileImageView.setFocusable(true);
+            profileImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkReadStorage();
+                    CropImage.startPickImageActivity(getContext(), ProfileFragment.this);
 
+                }
+            });
+        }else {
+            editProfileButton.setVisibility(View.INVISIBLE);
+            logOutButton.setVisibility(View.INVISIBLE);
+            profileImageView.setClickable(false);
+            profileImageView.setFocusable(false);
+            profileImageView.setOnClickListener(null);
+
+
+        }
 
         return v;
     }
@@ -120,13 +144,13 @@ public class ProfileFragment extends Fragment {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentUser = null;
+                user = null;
                 Context context= getContext();
                 SharedPreferences settings=context.getSharedPreferences("PREFERENCES", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.remove("token");
                 editor.apply();
-                Objects.requireNonNull(getActivity()).finish();
+                getActivity().finish();
                 startActivity(getActivity().getIntent());
             }
         });
@@ -154,14 +178,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkReadStorage();
-                CropImage.startPickImageActivity(getContext(), ProfileFragment.this);
 
-            }
-        });
 
         usernameET.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -171,8 +188,8 @@ public class ProfileFragment extends Fragment {
                         case KeyEvent.KEYCODE_ENTER:
                             String newName = usernameET.getText().toString();
                             if (newName!=null){
-                                currentUser.setUsername(newName);
-                                Person_CRUD.updateUsername(currentUser);
+                                user.setUsername(newName);
+                                Person_CRUD.updateUsername(user);
                                 usernameET.setVisibility(View.GONE);
                                 usernameTV.setText(newName);
                                 usernameTV.setVisibility(View.VISIBLE);
@@ -232,7 +249,10 @@ public class ProfileFragment extends Fragment {
     }
 
     public void replaceFragment(Fragment f){
-                getFragmentManager().beginTransaction()
+                Bundle bundle = new Bundle();
+                bundle.putInt("id_user", user.getIdUser());
+                f.setArguments(bundle);
+                getParentFragmentManager().beginTransaction()
                 .replace(R.id.profileSpots, f, f.getClass().getSimpleName()).addToBackStack(null)
                 .commit();
     }
@@ -284,8 +304,8 @@ public class ProfileFragment extends Fragment {
             if (bitmap != null){
                 InputStream inputStream = comprimirImagen(bitmap,url);
                 String newImage = ImageManager.uploadImage(inputStream,inputStream.available());
-                currentUser.setImageURL(newImage);
-                Person_CRUD.updateImage(newImage,currentUser.getIdUser());
+                user.setImageURL(newImage);
+                Person_CRUD.updateImage(newImage,user.getIdUser());
                 Snackbar.make(profileImageView.getRootView(),"Image Uploaded",BaseTransientBottomBar.LENGTH_SHORT).show();
             }else {
                 System.out.println("===============================No se pudo"+ bitmap);
