@@ -54,10 +54,10 @@ public class ClusterRenderer extends DefaultClusterRenderer {
         int icon = 0;
         switch (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
-                icon = R.drawable.icon_p;
+                icon = R.drawable.icon;
                 break;
             case Configuration.UI_MODE_NIGHT_NO:
-                icon = R.drawable.icon_dark_p;
+                icon = R.drawable.icon_dark;
                 break;
         }
         Drawable background = ContextCompat.getDrawable(context, icon);
