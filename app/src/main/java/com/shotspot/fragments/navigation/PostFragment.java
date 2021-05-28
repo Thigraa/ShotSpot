@@ -1,6 +1,7 @@
 package com.shotspot.fragments.navigation;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -84,7 +85,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     private LatLng postLocation;
     private CameraPosition camera;
     private TextView mapTheme;
-    String nombreImagen;
+    View rootView;
     Drawable defaultImage;
     byte[] thumb_byte;
     File url1, url2, url3;
@@ -100,20 +101,24 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_post, container, false);
-        bottomNavigationView.setVisibility(View.VISIBLE);
-        descriptionEdittext = v.findViewById(R.id.edittextDescription);
-        tagsEdittext = v.findViewById(R.id.tagsEdittext);
-        recyclerViewTags = v.findViewById(R.id.recyclerTags);
-        mapView = v.findViewById(R.id.mapViewPost);
-        mapTheme = v.findViewById(R.id.mapTheme);
-        image1 = v.findViewById(R.id.imageButton1);
-        postLocation = null;
+        rootView = inflater.inflate(R.layout.fragment_post, container, false);
+        setUpLayout();
+        setUpClickers();
+        setUpRecyclerTags();
+        setUpMap();
+        return rootView;
+    }
+
+    /**
+     * Method that set all the clickers to the Views on the layout
+     */
+    private void setUpClickers() {
         defaultImage = getResources().getDrawable(R.drawable.ic_launcher_foreground);
+        //On long click delete the image
         image1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -123,6 +128,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             }
 
         });
+        //On click add an image to the ImageView
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +139,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
-        image2 = v.findViewById(R.id.imageButton2);
+        image2 = rootView.findViewById(R.id.imageButton2);
+        //On long click delete the image
         image2.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -144,6 +151,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             }
 
         });
+        //On click add an image to the ImageView
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +162,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
-        image3 = v.findViewById(R.id.imageButton3);
+        image3 = rootView.findViewById(R.id.imageButton3);
+        //On long click delete the image
         image3.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -164,64 +173,72 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             }
 
         });
+        //On click add an image to the ImageView
         image3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
                     checkReadStorage();
                     CropImage.startPickImageActivity(getContext(), PostFragment.this);
                 }
             }
         });
-        addSpot = v.findViewById(R.id.buttonAddPost);
+        addSpot = rootView.findViewById(R.id.buttonAddPost);
+        //Upload spot to the database
         addSpot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(postLocation != null){
-
+                    //Check if the post have a location
                     if (!Spot_CRUD.checkLocation(postLocation)){
-
+                        //If image1 is empty
                         if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState()) ||
                                 !image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())||
                                 !image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                             String tags="";
+                            //Add all the tags to a String
                             for(String s : myTags){
                                 tags+=s;
                             }
+                            //Get the date at millis
                             long millis=System.currentTimeMillis();
+                            //Create th new spot
                             Spot spot = new Spot(currentUser.getIdUser(), postLocation.latitude, postLocation.longitude, descriptionEdittext.getText().toString(), tags, new Date(millis));
                             String imageName1="";
                             String imageName2="";
                             String imageName3="";
+                            //Check if the spot was inserted to DB
                             if(Spot_CRUD.insert(spot)){
                                 int spotId = Spot_CRUD.getSpotId(currentUser.getIdUser());
+                                //Check if the imageView have an image
                                 if(!image1.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                     Bitmap bitmap1 = ImageManager.drawableToBitmap(image1.getDrawable());
                                     InputStream inputStream1 = comprimirImagen(bitmap1,url1);
                                     try {
-                                        imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());
-                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));
+                                        imageName1 = ImageManager.uploadImage(inputStream1, inputStream1.available());//Upload the Image to the storage
+                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName1 ));//Insert the name of Image to the DB
                                     } catch (Exception e) {
                                         e.getMessage();
                                     }
                                 }
+                                //Check if the imageView have an image
                                 if(!image2.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                     Bitmap bitmap2 = ImageManager.drawableToBitmap(image2.getDrawable());
                                     InputStream inputStream2 = comprimirImagen(bitmap2,url2);
                                     try {
-                                        imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());
-                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));
+                                        imageName2 = ImageManager.uploadImage(inputStream2, inputStream2.available());//Upload the Image to the storage
+                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName2 ));//Insert the name of Image to the DB
                                     } catch (Exception e) {
                                         e.getMessage();
                                     }
                                 }
+                                //Check if the imageView have an image
                                 if(!image3.getDrawable().getConstantState().equals(defaultImage.getConstantState())){
                                     Bitmap bitmap3 = ImageManager.drawableToBitmap(image3.getDrawable());
                                     InputStream inputStream3 = comprimirImagen(bitmap3,url3);
                                     try {
-                                        imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());
-                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 ));
+                                        imageName3 = ImageManager.uploadImage(inputStream3, inputStream3.available());//Upload the Image to the storage
+                                        SpotImage_CRUD.insert(new SpotImage(currentUser.getIdUser(), spotId,imageName3 )); //Insert the name of Image to the DB
                                     } catch (Exception e) {
                                         e.getMessage();
                                     }
@@ -237,23 +254,21 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }else {
                         Snackbar.make(v,"That Location already exits",BaseTransientBottomBar.LENGTH_SHORT)
-                        .setAction("See", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Fragment f = new DiscoverFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putDouble("latitude",postLocation.latitude);
-                                bundle.putDouble("longitude",postLocation.longitude);
-                                f.setArguments(bundle);
-                                ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                                        .replace(R.id.navHost, f)
-                                        .commit();
-                            }
-                        }).setActionTextColor(Color.GRAY).show();
+                                .setAction("See", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Fragment f = new DiscoverFragment();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putDouble("latitude",postLocation.latitude);
+                                        bundle.putDouble("longitude",postLocation.longitude);
+                                        f.setArguments(bundle);
+                                        replaceFragment(f);
+                                    }
+                                }).setActionTextColor(Color.GRAY).show();
 
 
 
-                        
+
                     }
                 }else{
                     Snackbar.make(v, "Please select a location", BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -262,12 +277,16 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
                 replaceFragment(new HomeFragment());
             }
         });
-        setUpRecyclerTags();
-        setUpMap();
+    }
 
-
-
-        return v;
+    private void setUpLayout() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        descriptionEdittext = rootView.findViewById(R.id.edittextDescription);
+        tagsEdittext = rootView.findViewById(R.id.tagsEdittext);
+        recyclerViewTags = rootView.findViewById(R.id.recyclerTags);
+        mapView = rootView.findViewById(R.id.mapViewPost);
+        mapTheme = rootView.findViewById(R.id.mapTheme);
+        image1 = rootView.findViewById(R.id.imageButton1);
     }
 
     private void setUpMap() {
@@ -487,8 +506,8 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             }
     }
     public void replaceFragment(Fragment f) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+        ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                .replace(R.id.navHost, f)
                 .commit();
     }
 //
