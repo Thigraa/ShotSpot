@@ -55,7 +55,7 @@ public class Like_CRUD {
 
         return likes;
     }
-
+    //Insert a like
     public static boolean insert(Like like){
         boolean inserted = false;
         String sql ="INSERT INTO Liked (id_user, id_spot) VALUES (?,?)";
@@ -70,7 +70,7 @@ public class Like_CRUD {
         }
         return inserted;
     }
-
+    //Delete a like by id_spot and id_user
     public  static boolean delete(Like like){
         String sql ="DELETE FROM Liked where id_spot = ? AND id_user = ?";
         boolean isDeleted = false;
@@ -85,7 +85,7 @@ public class Like_CRUD {
         }
         return isDeleted;
     }
-
+    //Get list of likes of each user
     public static List<Like> getLikes(int idUser){
         String sql = "SELECT * FROM Liked where id_user =?";
         List<Like> likeList = new ArrayList<>();

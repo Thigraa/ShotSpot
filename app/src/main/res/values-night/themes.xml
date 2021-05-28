@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/bgEdittext</item>
         <!-- Customize your theme here. -->
         <item name="bg">@drawable/background_dark</item>
         <item name="bgColor">#262626</item>
@@ -24,6 +24,7 @@
         <item name="like_filled">@drawable/like_white_filled_24</item>
         <item name="like_unfilled">@drawable/like_white_24</item>
         <item name="locationIcon">@drawable/ic_outline_location_white_on_24</item>
+        <item name="mapIcon">@drawable/icon_dark_p</item>
         <item name="commentIcon">@drawable/ic_outline_mode_comment_white_24</item>
     </style>
 </resources>

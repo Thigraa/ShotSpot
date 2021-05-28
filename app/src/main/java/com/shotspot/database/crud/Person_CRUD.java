@@ -13,6 +13,7 @@ import java.sql.SQLException;
 public class Person_CRUD {
     private  static Connection connection = DatabaseConnection.connect();
 
+    //Get user by id
     public static Person getPerson(int idUser){
         Person person = new Person();
         try{
@@ -38,6 +39,7 @@ public class Person_CRUD {
         return person;
     }
 
+    //Get person by log in token
     public static Person getPerson(String token){
         Person person = new Person();
         try{
@@ -63,6 +65,7 @@ public class Person_CRUD {
         return person;
     }
 
+    //Get user by username and password --> Used to log in
     public static Person getPerson(String username, String password){
         Person person = new Person();
         try{
@@ -89,6 +92,7 @@ public class Person_CRUD {
         return person;
     }
 
+    //Insert user
     public static boolean insert(Person person){
         boolean inserted = false;
         String sql ="INSERT INTO Person (username, image_url, email, pass, token) VALUES (?,?,?,?,?)";
@@ -106,12 +110,12 @@ public class Person_CRUD {
         }
         return inserted;
     }
-
+    //Delete user by User (uses by id)
     public static boolean delete(Person person){
         return delete(person.getIdUser());
     }
 
-
+    //Delete user by id
     public static boolean delete(int idUser){
 
         String sql ="DELETE from Person where id_user = ?";
@@ -126,7 +130,7 @@ public class Person_CRUD {
         }
         return isDeleted;
     }
-
+    //Update username by id user
     public static boolean updateUsername(Person person){
         boolean inserted = false;
         String sql ="UPDATE Person SET  username = ? WHERE  id_user = ?";
@@ -145,6 +149,7 @@ public class Person_CRUD {
         return inserted;
     }
 
+    //Update image by id user
     public static boolean updateImage(String newImageName, int idUser){
         boolean inserted = false;
         String sql ="UPDATE Person SET image_url = ? WHERE id_user = ? ";
@@ -165,6 +170,7 @@ public class Person_CRUD {
         return inserted;
     }
 
+    //Update token by id user
     public static boolean updateToken(Person person){
         boolean inserted = false;
         String sql ="UPDATE Person SET token = ? where id_user = ? ";

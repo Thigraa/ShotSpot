@@ -105,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new PostFragment());
                         return true;
                     case R.id.profile:
-                        replaceFragment(new ProfileFragment());
+                        Fragment profileFragment = new ProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id_user",currentUser.getIdUser());
+                        profileFragment.setArguments(bundle);
+                        replaceFragment(profileFragment);
                         return true;
 
                 }

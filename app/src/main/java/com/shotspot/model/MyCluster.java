@@ -4,9 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.ClusterRenderer;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-public class  MyCluster implements ClusterItem {
+import java.util.Set;
+
+public class  MyCluster implements ClusterItem{
 
     private final LatLng position;
     private final String title;

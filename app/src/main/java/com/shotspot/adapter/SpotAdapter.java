@@ -29,6 +29,7 @@ import com.shotspot.database.crud.Person_CRUD;
 import com.shotspot.database.crud.SpotImage_CRUD;
 import com.shotspot.fragments.CommentsFragment;
 import com.shotspot.fragments.navigation.DiscoverFragment;
+import com.shotspot.fragments.navigation.ProfileFragment;
 import com.shotspot.helper.DoubleClickListener;
 import com.shotspot.model.Like;
 import com.shotspot.model.Person;
@@ -199,7 +200,18 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
 
                 }
             });
-
+            holder.profileImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment profileFragment = new ProfileFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id_user",spot.getIdUser());
+                    profileFragment.setArguments(bundle);
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.navHost, profileFragment)
+                            .commit();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

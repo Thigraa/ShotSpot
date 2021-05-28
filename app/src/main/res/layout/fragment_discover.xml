@@ -19,8 +19,14 @@
         android:visibility="gone"
         android:focusable="false"
         android:clickable="false"
-        android:text="?attr/mapTheme">
-
-    </TextView>
+        android:text="?attr/mapTheme"/>
+    <TextView
+        android:id="@+id/iconMapTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:focusable="false"
+        android:clickable="false"
+        android:text="?attr/mapIcon"/>
 
 </FrameLayout>

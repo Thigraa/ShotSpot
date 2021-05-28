@@ -19,7 +19,7 @@ import static com.shotspot.activities.MainActivity.currentUser;
 
 public class MySpotsFragment extends Fragment {
 
-
+    int user;
     RecyclerView rvProfileSpots;
     public MySpotsFragment() {
         // Required empty public constructor
@@ -38,11 +38,18 @@ public class MySpotsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_spots, container, false);
+        setUpLayout(v);
+        return v;
+    }
+
+    public void setUpLayout(View v){
+        Bundle bundle = new Bundle();
+        bundle = getArguments();
+        user = bundle.getInt("id_user");
         rvProfileSpots = v.findViewById(R.id.recyclerSpotsProfile);
         //Set adapter based on the spot published by the current user
-        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getByUserId(currentUser.getIdUser()));
+        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getByUserId(user));
         rvProfileSpots.setAdapter(adapter);
         rvProfileSpots.setLayoutManager(new LinearLayoutManager(getContext()));
-        return v;
     }
 }
