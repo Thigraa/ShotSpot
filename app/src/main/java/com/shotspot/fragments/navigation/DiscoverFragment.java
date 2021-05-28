@@ -44,6 +44,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
 import com.shotspot.fragments.SearchResultFragment;
@@ -294,14 +295,15 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         gMap.setOnMarkerClickListener(clusterManager);
 
         //TODO Make a function when you click on a item/marker
-        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyCluster>() {
+        clusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyCluster>() {
             @Override
-            public boolean onClusterItemClick(MyCluster item) {
-                return false;
+            public void onClusterItemInfoWindowClick(MyCluster item) {
+
             }
         });
         // Add cluster items (markers) to the cluster manager.
 //        addItems();
+
         añadirMarcadores();
 
     }
