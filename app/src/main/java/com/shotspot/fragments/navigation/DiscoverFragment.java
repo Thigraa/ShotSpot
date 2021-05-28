@@ -44,7 +44,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
 import com.shotspot.fragments.SearchResultFragment;
@@ -56,6 +55,7 @@ import com.shotspot.model.Spot;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -222,13 +222,13 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         }
         else{
             LatLng target = new LatLng(positionBundle.getDouble("latitude"), positionBundle.getDouble("longitude"));
-            cameraPosition = new CameraPosition.Builder()
+            CameraPosition cameraPosition1 = new CameraPosition.Builder()
                     .target(target)
                     .zoom(15)
                     .bearing(0)
                     .tilt(30)
                     .build();
-            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition1));
         }
 
 //        TODO personalize the window to show on the marker
@@ -298,6 +298,10 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         clusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyCluster>() {
             @Override
             public void onClusterItemInfoWindowClick(MyCluster item) {
+                Spot sp = Spot_CRUD.getSpot(item.getIdSpot());
+                Spot [] spot = {sp};
+                Fragment f = new SearchResultFragment(Arrays.asList(spot));
+                replaceFragment(f);
 
             }
         });
@@ -325,5 +329,10 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             clusterManager.addItem(offsetItem);
         }
         clusterManager.setAnimation(true);
+    }
+    public void replaceFragment(Fragment f){
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .commit();
     }
 }

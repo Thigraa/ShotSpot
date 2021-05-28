@@ -188,13 +188,13 @@ public class SpotAdapter extends RecyclerView.Adapter<SpotAdapter.SpotHolder> {
                     //Click to move to the spot in the map
                     Fragment f = new DiscoverFragment();
                     Bundle bundle = new Bundle();
-                    double latitude = spot.getLatitde();
-                    double longitude = spot.getLongitude();
-                    bundle.putDouble("latitude", latitude);
-                    bundle.putDouble("longitude", longitude);
+                    double latitudeSpot = spot.getLatitde();
+                    double longitudeSpot = spot.getLongitude();
+                    bundle.putDouble("latitude", latitudeSpot);
+                    bundle.putDouble("longitude", longitudeSpot);
                     f.setArguments(bundle);
                     //Change fragment
-                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                    ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.navHost, f)
                             .commit();
 
