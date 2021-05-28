@@ -339,7 +339,7 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
         enableMyLocation();
-        gMap.setMinZoomPreference(13);
+        gMap.setMinZoomPreference(9);
         gMap.setMaxZoomPreference(18);
         if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             FusedLocationProviderClient fusedLocationProviderClient;
