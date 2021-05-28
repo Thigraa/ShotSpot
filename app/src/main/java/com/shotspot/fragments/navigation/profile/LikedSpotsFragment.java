@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.shotspot.R;
 import com.shotspot.adapter.SpotAdapter;
 import com.shotspot.database.crud.Spot_CRUD;
+import com.shotspot.model.Person;
 
 import static com.shotspot.activities.MainActivity.currentUser;
 
@@ -22,6 +23,7 @@ public class LikedSpotsFragment extends Fragment {
 
 
     RecyclerView rvProfileLiked;
+    int user;
     public LikedSpotsFragment() {
         // Required empty public constructor
     }
@@ -38,11 +40,17 @@ public class LikedSpotsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_liked_spots, container, false);
+        setUpLayout(v);
+        return v;
+    }
+    public void setUpLayout(View v){
+        Bundle bundle = new Bundle();
+        bundle = getArguments();
+        user = bundle.getInt("id_user");
         rvProfileLiked = v.findViewById(R.id.recyclerLikedProfile);
         //Create adapter based on the like of the user
-        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getLikeds(currentUser.getIdUser()));
+        SpotAdapter adapter = new SpotAdapter(Spot_CRUD.getLikeds(user));
         rvProfileLiked.setAdapter(adapter);
         rvProfileLiked.setLayoutManager(new LinearLayoutManager(getContext()));
-        return v;
     }
 }

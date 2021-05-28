@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="MySpots"
         android:id="@+id/mySpots"
-        android:icon="@drawable/ic_baseline_approval_24"/>
+        android:icon="@drawable/ic_outline_location_white_on_24"/>
     <item android:title="Liked"
         android:id="@+id/likedSpots"
-        android:icon="@drawable/ic_baseline_beenhere_24"/>
+        android:icon="@drawable/like_white_filled_24"/>
 </menu>

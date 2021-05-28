@@ -55,164 +55,112 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Unless otherwise specified, the terms of use detailed in this section apply generally when using this Application.
+                    android:text="@string/TermsAndConditions_p1" />
 
-                      \n\nSingle or additional conditions of use or access may apply in specific scenarios and in such cases are additionally indicated within this document.
-
-                      \n\nBy using this Application, Users confirm to meet the following requirements:
-
-                      \n\nThere are no restrictions for Users in terms of being Consumers or Business Users" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Account registration" />
+                    android:text="@string/TermsAndConditions_p2" />
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="To use the Service Users must register or create a User account, providing all required data or information in a complete and truthful manner.
-                        \n\nFailure to do so will cause unavailability of the Service.
-
-                        \n\nUsers are responsible for keeping their login credentials confidential and safe. For this reason, Users are also required to choose passwords that meet the highest standards of strength permitted by this Application.
-
-                        \n\nBy registering, Users agree to be fully responsible for all activities that occur under their username and password.
-                        \n\nUsers are required to immediately and unambiguously inform the Owner via the contact details indicated in this document, if they think their personal information, including but not limited to User accounts, access credentials or personal data, have been violated, unduly disclosed or stolen." />
+                    android:text="@string/TermsAndConditions_p3" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Account termination
-                        \n\nUsers can terminate their account and stop using the Service at any time by doing the following:
-
-                        \n\nBy directly contacting the Owner at the contact details provided in this document." />
+                    android:text="@string/TermsAndConditions_p4" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Account suspension and deletion
-                        \n\nThe Owner reserves the right, at its sole discretion, to suspend or delete at any time and without notice, User accounts which it deems inappropriate, offensive or in violation of these Terms.
-
-                        \n\nThe suspension or deletion of User accounts shall not entitle Users to any claims for compensation, damages or reimbursement.
-
-                        \n\nThe suspension or deletion of accounts due to causes attributable to the User does not exempt the User from paying any applicable fees or prices." />
+                    android:text="@string/TermsAndConditions_p5" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Content on this Application
-                        \n\nUnless where otherwise specified or clearly recognizable, all content available on this Application is owned or provided by the Owner or its licensors.
-
-                        \n\nThe Owner undertakes its utmost effort to ensure that the content provided on this Application infringes no applicable legal provisions or third-party rights. However, it may not always be possible to achieve such a result.
-                        \n\nIn such cases, without prejudice to any legal prerogatives of Users to enforce their rights, Users are kindly asked to preferably report related complaints using the contact details provided in this document." />
+                    android:text="@string/TermsAndConditions_p6" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Rights regarding content on this Application - All rights reserved
-                        \n\nThe Owner holds and reserves all intellectual property rights for any such content.
+                    android:text="@string/TermsAndConditions_p7" />
 
-                        \n\nUsers may not therefore use such content in any way that is not necessary or implicit in the proper use of the Service.
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="16sp"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="@string/TermsAndConditions_p7a" />
 
-                        \n\nIn particular, but without limitation, Users may not copy, download, share (beyond the limits set forth below), modify, translate, transform, publish, transmit, sell, sublicense, edit, transfer/assign to third parties or create derivative works from the content available on this Application, nor allow any third party to do so through the User or their device, even without the User's knowledge.
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="16sp"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="@string/TermsAndConditions_p7b" />
 
-                        \n\nWhere explicitly stated on this Application, the User may download, copy and/or share some content available through this Application for its sole personal and non-commercial use and provided that the copyright attributions and all the other attributions requested by the Owner are correctly implemented.
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="16sp"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="@string/TermsAndConditions_p7c" />
 
-                        \n\nAny applicable statutory limitation or exception to copyright shall stay unaffected." />
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Content provided by Users
-                        \n\nThe Owner allows Users to upload, share or provide their own content to this Application.
-
-                        \n\nBy providing content to this Application, Users confirm that they are legally allowed to do so and that they are not infringing any statutory provisions and/or third-party rights." />
+                    android:text="@string/TermsAndConditions_p8" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Rights regarding content provided by Users
-                        \n\nUsers acknowledge and accept that by providing their own content on this Application they grant the Owner a non-exclusive, fully paid-up and royalty-free license to process such content solely for the operation and maintenance of this Application as contractually required.
-
-                        \n\nTo the extent permitted by applicable law, Users waive any moral rights in connection with content they provide to this Application.
-
-                        \n\nUsers acknowledge, accept and confirm that all content they provide through this Application is provided subject to the same general conditions set forth for content on this Application.
-
-" />
+                    android:text="@string/TermsAndConditions_p9" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="@string/TermsAndConditions_p10" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Liability for provided content
-                        \n\nUsers are solely liable for any content they upload, post, share, or provide through this Application. Users acknowledge and accept that the Owner does not filter or moderate such content.
-
-                        \n\nHowever, the Owner reserves the right to remove, delete, block or rectify such content at its own discretion and to, without prior notice, deny the uploading User access to this Application:
-
-                        \n\nif any complaint based on such content is received;
-                        \n\nif a notice of infringement of intellectual property rights is received;
-                        \n\nupon order of a public authority; or
-                        \n\nwhere the Owner is made aware that the content, while being accessible via this Application, may represent a risk for Users, third parties and/or the availability of the Service.
-                        \n\nThe removal, deletion, blocking or rectification of content shall not entitle Users that have provided such content or that are liable for it, to any claims for compensation, damages or reimbursement.
-                        \n\nUsers agree to hold the Owner harmless from and against any claim asserted and/or damage suffered due to content they provided to or provided through this Application.
-
-" />
+                    android:text="@string/TermsAndConditions_p11" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Access to external resources
-                        \n\nThrough this Application Users may have access to external resources provided by third parties. Users acknowledge and accept that the Owner has no control over such resources and is therefore not responsible for their content and availability.
+                    android:text="@string/TermsAndConditions_p12" />
 
-                        \n\nConditions applicable to any resources provided by third parties, including those applicable to any possible grant of rights in content, result from each such third parties’ terms and conditions or, in the absence of those, applicable statutory law.
-
-" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/raleway_regular"
-                    android:text="Acceptable use
-                        \n\nThis Application and the Service may only be used within the scope of what they are provided for, under these Terms and applicable law.
-
-                        \n\nUsers are solely responsible for making sure that their use of this Application and/or the Service violates no applicable law, regulations or third-party rights.
-
-                        \n\nTherefore, the Owner reserves the right to take any appropriate measure to protect its legitimate interests including by denying Users access to this Application or the Service, terminating contracts, reporting any misconduct performed through this Application or the Service to the competent authorities – such as judicial or administrative authorities - whenever Users engage or are suspected to engage in any of the following activities:
-
-                        \n\nviolate laws, regulations and/or these Terms;
-                        \n\ninfringe any third-party rights;
-                        \n\nconsiderably impair the Owner’s legitimate interests;
-                        \n\noffend the Owner or any third party." />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/raleway_regular"
-                    android:text="Account termination
-                        \n\nUsers can terminate their account and stop using the Service at any time by doing the following:
-
-                        \n\nBy directly contacting the Owner at the contact details provided in this document." />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

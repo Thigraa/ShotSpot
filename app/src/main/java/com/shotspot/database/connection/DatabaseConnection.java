@@ -16,7 +16,7 @@ public class DatabaseConnection {
     private static String un = "LGPremia";
     private static String password = "P@ssw0rd";
 
-
+    //Method to connect to the Azure Database. returns a connection.
     public static Connection connect(){
         Connection conn = null;
         String ConnURL = null;

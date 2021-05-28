@@ -14,6 +14,8 @@ public class Like_CRUD {
 
     private  static Connection connection = DatabaseConnection.connect();
 
+
+    //Get like by SpotID and UserID
     public static Like getLike(int idSpot, int idUser){
         String sql = "SELECT * FROM Liked where id_spot = ? AND id_user =?";
         Like like = new Like();
@@ -34,6 +36,8 @@ public class Like_CRUD {
         }
         return like;
     }
+
+    //Get like count from a Spot
     public static int getNumLikes(int idSpot){
         String sql = "SELECT COUNT(*) FROM Liked WHERE id_spot = ?";
         int likes=0;
@@ -41,12 +45,9 @@ public class Like_CRUD {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,idSpot);
             ResultSet rs = statement.executeQuery();
-
             if (rs.next()){
                 likes =rs.getInt(1);
-
             }
-
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -54,7 +55,7 @@ public class Like_CRUD {
 
         return likes;
     }
-
+    //Insert a like
     public static boolean insert(Like like){
         boolean inserted = false;
         String sql ="INSERT INTO Liked (id_user, id_spot) VALUES (?,?)";
@@ -69,7 +70,7 @@ public class Like_CRUD {
         }
         return inserted;
     }
-
+    //Delete a like by id_spot and id_user
     public  static boolean delete(Like like){
         String sql ="DELETE FROM Liked where id_spot = ? AND id_user = ?";
         boolean isDeleted = false;
@@ -84,7 +85,7 @@ public class Like_CRUD {
         }
         return isDeleted;
     }
-
+    //Get list of likes of each user
     public static List<Like> getLikes(int idUser){
         String sql = "SELECT * FROM Liked where id_user =?";
         List<Like> likeList = new ArrayList<>();

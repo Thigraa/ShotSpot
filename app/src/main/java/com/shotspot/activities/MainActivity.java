@@ -28,7 +28,6 @@ import java.sql.Connection;
 
 public class MainActivity extends AppCompatActivity {
     public static BottomNavigationView bottomNavigationView;
-    private Connection connection;
     public static Person currentUser;
     String logToken;
 
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectLayout();
-        connection = DatabaseConnection.connect();
         getToken();
         checkLogin(savedInstanceState);
         setBottomNavigationViewClicks();
@@ -64,35 +62,33 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = context.getSharedPreferences("PREFERENCES", 0);
         logToken = settings.getString("token", null);
     }
-    //Method to chek if the user have been logged before --> if logged goes to Home Fragment, else goes to Welcome Fragment
+    //Method to check if the user have been logged before --> if logged goes to Home Fragment, else goes to Welcome Fragment
     public void checkLogin(Bundle savedInstanceState){
         Fragment fragment;
         if(logToken != null){
 
             //LOGGED
             currentUser = Person_CRUD.getPerson(logToken);
-            System.out.println(currentUser);
             if (savedInstanceState != null) {
                 fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
-                replaceFragment(fragment);
             } else {
                 fragment = new HomeFragment();
-                replaceFragment(fragment);
 
             }
         }else{
             //NOT LOGGED
             if (savedInstanceState != null) {
                 fragment = getSupportFragmentManager().getFragment(savedInstanceState, "lastFragment");
-                replaceFragment(fragment);
             } else {
                 fragment = new WelcomeFragment();
-                replaceFragment(fragment);
 
             }
         }
+        replaceFragment(fragment);
     }
 
+
+    //Bottom Navigation View
     public void setBottomNavigationViewClicks(){
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -102,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.homeButton:
                         replaceFragment(new HomeFragment());
                         return true;
-
                     case R.id.discover:
                         replaceFragment(new DiscoverFragment());
                         return true;
@@ -110,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new PostFragment());
                         return true;
                     case R.id.profile:
-                        replaceFragment(new ProfileFragment());
+                        Fragment profileFragment = new ProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id_user",currentUser.getIdUser());
+                        profileFragment.setArguments(bundle);
+                        replaceFragment(profileFragment);
                         return true;
 
                 }
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //Method to save the fragment when changing the default theme. DARK TO LIGHT | LIGHT TO DARK without
+    //Method to save the fragment when changing the default theme. DARK TO LIGHT | LIGHT TO DARK without losing the progress (if there are more than one fragment, then it will lose it)
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {

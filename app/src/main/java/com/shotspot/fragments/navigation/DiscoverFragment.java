@@ -2,6 +2,7 @@ package com.shotspot.fragments.navigation;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
@@ -16,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -43,6 +46,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.clustering.ClusterManager;
 import com.shotspot.R;
 import com.shotspot.database.crud.Spot_CRUD;
+import com.shotspot.fragments.SearchResultFragment;
+import com.shotspot.model.ClusterRenderer;
 import com.shotspot.model.MyCluster;
 import com.shotspot.model.Spot;
 
@@ -50,6 +55,7 @@ import com.shotspot.model.Spot;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -72,6 +78,7 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     SearchView searchView;
 
     TextView mapTheme;
+    TextView iconTheme;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +92,13 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_discover, container, false);
+        setUpLayout(rootView);
+        return rootView;
+    }
+
+    public void setUpLayout(View rootView){
         pedirPermiso();
+        iconTheme = rootView.findViewById(R.id.iconMapTheme);
         bottomNavigationView.setVisibility(View.VISIBLE);
         searchView = rootView.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -93,20 +106,41 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             public boolean onQueryTextSubmit(String query) {
                 String location = searchView.getQuery().toString();
                 List<Address> addressList = null;
-
+                //Check if text is not null
                 if(location != null || !location.equals("")){
-                    Geocoder geocoder = new Geocoder(getContext());
-                    try{
-                        addressList = geocoder.getFromLocationName(location, 1);
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                    if(addressList.size()>=1) {
-                        Address address = addressList.get(0);
-                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    //Check if it's searching a tag or a location
+                    if(location.contains("#")){
+                        //TAG
+                        location = location.replaceAll("#", "");
+                        List<Spot> spotList = Spot_CRUD.searchByTags(location);
+                        if(spotList.size()>0) {
+                            //TAG FOUND
+                            InputMethodManager imm =(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+                            Fragment f = new SearchResultFragment(spotList);
+                            ((FragmentActivity) rootView.getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                    .replace(R.id.navHost, f)
+                                    .commit();
+                        }
+                        else{
+                            Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        }
                     }else{
-                        Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        //LOCATION
+                        Geocoder geocoder = new Geocoder(getContext());
+                        try{
+                            addressList = geocoder.getFromLocationName(location, 1);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                        if(addressList.size()>=1) {
+                            //LOCATION FOUND
+                            Address address = addressList.get(0);
+                            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        }else{
+                            Snackbar.make(rootView, "No results found", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 return false;
@@ -117,13 +151,13 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-        return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startGMap();
+        //Thread to get all the spots async
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -145,13 +179,14 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    //Method to ask for permisions of location
     private boolean pedirPermiso() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    //Method to get the users position
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (gMap != null) {
@@ -164,10 +199,12 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
         mapTheme = rootView.findViewById(R.id.discoverMapTheme);
+
         int mapStyle = getResources().getIdentifier(mapTheme.getText().toString(),"raw",getContext().getPackageName());
         gMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),mapStyle ));
         gMap.setMaxZoomPreference(18);
@@ -179,7 +216,20 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
         setUpClusterer();
-        getPosition();
+        Bundle positionBundle = getArguments();
+        if(positionBundle == null){
+            getPosition();
+        }
+        else{
+            LatLng target = new LatLng(positionBundle.getDouble("latitude"), positionBundle.getDouble("longitude"));
+            CameraPosition cameraPosition1 = new CameraPosition.Builder()
+                    .target(target)
+                    .zoom(15)
+                    .bearing(0)
+                    .tilt(30)
+                    .build();
+            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition1));
+        }
 
 //        TODO personalize the window to show on the marker
 
@@ -224,6 +274,8 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void añadirMarcadores() {
+
+        clusterManager.setRenderer(new ClusterRenderer(getContext(), gMap, clusterManager, iconTheme.getText().toString()));
         for (Spot spot :
                 spotList) {
             MyCluster marker = new MyCluster(spot.getLatitde(),spot.getLongitude(),spot.getDescription(),spot.getTags(), spot.getIdSpot());
@@ -243,14 +295,19 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
         gMap.setOnMarkerClickListener(clusterManager);
 
         //TODO Make a function when you click on a item/marker
-        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyCluster>() {
+        clusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyCluster>() {
             @Override
-            public boolean onClusterItemClick(MyCluster item) {
-                return false;
+            public void onClusterItemInfoWindowClick(MyCluster item) {
+                Spot sp = Spot_CRUD.getSpot(item.getIdSpot());
+                Spot [] spot = {sp};
+                Fragment f = new SearchResultFragment(Arrays.asList(spot));
+                replaceFragment(f);
+
             }
         });
         // Add cluster items (markers) to the cluster manager.
 //        addItems();
+
         añadirMarcadores();
 
     }
@@ -272,5 +329,10 @@ public class DiscoverFragment extends Fragment implements OnMapReadyCallback {
             clusterManager.addItem(offsetItem);
         }
         clusterManager.setAnimation(true);
+    }
+    public void replaceFragment(Fragment f){
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
+                .commit();
     }
 }

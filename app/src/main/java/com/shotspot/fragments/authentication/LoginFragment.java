@@ -52,6 +52,12 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
         //Connect layout to class
+        setUpLayout(v);
+        return v;
+    }
+
+
+    public void setUpLayout(View v){
         usernameEdittext = v.findViewById(R.id.usernameEdittextLogin);
         passwordEdittext = v.findViewById(R.id.passwordEdittextLogin);
         login = v.findViewById(R.id.buttonLogin);
@@ -62,7 +68,7 @@ public class LoginFragment extends Fragment {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +78,6 @@ public class LoginFragment extends Fragment {
                 loginManager();
             }
         });
-
-        return v;
     }
 
 
@@ -108,10 +112,9 @@ public class LoginFragment extends Fragment {
                 login.setClickable(true);
                 //CHANGES TO HOME FRAGMENT
                 replaceFragment(new HomeFragment());
-                progressBar.setVisibility(View.INVISIBLE);
             }else{
                 //NOT MATCHES
-                Snackbar.make(Objects.requireNonNull(getView()), "Username or password are incorrect", BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Username or password are incorrect", BaseTransientBottomBar.LENGTH_SHORT).show();
                 login.setFocusable(true);
                 login.setClickable(true);
                 progressBar.setVisibility(View.INVISIBLE);
@@ -124,7 +127,7 @@ public class LoginFragment extends Fragment {
     }
     //Method to replace fragments
     public void replaceFragment(Fragment f) {
-        getFragmentManager().beginTransaction()
+        getParentFragmentManager().beginTransaction()
                 .replace(R.id.navHost, f, f.getClass().getSimpleName()).addToBackStack(null)
                 .commit();
     }

@@ -1,4 +1,4 @@
-package com.shotspot.fragments.navigation;
+package com.shotspot.fragments;
 
 import android.os.Bundle;
 
@@ -13,15 +13,19 @@ import android.view.ViewGroup;
 import com.shotspot.R;
 import com.shotspot.adapter.SpotAdapter;
 import com.shotspot.database.crud.Spot_CRUD;
+import com.shotspot.model.Spot;
+
+import java.util.List;
 
 import static com.shotspot.activities.MainActivity.bottomNavigationView;
 
-public class HomeFragment extends Fragment {
-
-    RecyclerView rHome;
-    public HomeFragment() {
-        // Required empty public constructor
+public class SearchResultFragment extends Fragment {
+    RecyclerView rSpots;
+    private List<Spot> spotList;
+    public SearchResultFragment(List <Spot> spotList) {
+        this.spotList = spotList;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,15 +36,14 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_search_result, container, false);
         //Connect layout to class
         bottomNavigationView.setVisibility(View.VISIBLE);
-        rHome = v.findViewById(R.id.recyclerHome);
+        rSpots = v.findViewById(R.id.recyclerSpots);
         //Set the adapter of the recycler which a List of Spots and a LayoutManager
-        SpotAdapter spotAdapter = new SpotAdapter(Spot_CRUD.getAll());
-        rHome.setAdapter(spotAdapter);
-        rHome.setOnFlingListener(null);
-        rHome.setLayoutManager(new LinearLayoutManager(getContext()));
+        SpotAdapter spotAdapter = new SpotAdapter(spotList);
+        rSpots.setAdapter(spotAdapter);
+        rSpots.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;
     }
 }

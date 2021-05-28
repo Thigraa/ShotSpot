@@ -13,6 +13,7 @@ import java.util.List;
 public class Comment_CRUD {
     private  static Connection connection = DatabaseConnection.connect();
 
+    //Find comment by id
     public static Comment getComment(int idComment){
         Comment comment = new Comment();
         try{
@@ -37,6 +38,7 @@ public class Comment_CRUD {
         return comment;
     }
 
+    //Find spot comments in a list
     public static List<Comment> getCommentBySpotID(int idSpot){
         List<Comment> comments = new ArrayList<>();
 
@@ -62,7 +64,7 @@ public class Comment_CRUD {
 
         return comments;
     }
-
+    //Insert a comment
     public static boolean insert(Comment comment){
         boolean inserted = false;
         String sql ="INSERT INTO Comment (id_spot, id_user, comment) VALUES (?,?,?)";
@@ -78,7 +80,7 @@ public class Comment_CRUD {
         }
         return inserted;
     }
-
+    //Delete a comment by id
     public static boolean delete(int idComment){
         String sql ="DELETE FROM Comment where id_comment = ?";
         boolean isDeleted = false;
